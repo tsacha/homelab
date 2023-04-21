@@ -1,0 +1,18 @@
+---
+machine:
+  kubelet:
+    nodeIP:
+      validSubnets:
+        - {{ .Env.nodesubnet6 }}
+        - {{ .Env.nodesubnet4 }}
+  network:
+    nameservers:
+      - 1.1.1.1
+      - 2620:fe::fe
+    interfaces:
+      - interface: eth0
+        routes:
+          - network: ::/0
+            gateway: {{ .Env.gw6 }}
+          - network: 0.0.0.0/0
+            gateway: {{ .Env.gw4 }}

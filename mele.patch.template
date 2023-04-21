@@ -1,0 +1,11 @@
+---
+machine:
+  network:
+    hostname: {{ .Env.mele_hostname }}
+    interfaces:
+      - interface: eth0
+        addresses:
+          - {{ .Env.mele_ip6 }}
+          - {{ .Env.mele_ip4 }}
+  install:
+    disk: /dev/mmcblk1
