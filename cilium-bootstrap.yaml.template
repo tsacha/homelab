@@ -16,37 +16,7 @@ ipam:
     clusterPoolIPv6PodCIDR: {{ .Env.podsubnet6 }}
     clusterPoolIPv6MaskSize: {{ .Env.podmask6 }}
 tunnel: disabled
-operator:
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-prometheus:
-  enabled: true
-  serviceMonitor:
-    enabled: true
-hubble:
-  enabled: true
-  port: 9965
-  preferIpv6: true
-  metrics:
-    enabled:
-      - dns
-      - drop
-      - tcp
-      - flow
-      - icmp
-      - httpV2
-      - port-distribution
-    serviceMonitor:
-      enabled: true
-  relay:
-    enabled: true
-  ui:
-    enabled: true
 kubeProxyReplacement: strict
-bandwidthManager:
-  enabled: true
 bgpControlPlane:
   enabled: true
 bpf:

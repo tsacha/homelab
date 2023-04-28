@@ -1,6 +1,9 @@
 ---
 machine:
   kubelet:
+    clusterDNS:
+      - {{ .Env.dns6 }}
+      - {{ .Env.dns4 }}
     nodeIP:
       validSubnets:
         - {{ .Env.nodesubnet6 }}
@@ -16,3 +19,13 @@ machine:
             gateway: {{ .Env.gw6 }}
           - network: 0.0.0.0/0
             gateway: {{ .Env.gw4 }}
+
+cluster:
+  network:
+    dnsDomain: {{ .Env.dnsdomain }}
+    podSubnets:
+      - {{ .Env.podsubnet6 }}
+      - {{ .Env.podsubnet4 }}
+    serviceSubnets:
+      - {{ .Env.svcsubnet6 }}
+      - {{ .Env.svcsubnet4 }}

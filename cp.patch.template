@@ -6,15 +6,10 @@ cluster:
   allowSchedulingOnControlPlanes: true
   controlPlane:
     endpoint: https://{{ .Env.endpoint }}:6443
+  proxy:
+    disabled: true
   clusterName: {{ .Env.cluster }}
   network:
-    dnsDomain: {{ .Env.dnsdomain }}
-    podSubnets:
-      - {{ .Env.podsubnet6 }}
-      - {{ .Env.podsubnet4 }}
-    serviceSubnets:
-      - {{ .Env.svcsubnet6 }}
-      - {{ .Env.svcsubnet4 }}
     cni:
       name: none
   apiServer:
@@ -27,11 +22,12 @@ cluster:
             audit-version: latest
             enforce: baseline
             enforce-version: latest
-            warn: restricted
+            warn: baseline
             warn-version: latest
           exemptions:
             namespaces:
               - cilium
+              - rook-ceph
             runtimeClasses: []
             usernames: []
           kind: PodSecurityConfiguration
