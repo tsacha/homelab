@@ -22,7 +22,6 @@ machine:
 
 cluster:
   network:
-    dnsDomain: {{ .Env.dnsdomain }}
     podSubnets:
       - {{ .Env.podsubnet6 }}
       - {{ .Env.podsubnet4 }}

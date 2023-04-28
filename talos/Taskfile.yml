@@ -24,6 +24,17 @@ tasks:
     - gomplate -f bgp.yaml.template -o _out/bgp.yaml
     - helm upgrade --install cilium cilium/cilium  --namespace cilium --create-namespace -f _out/cilium-bootstrap.yaml --version=1.14.0-snapshot.1
     - kubectl create -f _out/bgp.yaml
+
+  bl1:
+    - gomplate -f bl1.patch.template -o _out/bl1.patch
+    - talosctl machineconfig patch _out/controlplane.yaml --patch @_out/bl1.patch --output _out/bl1.yaml
+    - talosctl apply-config --insecure --nodes $bl1_recovery_ip --file _out/bl1.yaml
+
+  bl2:
+    - gomplate -f bl2.patch.template -o _out/bl2.patch
+    - talosctl machineconfig patch _out/controlplane.yaml --patch @_out/bl2.patch --output _out/bl2.yaml
+    - talosctl apply-config --insecure --nodes $bl2_recovery_ip --file _out/bl2.yaml
+
   encrypt:
     cmds:
       - sops --encrypt .env > .env.sops

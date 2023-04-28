@@ -1,0 +1,13 @@
+---
+machine:
+  network:
+    hostname: {{ .Env.bl1_hostname }}
+    interfaces:
+      - interface: eth0
+        addresses:
+          - {{ .Env.bl1_ip6 }}
+          - {{ .Env.bl1_ip4 }}
+  install:
+    disk: /dev/sda
+    extraKernelArgs:
+      - pci=noaer
