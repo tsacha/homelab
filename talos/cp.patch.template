@@ -28,6 +28,7 @@ cluster:
             namespaces:
               - cilium
               - rook-ceph
+              - monitoring
             runtimeClasses: []
             usernames: []
           kind: PodSecurityConfiguration
