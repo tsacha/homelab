@@ -39,4 +39,4 @@ spec:
         optional: false
       - kind: Secret
         name: cluster-secrets
-        optional: true
+        optional: false
