@@ -9,5 +9,5 @@ spec:
     - "*.home.tremoureux.fr"
   issuerRef:
     name: acme
-    kind: Issuer
+    kind: ClusterIssuer
     group: cert-manager.io
