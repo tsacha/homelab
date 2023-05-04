@@ -5,3 +5,7 @@ kind: Kustomization
 namespace: cert-manager
 resources:
   - helm.yaml
+  - rndc.sops.yaml
+  - issuer.sops.yaml
+  - issuer.staging.sops.yaml
+  - wildcard.yaml

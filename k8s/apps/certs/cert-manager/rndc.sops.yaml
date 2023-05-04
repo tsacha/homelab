@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: rndc-key
+    namespace: default
+data:
+    rndc-key: ENC[AES256_GCM,data:Gjx1aN6DBPY24gqqKm2n6BWgcXEqOEGmcLqBMyo9sb577xBgobe89mcGMB+oLrOBBHVQR7WzGXSwqWYi,iv:hmFMvsHHZZjmjnTH203AsqF8ixhI4Udd+xCtCTRuGgs=,tag:1wUeruAIn4J9zjJ1pK0y2w==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBlNzl3ajFGNGFSSEh2cW9X
+            elFqaVVNZGV5WnBqN1VWWVhlc0ZzZVVVRmxjCm56THZURlg3QWR0N2lLNGZlTGZ2
+            cTVJaXNPUWc2QTMrazlXRzh4YkxRYUUKLS0tIEQwdEtvZmVIQVNXSEZ1d01mY2ZI
+            dHhLaU1vYjVyWXN4YktqaUovVFU5cFEK+ldoTKYTGs6c+dQ/nrRowVVERNogaiM/
+            nu2MPa40GDVl3bDLG95eql/JDc3pA8hebwUQ9r1E8ZMwe4IR9+gdXw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-05-04T19:13:35Z"
+    mac: ENC[AES256_GCM,data:aDn2ov5uwzmkBLuKs0Hy52/DvRj4hH36hn8qWS6cX62RaFlWuA8DBYlRvsZ4KvW9nhH4+oCq31/NaW7EX2TC7zuoFqOW14xLsWCEvDbaa0+M4n2dTno8vpwQwyruHc8LImqNE+aUowVOv1bOIc4BOXNSkanLDGxO0ksS4g5n55Q=,iv:Rx8dXJ6JkDDtnakXsQBbPFk8wmEgwgMyfcN0/drpS64=,tag:6pqAigFUcTT/JiK6+TPXIA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3
