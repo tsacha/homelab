@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lldap-web
+  annotations:
+    cert-manager.io/issuer: "acme"
+spec:
+  ingressClassName: nginx
+  tls:
+    -
+      hosts:
+        - lldap.home.tremoureux.fr
+      secretName: lldap-cert
+  rules:
+  -
+    host: lldap.home.tremoureux.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: lldap-service
+            port:
+              number: 17170
