@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   - ./pod.yaml
   - ./service.yaml
+  - ./ingress.yaml
