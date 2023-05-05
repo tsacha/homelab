@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: grafana
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      remediateLastFailure: true
+      retries: 5
+      strategy: rollback
+  uninstall:
+    keepHistory: false
+  values:
+    persistence:
+      type: pvc
+      enabled: true
+      existingClaim: grafana-data
+    grafana.ini:
+      server:
+        root_url: https://grafana.home.tremoureux.fr
+      auth.generic_oauth:
+        enabled: true
+        auto_login: true
+        name: Authelia
+        allow_sign_up: true
+        empty_scopes: false
+        scopes: openid,profile,email,groups
+        auth_url: $__file{/secrets/grafana-secrets/auth_url}
+        token_url: $__file{/secrets/grafana-secrets/token_url}
+        api_url: $__file{/secrets/grafana-secrets/api_url}
+        client_id: $__file{/secrets/grafana-secrets/grafana_id}
+        client_secret: $__file{/secrets/grafana-secrets/grafana_secret}
+        login_attribute_path: preferred_username
+        groups_attribute_path: groups
+        name_attribute_path: name
+        use_pkce: true
+        role_attribute_path: contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'user') && 'Editor' || 'Viewer'
+
+    extraSecretMounts:
+      - name: grafana-secrets
+        secretName: grafana-secrets
+        defaultMode: 0440
+        mountPath: /secrets/grafana-secrets
+        readOnly: true

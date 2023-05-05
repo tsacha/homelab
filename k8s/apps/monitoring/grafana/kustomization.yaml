@@ -5,3 +5,7 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - oidc.sops.yaml
+  - storage.yaml
+  - helm.yaml
+  - certificate.yaml
+  - ingress.yaml

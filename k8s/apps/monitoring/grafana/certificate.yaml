@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-cert
+spec:
+  secretName: grafana-cert
+  dnsNames:
+    - grafana.home.tremoureux.fr
+  issuerRef:
+    name: acme
+    kind: ClusterIssuer
+    group: cert-manager.io
