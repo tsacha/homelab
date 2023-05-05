@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dummy-cert
+spec:
+  secretName: dummy-cert
+  dnsNames:
+    - dummy.home.tremoureux.fr
+  issuerRef:
+    name: acme
+    kind: ClusterIssuer
+    group: cert-manager.io

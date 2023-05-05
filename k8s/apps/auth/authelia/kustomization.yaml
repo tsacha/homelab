@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default
+resources:
+  - storage.yaml
+  - secrets.sops.yaml
+  - configuration.oidc.sops.yaml
+  - redis.yaml
+  - postgresql.yaml
+  - cm.yaml
+  - service.yaml
+  - ds.yaml
+  - certificate.yaml
+  - ingress.yaml

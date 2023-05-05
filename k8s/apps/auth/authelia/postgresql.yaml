@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: authelia-db
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: postgresql
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      remediateLastFailure: true
+      retries: 5
+      strategy: rollback
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      postgresql:
+        auth:
+          existingSecret: authelia-secrets
+          username: authelia
+          database: authelia
+          secretKeys:
+            userPasswordKey: authelia-storage-password
+            adminPasswordKey: authelia-storage-password
+    auth:
+      secretKeys:
+        adminPasswordKey: authelia-storage-password
+        userPasswordKey: authelia-storage-password
+    primary:
+      persistence:
+        enabled: true
+        existingClaim: authelia-db
+    volumePermissions:
+      enabled: true
