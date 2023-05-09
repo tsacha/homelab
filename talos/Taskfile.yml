@@ -5,10 +5,11 @@ version: '3'
 dotenv: ['.env']
 
 tasks:
+  secrets:
+    - talosctl gen secrets --force -o _out/secrets.yaml
   default:
     - gomplate -f cp.patch.template -o _out/cp.patch
     - gomplate -f all.patch.template -o _out/all.patch
-    - talosctl gen secrets --force -o _out/secrets.yaml
     - talosctl gen config --force --with-secrets _out/secrets.yaml $cluster https://$endpoint:6443 --config-patch @_out/all.patch --config-patch-control-plane=@_out/cp.patch --output-dir _out/
     - talosctl --talosconfig _out/talosconfig config endpoint $endpoint
     - talosctl --talosconfig _out/talosconfig config node $endpoint
