@@ -1,0 +1,11 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mqtt-exporter
+spec:
+  selector:
+    matchLabels:
+      app: mqtt-exporter
+  endpoints:
+  - port: mqtt-exporter

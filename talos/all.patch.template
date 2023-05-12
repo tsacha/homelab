@@ -19,7 +19,10 @@ machine:
             gateway: {{ .Env.gw6 }}
           - network: 0.0.0.0/0
             gateway: {{ .Env.gw4 }}
-
+  time:
+    disabled: false
+    servers:
+        - time.cloudflare.com
 cluster:
   network:
     podSubnets:
