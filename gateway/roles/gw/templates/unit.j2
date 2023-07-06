@@ -1,0 +1,14 @@
+[Unit]
+Description=Gateway services
+PartOf=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=/opt/gateway
+ExecStart=docker-compose up -d --remove-orphans
+ExecStop=docker-compose down
+
+[Install]
+WantedBy=multi-user.target

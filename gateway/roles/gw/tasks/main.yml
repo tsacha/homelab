@@ -1,0 +1,151 @@
+---
+- name: Setup hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
+    use: systemd
+
+- name: Install GW packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - certbot
+      - python3-certbot-dns-ovh
+      - curl
+      - docker.io
+      - docker-compose
+      - emacs-nox
+      - git
+      - gnupg2
+    update_cache: yes
+
+# Free up port 53
+- name: Configure public DNS
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: 'DNS='
+    line: DNS=2620:fe::fe
+  notify: Restart systemd-resolved
+
+- name: Disable DNS stub listener
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: 'DNSStubListener='
+    line: DNSStubListener=no
+  notify: Restart systemd-resolved
+
+- meta: flush_handlers
+
+- name: Install yq
+  ansible.builtin.get_url:
+    url: https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64
+    dest: /usr/local/bin/yq
+    mode: 0755
+
+- name: Configure Emacs backups directory
+  ansible.builtin.copy:
+    content: "(setq backup-directory-alist '((\".\" . \"~/.emacs.d/backups\")))"
+    dest: /usr/share/emacs/site-lisp/backup.el
+
+- name: Create root Emacs backups directory
+  ansible.builtin.file:
+    path: /root/.emacs.d/backups
+    state: directory
+
+- name: Gateway directory
+  ansible.builtin.file:
+    path: /opt/gateway
+    state: directory
+
+- name: Docker compose file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: /opt/gateway/docker-compose.yml
+
+- name: Systemd unit
+  ansible.builtin.template:
+    src: unit.j2
+    dest: /etc/systemd/system/gateway.service
+
+- name: Certbot OVH credentials
+  ansible.builtin.template:
+    src: certbot-ovh-credentials.ini.j2
+    dest: /opt/gateway/certbot-ovh-credentials.ini
+    mode: 0400
+
+### HTTP 2136 configuration
+- name: HTTP2136 vhost
+  ansible.builtin.template:
+    src: http2136-vhost.conf.j2
+    dest: /opt/gateway/vhost.conf
+
+- name: Generate HTTP2136 certificate
+  ansible.builtin.shell: "certbot certonly --dns-ovh --dns-ovh-credentials /opt/gateway/certbot-ovh-credentials.ini -d {{ http2136_vhost }} -m {{ mail }} --agree-tos"
+  args:
+    creates: "/etc/letsencrypt/live/{{ http2136_vhost }}"
+
+- name: Copy HTTP2136 certificate
+  ansible.builtin.copy:
+    src: "/etc/letsencrypt/live/{{ http2136_vhost }}/fullchain.pem"
+    dest: /opt/gateway/https.crt
+    remote_src: yes
+    follow: yes
+
+- name: Copy HTTP2136 certificate private key
+  ansible.builtin.copy:
+    src: "/etc/letsencrypt/live/{{ http2136_vhost }}/privkey.pem"
+    dest: /opt/gateway/https.key
+    remote_src: yes
+    follow: yes
+
+
+- name: HTTP2136 environment file
+  ansible.builtin.copy:
+    mode: 0440
+    content: |
+      TOKEN={{ http2136_token }}
+    dest: /opt/gateway/.env
+
+### Bind configuration
+- name: Zone file
+  ansible.builtin.template:
+    src: zone.j2
+    dest: "/opt/gateway/{{ zone }}"
+  notify: Restart DNS
+  tags: dns-restart
+
+- meta: flush_handlers
+  tags: dns-restart
+
+- name: DNS configuration
+  ansible.builtin.template:
+    src: named.conf.j2
+    dest: "/opt/gateway/named.conf"
+
+- name: DNS RNDC key
+  ansible.builtin.template:
+    src: rndc.key.j2
+    dest: "/opt/gateway/rndc.key"
+
+### Wireguard configuration
+- name: Wireguard public key
+  ansible.builtin.template:
+    src: wireguard-pubkey.key.j2
+    dest: "/opt/gateway/wireguard-pubkey.key"
+
+- name: Wireguard private key
+  ansible.builtin.template:
+    src: wireguard-privkey.key.j2
+    dest: "/opt/gateway/wireguard-privkey.key"
+
+- name: Wireguard configuration
+  ansible.builtin.template:
+    src: wireguard.conf.j2
+    dest: "/opt/gateway/wireguard.conf"
+
+# Start Gateway
+- name: Start gateway
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: gateway

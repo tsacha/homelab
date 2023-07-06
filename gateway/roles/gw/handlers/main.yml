@@ -1,0 +1,10 @@
+---
+- name: Restart DNS
+  ansible.builtin.command: docker-compose restart dns
+  args:
+    chdir: /opt/gateway
+
+- name: Restart systemd-resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted

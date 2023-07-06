@@ -1,2 +1,5 @@
 talos/_out/
 .env
+gateway/group_vars
+gateway/inventory
+gateway/roles/gw/templates/zone.j2

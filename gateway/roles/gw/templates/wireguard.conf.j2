@@ -1,0 +1,10 @@
+[Interface]
+Address = {{ wireguard_address }}
+ListenPort = {{ wireguard_listen_port }}
+PrivateKey = {{ wireguard_privkey }}
+
+[Peer]
+PublicKey = {{ wireguard_peer_pubkey }}
+AllowedIPs = {{ wireguard_peer_allowed_ips }}
+Endpoint = {{ wireguard_peer_endpoint }}
+PersistentKeepalive = 25
