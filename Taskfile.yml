@@ -1,0 +1,19 @@
+---
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  encrypt:
+    cmds:
+      - sops --encrypt secrets.yml > secrets.yml.enc
+      - sops --encrypt gateway/inventory/gw.yml > gateway/inventory/gw.yml.enc
+  decrypt:
+    cmds:
+      - sops --input-type yaml --output-type yaml --decrypt secrets.yml.enc > secrets.yml
+      - sops --input-type yaml --output-type yaml --decrypt gateway/inventory/gw.yml.enc > gateway/inventory/gw.yml
+
+  dns:
+    dir: gateway/
+    cmds:
+      - ansible-playbook -i inventory/gw.yml gw.yml -t dns-restart
