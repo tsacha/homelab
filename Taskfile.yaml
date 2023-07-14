@@ -83,7 +83,6 @@ tasks:
         for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
           mkdir -p talos/data/iso/$node
           NODE=$node gomplate -d secrets.yaml -f talos/templates/node.patch.template -o talos/data/$node.patch.yaml
-
           talosctl machineconfig patch talos/data/controlplane.yaml --patch @talos/data/$node.patch.yaml --patch @talos/data/cilium-inline.yaml --output talos/data/nodes/$node.yaml
           cp talos/data/nodes/$node.yaml boot/assets/nodes/$node.yaml
           NODE=$node gomplate -d secrets.yaml -f boot/assets/ipxe.template -o boot/assets/nodes/$(yq -r ".nodes.$node.mac" secrets.yaml | sed -s "s/:/-/g").pxe

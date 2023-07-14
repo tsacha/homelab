@@ -6,9 +6,6 @@ metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  dependsOn:
-    - name: prometheus-operator-crds
-      namespace: monitoring
   interval: 5m
   chart:
     spec:

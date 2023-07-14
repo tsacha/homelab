@@ -2,10 +2,6 @@
 machine:
   certSANs:
     - kube.home.tremoureux.fr
-  nodeLabels:
-    openebs.io/engine: mayastor
-  sysctls:
-    vm.nr_hugepages: "1024"
 
 cluster:
   allowSchedulingOnControlPlanes: true
@@ -32,7 +28,7 @@ cluster:
           exemptions:
             namespaces:
               - cilium
-              - mayastor
+              - storage
               - monitoring
             runtimeClasses: []
             usernames: []

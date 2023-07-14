@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: prometheus
+  namespace: flux-system
+spec:
+  interval: 5m
+  path: ./k8s/apps/monitoring/prometheus
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-tremoureux-fr
+    namespace: flux-system
