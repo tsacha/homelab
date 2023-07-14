@@ -1,0 +1,10 @@
+cluster:
+  inlineManifests:
+    - name: cilium
+      contents: |-
+        ---
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: "cilium"
+{{ helm "template" "cilium" "cilium/cilium" "--namespace" "cilium" "-f" "talos/data/cilium-options.yml" "--version=1.14.0-rc.0"  | strings.Indent 8 }}

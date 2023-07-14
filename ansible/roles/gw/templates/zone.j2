@@ -1,0 +1,12 @@
+@ 60 IN SOA {{ gw_fqdn }}. {{ gw_fqdn }}. 2022102109 3600 600 2600 30
+@ 60 IN NS  {{ gw_fqdn }}.
+
+{% for hypervisor in hypervisors %}
+{{ hypervisors[hypervisor]["web"] }}. AAAA {{ hypervisors[hypervisor]["ip6"].split("/")[0] }}
+{{ hypervisor }} AAAA {{ hypervisors[hypervisor]["ip6"].split("/")[0] }}
+{% endfor %}
+
+{% for node in nodes %}
+{{ node }} AAAA {{ nodes[node]["ip6"].split("/")[0] }}
+{{ kube.endpoint }}. AAAA {{ nodes[node]["ip6"].split("/")[0] }}
+{% endfor %}

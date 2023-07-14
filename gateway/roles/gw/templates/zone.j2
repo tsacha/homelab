@@ -1,6 +1,0 @@
-@ 60 IN SOA {{ gw_fqdn }}. {{ gw_fqdn }}. 2022102109 3600 600 2600 30
-@ 60 IN NS  {{ gw_fqdn }}.
-
-{% for node in nodes %}
-{{ node }} AAAA {{ nodes[node]["ip6"].split("/")[0] }}
-{% endfor %}

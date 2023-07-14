@@ -1,0 +1,33 @@
+---
+machine:
+  kubelet:
+    clusterDNS:
+      - {{ (datasource "secrets").kube.dns6 }}
+      - {{ (datasource "secrets").kube.dns4 }}
+    nodeIP:
+      validSubnets:
+        - {{ (datasource "secrets").kube.nodesubnet6 }}
+        - {{ (datasource "secrets").kube.nodesubnet4 }}
+  network:
+    nameservers:
+      - 1.1.1.1
+      - 2620:fe::fe
+    interfaces:
+      - interface: eth0
+        routes:
+          - network: ::/0
+            gateway: {{ (datasource "secrets").kube.gw6 }}
+          - network: 0.0.0.0/0
+            gateway: {{ (datasource "secrets").kube.gw4 }}
+  time:
+    disabled: false
+    servers:
+        - time.cloudflare.com
+cluster:
+  network:
+    podSubnets:
+      - {{ (datasource "secrets").kube.podsubnet6 }}
+      - {{ (datasource "secrets").kube.podsubnet4 }}
+    serviceSubnets:
+      - {{ (datasource "secrets").kube.svcsubnet6 }}
+      - {{ (datasource "secrets").kube.svcsubnet4 }}

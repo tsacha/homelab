@@ -38,6 +38,7 @@ services:
     ports:
       - 53:53
       - 53:53/udp
+      - 953:953
     volumes:
       - dns-cache:/var/cache/bind
       - dns-run:/run/named

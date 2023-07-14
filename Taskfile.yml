@@ -1,19 +1,104 @@
 ---
 version: '3'
 
-dotenv: ['.env']
-
 tasks:
-  encrypt:
+  # Secrets
+  git/encrypt:
     cmds:
       - sops --encrypt secrets.yml > secrets.yml.enc
-      - sops --encrypt gateway/inventory/gw.yml > gateway/inventory/gw.yml.enc
-  decrypt:
+      - sops --encrypt ansible/inventory/gw.yml > ansible/inventory/gw.yml.enc
+      - sops --encrypt ansible/inventory/proxmox.yml > ansible/inventory/proxmox.yml.enc
+  git/decrypt:
     cmds:
       - sops --input-type yaml --output-type yaml --decrypt secrets.yml.enc > secrets.yml
-      - sops --input-type yaml --output-type yaml --decrypt gateway/inventory/gw.yml.enc > gateway/inventory/gw.yml
+      - sops --input-type yaml --output-type yaml --decrypt ansible/inventory/gw.yml.enc > ansible/inventory/gw.yml
 
-  dns:
-    dir: gateway/
+  # Gateway things
+  gw/dns:
+    dir: ansible/
     cmds:
       - ansible-playbook -i inventory/gw.yml gw.yml -t dns-restart
+
+  # Talos
+  talos/nocloud-iso:
+    cmds:
+      - mkdir -p talos/iso
+      - |
+        docker run --rm -i -w /work -v "$PWD":/work --entrypoint sh ghcr.io/siderolabs/imager:v1.4.6 -c '
+          installer iso --arch amd64 --output talos/iso/
+          xorriso -osirrox on -indev ./talos/iso/talos-amd64.iso -extract / /tmp &&
+          rm -f ./talos/iso/talos-amd64.iso &&
+          sed -i 's/talos.platform=metal/talos.platform=nocloud/g' /tmp/boot/grub/grub.cfg &&
+          grub-mkrescue --compress=xz --output=./talos/iso/talos-amd64-nocloud.iso /tmp'
+      - |
+        for hypervisor in $( yq -r ".hypervisors|to_entries[].key" secrets.yml ); do
+          scp talos/iso/talos-amd64-nocloud.iso root@$(yq -r ".hypervisors.$hypervisor.hostname" secrets.yml):/var/lib/vz/template/iso/
+        done
+  talos/gensecrets:
+    cmds:
+      - mkdir -p talos/data
+      - talosctl gen secrets --force -o talos/data/secrets.yml
+  talos/genconfig:
+    vars:
+      endpoint:
+        sh: yq -r ".kube.endpoint" secrets.yml
+      cluster:
+        sh: yq -r ".kube.cluster" secrets.yml
+    cmds:
+      - gomplate -d secrets.yml -f talos/templates/all.patch.template -o talos/data/all.patch
+      - gomplate -d secrets.yml -f talos/templates/cp.patch.template -o talos/data/cp.patch
+      - gomplate -d secrets.yml -f talos/templates/bgp.yml.template -o talos/data/bgp.yml
+      - gomplate -d secrets.yml -f talos/templates/cilium-options.yml.template -o talos/data/cilium-options.yml
+      - gomplate --plugin helm=/usr/bin/helm -f talos/templates/cilium-inline.patch.template -o talos/data/cilium-inline.yml
+      - talosctl gen config --force --with-secrets talos/data/secrets.yml {{ .cluster }} https://{{ .endpoint }}:6443 --config-patch @talos/data/all.patch --config-patch-control-plane=@talos/data/cp.patch --output-dir talos/data/
+      - talosctl --talosconfig talos/data/talosconfig config endpoint {{ .endpoint }}
+      - talosctl --talosconfig talos/data/talosconfig config node {{ .endpoint }}
+      - mkdir -p talos/data/iso
+  talos/gennodes:
+    cmds:
+      - |
+        for node in $( yq -r ".nodes|to_entries[].key" secrets.yml ); do
+          mkdir -p talos/data/iso/$node
+          NODE=$node gomplate -d secrets.yml -f talos/templates/node.patch.template -o talos/data/$node.patch
+          talosctl machineconfig patch talos/data/controlplane.yaml --patch @talos/data/$node.patch --patch @talos/data/cilium-inline.yml --output talos/data/iso/$node/user-data
+          NODE=$node gomplate -d secrets.yml -f talos/templates/cloud-init-network.template -o talos/data/iso/$node/network-config
+          NODE=$node gomplate -d secrets.yml -f talos/templates/cloud-init-meta-data.template -o talos/data/iso/$node/meta-data
+          genisoimage -output talos/data/iso/$node/cidata.iso -V cidata -r -J talos/data/iso/$node/user-data talos/data/iso/$node/meta-data talos/data/iso/$node/network-config
+          scp talos/data/iso/$node/cidata.iso root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yml).hostname" secrets.yml):/var/lib/vz/template/iso/
+        done;
+  talos/vms:
+    cmds:
+      - |
+        for node in $( yq -r ".nodes|to_entries[].key" secrets.yml ); do
+          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yml).hostname" secrets.yml) -C \
+            qm create $(yq -r ".nodes.$node.id" secrets.yml) \
+              --name $node \
+              --memory 6144 \
+              --net0 virtio,bridge=vmbr0 \
+              --cores 4 \
+              --sockets 1 \
+              --scsi0 local-lvm:50,iothread=1 \
+              --scsi1 $(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yml).fstype" secrets.yml):250,iothread=1 \
+              --scsi2 local:iso/talos-amd64-nocloud.iso,media=cdrom \
+              --scsi3 local:iso/cidata.iso,media=cdrom \
+              --efidisk0 local-lvm:0,efitype=4m \
+              --bios ovmf \
+              --vga qxl \
+              --ostype l26 \
+              --scsihw virtio-scsi-single \
+              --cpu x86-64-v2-AES \
+              --onboot 1
+          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yml).hostname" secrets.yml) -C qm start $(yq -r ".nodes.$node.id" secrets.yml)
+        done;
+  talos/postinstall:
+    cmds:
+      - talosctl --talosconfig talos/data/talosconfig bootstrap
+      - talosctl --talosconfig talos/data/talosconfig kubeconfig -f
+      - kubectl apply -f bgp.yml
+  talos/destroy:
+    cmds:
+      - |
+        for node in $( yq -r ".nodes|to_entries[].key" secrets.yml ); do
+          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yml).hostname" secrets.yml) -C qm stop $(yq -r ".nodes.$node.id" secrets.yml) || /bin/true
+          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yml).hostname" secrets.yml) -C qm destroy $(yq -r ".nodes.$node.id" secrets.yml) || /bin/true --destroy-unreferenced-disks=true --purge
+        done;

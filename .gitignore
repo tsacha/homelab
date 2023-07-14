@@ -1,4 +1,5 @@
-talos/_out/
+talos/data
+talos/iso
 .env
-gateway/inventory/*.yml
+ansible/inventory/*.yml
 secrets.yml

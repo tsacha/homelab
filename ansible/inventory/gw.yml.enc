@@ -1,0 +1,24 @@
+gw:
+    hosts:
+        gw.tremoureux.fr:
+            ansible_user: ENC[AES256_GCM,data:l/IDQQ==,iv:diKI15FHA498FZe24m7r8w6SoeMuWYp7ZVB/tnPG7Ro=,tag:cjy1Ahm49EUfPtJM0w1IMQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBQazZ6OVdxdEtaNUlVcjJz
+            cE5PUWJORTFja0lzR3BYa3loQjFnUzd0emlzCkFzYXhnQ1ovYTVKSTQ1TnBjb3Y0
+            TEh0TXMvTXZjcStZbEZ1RGFPT1ZtWkkKLS0tIFBWNk5kNEFsUjZkU3VndWx2RWlw
+            b2hwbk90eUFod2dkaUFpa2tGKzVQNDAKo0C3r98PStWk9iNbuf9xnWhkSw0jzvSo
+            7IoyX3Wj9l0CXzI9UpGZ13tMkB7TlQdLdcgti0V7QWAsZz4XmIOfrg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-14T20:10:50Z"
+    mac: ENC[AES256_GCM,data:J3BhScidtuQaIHUKk64RrJrDr8Ke7UR9K41n6ns4onnF8YdHvweymiaUq5sy6lRGuo7KA1zgqym0Z+fXZSxoLXh19VEgtLUOjmJkQrG+KutAZdZLYgLYD4d/8liR7W1hdBYMArr/MUq8h6uI855DfMhKDrABIWNUOV5lulyryOg=,iv:D8Ke+k2ojYvoPp2FCb3yYxZ5HzNROFReSqFiqRvY6Vk=,tag:g3reO12Sga/JPs0Rgxjzdw==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3

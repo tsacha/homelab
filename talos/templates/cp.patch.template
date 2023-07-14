@@ -5,10 +5,10 @@ machine:
 cluster:
   allowSchedulingOnControlPlanes: true
   controlPlane:
-    endpoint: https://{{ .Env.endpoint }}:6443
+    endpoint: https://{{ (datasource "secrets").kube.endpoint }}:6443
   proxy:
     disabled: true
-  clusterName: {{ .Env.cluster }}
+  clusterName: {{ (datasource "secrets").kube.cluster }}
   network:
     cni:
       name: none
@@ -34,4 +34,4 @@ cluster:
           kind: PodSecurityConfiguration
   etcd:
     advertisedSubnets:
-      - {{ .Env.nodesubnet6 }}
+      - {{ (datasource "secrets").kube.nodesubnet6 }}
