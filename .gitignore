@@ -1,5 +1,8 @@
-talos/data
-talos/iso
-.env
-ansible/inventory/*.yml
-secrets.yml
+talos/data/*.yaml
+talos/data/talosconfig
+talos/data/iso/**/*.iso
+talos/data/iso/**/user-data
+talos/data/iso/**/meta-data
+talos/data/iso/**/network-config
+ansible/inventory/*.yaml
+secrets.yaml

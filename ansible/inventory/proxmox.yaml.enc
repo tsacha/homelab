@@ -1,0 +1,28 @@
+proxmox:
+    hosts:
+        mele.home.tremoureux.fr:
+            ansible_user: ENC[AES256_GCM,data:IWYUjA==,iv:KRUiT6FKyopV26OyKlcKkvx8rD7QfNpBKFwSRQmnIq8=,tag:8YlsPM7lnXU4uTstLcq8NA==,type:str]
+        bl1.home.tremoureux.fr:
+            ansible_user: ENC[AES256_GCM,data:xFVOjA==,iv:ZqJn96kV2q4E//5lG3+LrP2h6cA6eWP+xGiNKPeP9e4=,tag:1tOegKbNuRbsoEe0DnTZlg==,type:str]
+        bl2.home.tremoureux.fr:
+            ansible_user: ENC[AES256_GCM,data:rUpLXw==,iv:bSF8Y6lwbSHFaYiqz8h5GGOoBRv2TKDGSbmTzdcKvqA=,tag:SjT/FNAvNIoxIAPAH2vNRw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnckN3M05qenVCQ0Y0NitX
+            andXeEo3UnNqT0VtamxQbFhKMkw2LzEwOWowCmcraFlIKzdxdDFrcVhVTUt1SU92
+            Tm5GRzMzVzdzVHNiSThWZyt4Y092NWsKLS0tIFdaR3YyRUc4RS9aUzFkR1cxZHJj
+            aWtvMWpGaTRjYThTUkR6cHowc1VRZzAKGwsXPsLExhAHHwvXd+JmI5qDRlOW1YCP
+            zrpXZByZzUlkK8px34H6NGLTW4oSUyWaC7VMV+C1mHmkjyxjGK0GYw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-17T09:14:41Z"
+    mac: ENC[AES256_GCM,data:XPTAE1vW4s86j4Sl7TLcYNHev2mtM+mSeF8Khewz91aa3s2mDMPXXezwXwgjYTMW9xPnqy4k4sxqrYlgS9a2Uo67aG2Z7hkMvz9aNsAjinKSSKjU1VeHnBw55R9F0WWm2z6OHjLEYBYablD8dvGkt9KA3mtHttUJH0Xumb2H+0Y=,iv:wkAJmujPJOpGsQyA13e53mI9p/+9V7LgG2qMM92w/RU=,tag:L7CeIXqvyHFzU6tqEg3btg==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3

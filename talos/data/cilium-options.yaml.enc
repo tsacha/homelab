@@ -1,0 +1,50 @@
+autoDirectNodeRoutes: ENC[AES256_GCM,data:wcva1w==,iv:W2qZvdExuoYNWzdUq6zPJOmn5mXRSCl5hoU7r6D6irk=,tag:GaacJHG//wiOHHZzAQ8y1A==,type:bool]
+ipv4NativeRoutingCIDR: ENC[AES256_GCM,data:hmS7faOMF7LJEJszTUXc,iv:UpND9XHJGyDAbOxzzAIKAxKHbEJUwNrTVBQGAF1s0GY=,tag:W2p8vAhlMfRoV8Gve4qqmw==,type:str]
+ipv6NativeRoutingCIDR: ENC[AES256_GCM,data:XaW9nHkzx06J0iy531xTx0j2e1sxrg==,iv:B99BpE+xivhEE8NDqaY4a1kaBuAHoWhh4uDks7+987g=,tag:NnTjDJBlJBHegMx1ZV4TIg==,type:str]
+ipv4:
+    enabled: ENC[AES256_GCM,data:tdBbgw==,iv:cY8jJ1+jIW5Q+6ZHY8aZnlaUrjeA3qog5E7D7IdJp2I=,tag:ihdoatKfBcx3jQfdp4WtCg==,type:bool]
+ipv6:
+    enabled: ENC[AES256_GCM,data:OD54CA==,iv:rmghdva54yg9KmPUbapGakYMO+R5+kpL8n7enrUiLzM=,tag:Gu06B8uSbZRiLi3/ID5dNg==,type:bool]
+enableIPv4Masquerade: ENC[AES256_GCM,data:O0+4Wxk=,iv:QC2l34pw16fc/wQ9+ShNNK3k50CT0Bwfl1IxDuyAm2Y=,tag:q9R9feTHVczGOvxOb8t1gA==,type:bool]
+enableIPv6Masquerade: ENC[AES256_GCM,data:ev6fXh8=,iv:P5g+tn/Q+V8KR9lW2XmabSrncAhAtLbz+jmlu1eKuy0=,tag:Y4vqOubqu2HRLDBqYOsmOw==,type:bool]
+ipam:
+    mode: ENC[AES256_GCM,data:xAez1TGfoXiM1G+7,iv:3TRZ+FwoxJWx2DRXLTJ1rPw4Y7nXLxU+MtHedjirfMo=,tag:3t8jliQq8x4BvACWNQ0QXg==,type:str]
+    operator:
+        clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:6krE0ChUEgX20yJONgNj,iv:CjtGa80VVfoOjBjuHGz6Ocs6hDEh1bidJhSJt4HvdKU=,tag:RmkHS7oUfPLE4K1hoXGzQA==,type:str]
+        clusterPoolIPv4MaskSize: ENC[AES256_GCM,data:qV4=,iv:ZPpgy7gHvd5wWJw4TGZk+bnylWdzztmYP955pkIRtDI=,tag:/QdhFekdZTJX0Tw1zveZ0A==,type:int]
+        clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:uUciGmmPReLhTwdY/4EgAmb0GAf/eQ==,iv:N5d69ql6pYojLKBLQRIAU1AQEIyhzpiPP6w4VWvWrlg=,tag:m7Dud56vesApSVzUYo5EuA==,type:str]
+        clusterPoolIPv6MaskSize: ENC[AES256_GCM,data:5zQ=,iv:T40hCIAigZ9pENBPuWoWoPm152d5s6uYhJ3/ObGV7MY=,tag:YY6uKC+W9RhSN3BNvbObMw==,type:int]
+tunnel: ENC[AES256_GCM,data:rbKh0XBMZ7Y=,iv:6ZpuqYl4jAp6YGT2CkkVERBNWplYiRA7mZfvlIF5TUY=,tag:Gf8g72gHLsFAZRQY2OHlwA==,type:str]
+kubeProxyReplacement: ENC[AES256_GCM,data:kOIO6bU2,iv:2l4RDogz50yoY5iq0mhdEYR5Qn+QHG+i1XzfjslvALs=,tag:VWYAga1Jhj/5zdOyXbXEjQ==,type:str]
+bgpControlPlane:
+    enabled: ENC[AES256_GCM,data:jhgCWQ==,iv:6WaquoYzB/to0fK1WspWzwzLqB1Ax6VWkejhE0BGc9s=,tag:zJfswpaBfahu/Mglsi/t9g==,type:bool]
+bpf:
+    masquerade: ENC[AES256_GCM,data:dXmQlg==,iv:vxi9QSvz1dszTQaafMS36JCd5ZigbURcT8yZwKXRjJA=,tag:OPXMBoQ82bmrnQJRSGMwDw==,type:bool]
+securityContext:
+    privileged: ENC[AES256_GCM,data:v5gF2w==,iv:e4IK9PXEEiuvf/BmjjuUadBDZX+y/uH4uomrrETu5yg=,tag:2EMGlpG0zvEoBog1w3jcnA==,type:bool]
+cgroup:
+    hostRoot: ENC[AES256_GCM,data:h3Hq84nuRs+Nh2WTzeI=,iv:eFgQKobLRaHF666dSUTuM1HaqOfNoX3VgdBR+1ADrN4=,tag:Ig7XxhXMBA02XcKl4pyEdw==,type:str]
+    autoMount:
+        enabled: ENC[AES256_GCM,data:lArMQUk=,iv:mPvU6pZOiy4JHDCFzFcaeuIwgxLdadKnhxVY++d5khM=,tag:J8Ly5OBKiv2Xx0QJW/Fkrg==,type:bool]
+k8sServiceHost: ENC[AES256_GCM,data:xOQIQ5MVsnCXcX1TBN1nE3I+Erq7xXU=,iv:nI6HZMTuu+pYPvY5lAM+9lfMXnNa3L739SpHEcnttss=,tag:/Fo4VFDeQDVV8h6AFvZ8lw==,type:str]
+k8sServicePort: ENC[AES256_GCM,data:uoLVVg==,iv:ptm61LSTeVTkpdkrlNVxr4ij88gZNChDVBOPPVLG3GE=,tag:aHlGSQdm1tx//OkOAHFkBQ==,type:int]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4dm5abUFSdk5CbjBuMVlR
+            VzNiaHl6K3QvaEhNRmViNmtnZkQ2Z0pWNFNBCk9jOW02UEZQbVU1RVUveDVUbDZp
+            YWQ5UVRrbGRuRTdEb0JPdXFKTndvemMKLS0tIER6a1c3b1ViS0tRaEwyL2F0VWt6
+            WWd4SGlyYXZBeTduNHZBaXp1RVF6Z1EKFR2viBxmaLxJgtcZOX+EmKAoP7fcMkhH
+            mpfIanEbGJeZUFompa5NBjJ+LDCcsNLPstez20rAM5phFzh//v5Mig==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-07-17T09:14:41Z"
+    mac: ENC[AES256_GCM,data:gFfYkJUUBa1vN0F/ow21+tnbli285V71sBrgWJM11l5NtMLeBPYoVUdap6Bc+CjvMA7d23wNSSrahvYjwOE1q2kFO924KRcAh3p5pujsiBqjMPgSqmSJTeSz24Rkmjt9FswQokRPP89olBj6eiHgvSMz3zs1HFeQDjTN+0VDXqI=,iv:egh2xEnlgNBPAMG60GdQuIoJ98xcDBJL/AeltwJ+ebY=,tag:PNx5cJ48pQ6btx68vQXeMg==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.7.3
