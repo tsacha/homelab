@@ -7,4 +7,4 @@ cluster:
         kind: Namespace
         metadata:
           name: "cilium"
-{{ helm "template" "cilium" "cilium/cilium" "--namespace" "cilium" "-f" "talos/data/cilium-options.yml" "--version=1.14.0-rc.0"  | strings.Indent 8 }}
+{{ helm "template" "cilium" "cilium/cilium" "--namespace" "cilium" "-f" "talos/data/cilium-options.yaml" "--version=1.14.0-rc.0"  | strings.Indent 8 }}

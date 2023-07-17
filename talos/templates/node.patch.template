@@ -1,5 +1,7 @@
 ---
 machine:
+  certSANs:
+    - {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).hostname }}
   network:
     hostname: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).hostname }}
     interfaces:

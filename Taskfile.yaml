@@ -123,7 +123,7 @@ tasks:
       - talosctl --talosconfig talos/data/talosconfig kubeconfig -f
   talos/postinstall:
     cmds:
-      - kubectl apply -f bgp.yaml
+      - kubectl apply -f talos/data/bgp.yaml
   talos/destroy:
     cmds:
       - |
