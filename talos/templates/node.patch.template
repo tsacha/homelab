@@ -10,4 +10,5 @@ machine:
           - {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).ip6 }}
           - {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).ip4 }}
   install:
-    disk: /dev/sda
+    disk: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).system_disk }}
+    wipe: true

@@ -2,9 +2,24 @@
 version: '3'
 
 tasks:
-  prereqs:
+  local/prereqs:
     cmds:
       - helm repo add cilium https://helm.cilium.io/
+      - curl -L http://boot.ipxe.org/snponly.efi -o boot/assets/snponly.efi
+      - curl -L https://github.com/siderolabs/talos/releases/download/v1.4.6/vmlinuz-amd64 -o boot/assets/vmlinuz
+      - curl -L https://github.com/siderolabs/talos/releases/download/v1.4.6/initramfs-amd64.xz -o boot/assets/initramfs.xz
+  boot/web:
+    dir: boot/assets
+    cmds:
+      - caddy file-server --listen "[::]:8080" --access-log
+  boot/dhcp:
+    cmds:
+      - gomplate --experimental -d secrets.yaml -f boot/kea-config/dhcp6.json.template -o boot/kea-config/dhcp6.json
+      - sudo kea-dhcp6 -d -c boot/kea-config/dhcp6.json
+  boot/tftp:
+    dir: boot/assets
+    cmds:
+      - sudo in.tftpd -6 -L -s .
   # Secrets
   git/encrypt:
     cmds:
@@ -17,12 +32,9 @@ tasks:
           sops --encrypt $f > $f.enc
         done;
       - |
-        for n in $(ls talos/data/iso/); do
-          sops --input-type yaml --output-type yaml --encrypt talos/data/iso/$n/meta-data > talos/data/iso/$n/meta-data.enc
-          sops --input-type yaml --output-type yaml --encrypt talos/data/iso/$n/user-data > talos/data/iso/$n/user-data.enc
-          sops --input-type yaml --output-type yaml --encrypt talos/data/iso/$n/network-config > talos/data/iso/$n/network-config.enc
+        for f in $(ls talos/data/nodes/*.yaml); do
+          sops --encrypt $f > $f.enc
         done;
-
   git/decrypt:
     cmds:
       - sops --input-type yaml --output-type yaml --decrypt secrets.yaml.enc > secrets.yaml
@@ -35,10 +47,8 @@ tasks:
           sops --input-type yaml --output-type yaml --decrypt $f > ${f%.*}
         done;
       - |
-        for n in $(ls talos/data/iso/); do
-          sops --input-type yaml --output-type yaml --decrypt talos/data/iso/$n/meta-data.enc > talos/data/iso/$n/meta-data
-          sops --input-type yaml --output-type yaml --decrypt talos/data/iso/$n/user-data.enc > talos/data/iso/$n/user-data
-          sops --input-type yaml --output-type yaml --decrypt talos/data/iso/$n/network-config.enc > talos/data/iso/$n/network-config
+        for f in $(ls talos/data/nodes/*.yaml.enc); do
+          sops --input-type yaml --output-type yaml --decrypt $f > ${f%.*}
         done;
   # Gateway things
   gw/dns:
@@ -47,20 +57,6 @@ tasks:
       - ansible-playbook -i inventory/gw.yaml gw.yaml -t dns-restart
 
   # Talos
-  talos/nocloud-iso:
-    cmds:
-      - mkdir -p talos/iso
-      - |
-        docker run --rm -i -w /work -v "$PWD":/work --entrypoint sh ghcr.io/siderolabs/imager:v1.4.6 -c '
-          installer iso --arch amd64 --output talos/iso/
-          xorriso -osirrox on -indev ./talos/iso/talos-amd64.iso -extract / /tmp &&
-          rm -f ./talos/iso/talos-amd64.iso &&
-          sed -i 's/talos.platform=metal/talos.platform=nocloud/g' /tmp/boot/grub/grub.cfg &&
-          grub-mkrescue --compress=xz --output=./talos/iso/talos-amd64-nocloud.iso /tmp'
-      - |
-        for hypervisor in $( yq -r ".hypervisors|to_entries[].key" secrets.yaml ); do
-          scp talos/iso/talos-amd64-nocloud.iso root@$(yq -r ".hypervisors.$hypervisor.hostname" secrets.yaml):/var/lib/vz/template/iso/
-        done
   talos/gensecrets:
     cmds:
       - mkdir -p talos/data
@@ -80,42 +76,17 @@ tasks:
       - talosctl gen config --force --with-secrets talos/data/secrets.yaml {{ .cluster }} https://{{ .endpoint }}:6443 --config-patch @talos/data/all.patch.yaml --config-patch-control-plane=@talos/data/cp.patch.yaml --output-dir talos/data/
       - talosctl --talosconfig talos/data/talosconfig config endpoint {{ .endpoint }}
       - talosctl --talosconfig talos/data/talosconfig config node {{ .endpoint }}
-      - mkdir -p talos/data/iso
+      - mkdir -p talos/data/nodes boot/assets/nodes
   talos/gennodes:
     cmds:
       - |
         for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
           mkdir -p talos/data/iso/$node
           NODE=$node gomplate -d secrets.yaml -f talos/templates/node.patch.template -o talos/data/$node.patch.yaml
-          talosctl machineconfig patch talos/data/controlplane.yaml --patch @talos/data/$node.patch.yaml --patch @talos/data/cilium-inline.yaml --output talos/data/iso/$node/user-data
-          NODE=$node gomplate -d secrets.yaml -f talos/templates/cloud-init-network.template -o talos/data/iso/$node/network-config
-          NODE=$node gomplate -d secrets.yaml -f talos/templates/cloud-init-meta-data.template -o talos/data/iso/$node/meta-data
-          mkisofs -output talos/data/iso/$node/cidata.iso -V cidata -r -J talos/data/iso/$node/user-data talos/data/iso/$node/meta-data talos/data/iso/$node/network-config
-          scp talos/data/iso/$node/cidata.iso root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yaml).hostname" secrets.yaml):/var/lib/vz/template/iso/
-        done;
-  talos/vms:
-    cmds:
-      - |
-        for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
-          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yaml).hostname" secrets.yaml) -C \
-            qm create $(yq -r ".nodes.$node.id" secrets.yaml) \
-              --name $node \
-              --memory 6144 \
-              --net0 virtio,bridge=vmbr0 \
-              --cores 4 \
-              --sockets 1 \
-              --scsi0 local-lvm:50,iothread=1 \
-              --scsi1 $(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yaml).fstype" secrets.yaml):250,iothread=1 \
-              --scsi2 local:iso/talos-amd64-nocloud.iso,media=cdrom \
-              --scsi3 local:iso/cidata.iso,media=cdrom \
-              --efidisk0 local-lvm:0,efitype=4m \
-              --bios ovmf \
-              --vga qxl \
-              --ostype l26 \
-              --scsihw virtio-scsi-single \
-              --cpu x86-64-v2-AES \
-              --onboot 1
-          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yaml).hostname" secrets.yaml) -C qm start $(yq -r ".nodes.$node.id" secrets.yaml)
+
+          talosctl machineconfig patch talos/data/controlplane.yaml --patch @talos/data/$node.patch.yaml --patch @talos/data/cilium-inline.yaml --output talos/data/nodes/$node.yaml
+          cp talos/data/nodes/$node.yaml boot/assets/nodes/$node.yaml
+          NODE=$node gomplate -d secrets.yaml -f boot/assets/ipxe.template -o boot/assets/nodes/$(yq -r ".nodes.$node.mac" secrets.yaml | sed -s "s/:/-/g").pxe
         done;
   talos/install:
     cmds:
@@ -124,10 +95,14 @@ tasks:
   talos/postinstall:
     cmds:
       - kubectl apply -f talos/data/bgp.yaml
-  talos/destroy:
+      - kubectl apply --server-side --kustomize ~/Git/homelab/k8s/bootstrap/flux/
+      - cat ~/.age | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin || /bin/true
+      - sops -d k8s/bootstrap/flux/ssh.yaml | kubectl apply -f -
+      - kubectl apply -f k8s/flux/vars/cluster-settings.yaml
+      - sops --decrypt k8s/flux/vars/cluster-secrets.sops.yaml | kubectl apply -f -
+      - kubectl apply --server-side --kustomize k8s/flux/config
+  flux/apply:
     cmds:
-      - |
-        for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
-          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yaml).hostname" secrets.yaml) -C qm stop $(yq -r ".nodes.$node.id" secrets.yaml) || /bin/true
-          ssh root@$(yq -r ".hypervisors.$(yq -r ".nodes.$node.hypervisor" secrets.yaml).hostname" secrets.yaml) -C qm destroy $(yq -r ".nodes.$node.id" secrets.yaml) || /bin/true --destroy-unreferenced-disks=true --purge
-        done;
+      - flux reconcile -n flux-system source git home-tremoureux-fr
+      - flux reconcile -n flux-system kustomization cluster
+      - flux reconcile -n flux-system kustomization cluster-apps

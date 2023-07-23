@@ -1,9 +1,0 @@
----
-version: 1
-config:
-  - type: physical
-    name: eth0
-    subnets:
-      - type: static
-        address: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).ip6 }}
-        gateway: {{ (datasource "secrets").kube.gw6 }}

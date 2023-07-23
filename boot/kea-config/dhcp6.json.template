@@ -1,0 +1,97 @@
+{
+  "Dhcp6": {
+    "interfaces-config": {
+      "interfaces": [
+        "{{ (datasource "secrets").boot.interface }}"
+      ]
+    },
+    "lease-database": {
+      "type": "memfile",
+      "persist": true
+    },
+    "expired-leases-processing": {
+      "reclaim-timer-wait-time": 10,
+      "flush-reclaimed-timer-wait-time": 25,
+      "hold-reclaimed-time": 3600,
+      "max-reclaim-leases": 100,
+      "max-reclaim-time": 250,
+      "unwarned-reclaim-cycles": 5
+    },
+    "preferred-lifetime": 240,
+    "valid-lifetime": 300,
+    "renew-timer": 180,
+    "rebind-timer": 240,
+    "client-classes": [
+      {
+        "name": "ipxe_script",
+        "test": "substring(option[user-class].hex,2,4) == 0x69505845",
+        "option-data": [
+          {
+            "name": "bootfile-url",
+            "code": 59,
+            "space": "dhcp6",
+            "csv-format": true,
+            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/boot.ipxe"
+          }
+        ]
+      },
+      {
+        "name": "uefi_x64_ftp",
+        "test": "option[client-arch-type].hex == 0x0007",
+        "option-data": [
+          {
+            "name": "bootfile-url",
+            "code": 59,
+            "space": "dhcp6",
+            "csv-format": true,
+            "data": "tftp://[{{ (datasource "secrets").boot.host }}]/snponly.efi"
+          }
+        ]
+      },
+      {
+        "name": "uefi_x64_http",
+        "test": "option[client-arch-type].hex == 0x0010",
+        "option-data": [
+          {
+            "name": "vendor-class",
+            "code": 16,
+            "space": "dhcp6",
+            "csv-format": false,
+            "data": "00000000000A48545450436C69656E74"
+          },
+          {
+            "name": "bootfile-url",
+            "code": 59,
+            "space": "dhcp6",
+            "csv-format": true,
+            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/assets/snponly.efi"
+          },
+          {
+            "name": "bootfile-url",
+            "code": 59,
+            "space": "dhcp6",
+            "csv-format": true,
+            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/assets/snponly.efi"
+          }
+        ]
+      }
+    ],
+    "option-data": [
+      {
+        "name": "dns-servers",
+        "data": "{{ (datasource "secrets").boot.dns0 }}"
+      }
+    ],
+    "subnet6": [
+      {
+        "pools": [
+          {
+            "pool": "{{ index ((datasource "secrets").kube.nodesubnet6 | net.CIDRSubnets 16) 256 }}" # far away
+          }
+        ],
+        "subnet": "{{ (datasource "secrets").kube.nodesubnet6 }}",
+        "interface": "{{ (datasource "secrets").boot.interface }}"
+      }
+    ]
+  }
+}

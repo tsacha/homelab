@@ -1,2 +1,0 @@
----
-local-hostname: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).hostname }}

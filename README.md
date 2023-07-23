@@ -5,4 +5,4 @@
 - gomplate
 - sops
 - helm
-- cdrtools
+
