@@ -9,4 +9,7 @@ machine:
           - {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).ip4 }}
   install:
     disk: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).system_disk }}
-    wipe: true
+    wipe: false
+{{ if (index (index (datasource "secrets").nodes (env.Getenv "NODE")) "kernel_args")  }}
+    extraKernelArgs: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).kernel_args }}
+{{ end }}

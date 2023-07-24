@@ -31,7 +31,11 @@
             "code": 59,
             "space": "dhcp6",
             "csv-format": true,
+{{- if index .Env "FORMAT" }}
+            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/format.ipxe"
+{{- else }}
             "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/boot.ipxe"
+{{ end }}
           }
         ]
       },

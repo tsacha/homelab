@@ -16,6 +16,10 @@ tasks:
     cmds:
       - gomplate --experimental -d secrets.yaml -f boot/kea-config/dhcp6.json.template -o boot/kea-config/dhcp6.json
       - sudo kea-dhcp6 -d -c boot/kea-config/dhcp6.json
+  boot/format:
+    cmds:
+      - FORMAT=true gomplate --experimental -d secrets.yaml -f boot/kea-config/dhcp6.json.template -o boot/kea-config/dhcp6.json
+      - sudo kea-dhcp6 -d -c boot/kea-config/dhcp6.json
   boot/tftp:
     dir: boot/assets
     cmds:
