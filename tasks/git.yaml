@@ -1,0 +1,19 @@
+---
+version: '3'
+
+tasks:
+  # Secrets
+  encrypt:
+    cmds:
+      - mkdir -p encrypted encrypted/ansible/inventory encrypted/talos/data
+      - sops --encrypt secrets.yaml > encrypted/secrets.yaml
+      - sops --encrypt ansible/inventory/gw.yaml > encrypted/ansible/inventory/gw.yaml
+      - sops --encrypt ansible/inventory/proxmox.yaml > encrypted/ansible/inventory/proxmox.yaml
+      - sops --encrypt talos/data/talosconfig > encrypted/talos/data/talosconfig
+  decrypt:
+    cmds:
+      - mkdir -p ansible/inventory talos/data
+      - sops --input-type yaml --output-type yaml --decrypt encrypted/secrets.yaml > secrets.yaml
+      - sops --input-type yaml --output-type yaml --decrypt encrypted/ansible/inventory/gw.yaml > ansible/inventory/gw.yaml
+      - sops --input-type yaml --output-type yaml --decrypt encrypted/ansible/inventory/proxmox.yaml > ansible/inventory/proxmox.yaml
+      - sops --input-type yaml --output-type yaml --decrypt encrypted/talos/data/talosconfig > talos/data/talosconfig

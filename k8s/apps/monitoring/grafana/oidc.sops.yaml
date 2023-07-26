@@ -1,0 +1,31 @@
+apiVersion: v1
+data:
+    api_url: ENC[AES256_GCM,data:qaGaXrV7Sj6ID3k6r8oNB9bC2OU9VvVNEueLjI8gMMVpVh1kd9sP2G2nqovAGbvPXHHl5SJyldSgLBJIyo4Y/b+GuAE=,iv:4gnzce7oY/M/1ZTqaT2JmCJswdGnZC1N37Kz6IwpQzo=,tag:M75wcj33kXP+XIWef6Oepw==,type:str]
+    auth_url: ENC[AES256_GCM,data:5aDt58XrCGa9ppyAwWebyQJxGfIE10sGadFTlqzlcV/JlMTOVSIMVjw/jCtGu+Rb2DZLbWewqZNSnkfOgEj7hkf0T8b2y/Ev,iv:KHFlGHnoDGHGgQWPAC241nwZEHGPl44uIrWp643zCyI=,tag:1wqm36IiTSvvViO02Uz/zg==,type:str]
+    grafana_id: ENC[AES256_GCM,data:gHyUe39odIrToeSU,iv:kVtF6OmkEUafd6jWRI50UelV/wBqTWMP/wMrifPJa9U=,tag:xaLwIJpX3W/B0vlS1aoH1A==,type:str]
+    grafana_secret: ENC[AES256_GCM,data:EXAdx0lbd31kj0vF,iv:QRqxubP0QizEJWmrTaXhRgTLSn+oYLoj7TMimHQuhiA=,tag:8EXdcfZToWQMsOv4MbFpQQ==,type:str]
+    token_url: ENC[AES256_GCM,data:Lce31AAyHOl77RaNHUeGfM1bhikziO22TNDsSNlclM1c0UOziOUyquG5bgKnS1mSAHRRbONG4G+yGuSlmPJoCw==,iv:t5VyT8BjiIHNWYMYUWRvWjWrOLUJTYf/UO4/rSlieRQ=,tag:GXQUwaJwcxsyCJydJQTXyA==,type:str]
+kind: Secret
+metadata:
+    creationTimestamp: null
+    name: grafana-secrets
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBpZXdlNW5aYTJUWmJ4L0ts
+            LzI5ajY4aG9sMEFBMXpuaDRYamE1R1ZVaFJ3CkU5ZEhMdzlNWE5EUklBSUFGcHJ2
+            MTRBOGd5OEZ4bE1OaWlZTzBEMEJIbmsKLS0tIGQrVm5tZGh5UC8vdUlxdmd5ampS
+            aUhSNFo0cVlFYUxLTER4U2dyNWdZblEK5U/t1Pa50Lci7UMImuNznBK79GoQmE8L
+            4j3exCY8PLcVTKBVBwq8YMoVfWWUO40/Y6AlDR4ZN+dgkGevWDEgwA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-08-07T19:52:49Z"
+    mac: ENC[AES256_GCM,data:phY/8zxdobpBtsezV5+6TcXf7YdOvSZFl3RZwEMgXiAdXvuR+8e+Lod6Ml4WswkSBvFNqW3YWbIYmfemH/jwKqfzOPDmVSBUUfyU32cJSgCcvBIDSpegXiNrEJv1fJu8KWYnpiE+lCW0UsUZYjmvBx57b65x6DCR2eFiTudL0y8=,iv:ZJI8B99rfUpPf2k8PTga5BUF/hXhwCu6MJLgaBm+h08=,tag:kOuph//jwo7S5Arj2o/9ig==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3

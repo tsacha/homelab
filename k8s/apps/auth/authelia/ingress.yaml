@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: authelia
+  annotations:
+    cert-manager.io/issuer: "acme"
+spec:
+  ingressClassName: nginx
+  tls:
+    -
+      hosts:
+        - auth.home.tremoureux.fr
+  rules:
+  -
+    host: auth.home.tremoureux.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: authelia
+            port:
+              number: 80

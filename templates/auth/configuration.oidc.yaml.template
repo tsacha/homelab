@@ -1,0 +1,64 @@
+---
+identity_providers:
+  oidc:
+    clients:
+    - id: grafana
+      description: Grafana
+      secret: $plaintext${{ (datasource "secrets").oidc.grafana }}
+      sector_identifier: 'home.tremoureux.fr'
+      consent_mode: 'implicit'
+      public: false
+      authorization_policy: 'two_factor'
+      redirect_uris:
+      - 'https://grafana.home.tremoureux.fr/login/generic_oauth'
+      scopes:
+      - 'openid'
+      - 'profile'
+      - 'email'
+      - 'groups'
+      grant_types:
+      - 'refresh_token'
+      - 'authorization_code'
+      response_types:
+      - 'code'
+      userinfo_signing_algorithm: none
+    - id: gitea
+      description: Gitea
+      secret: $plaintext${{ (datasource "secrets").oidc.gitea }}
+      sector_identifier: 'home.tremoureux.fr'
+      consent_mode: 'implicit'
+      public: false
+      authorization_policy: 'two_factor'
+      redirect_uris:
+      - 'https://git.home.tremoureux.fr/user/oauth2/authelia/callback'
+      scopes:
+      - 'openid'
+      - 'email'
+      - 'profile'
+      - 'groups'
+      grant_types:
+      - 'refresh_token'
+      - 'authorization_code'
+      response_types:
+      - 'code'
+      userinfo_signing_algorithm: none
+    - id: nextcloud
+      description: Nextcloud
+      secret: $plaintext${{ (datasource "secrets").oidc.nextcloud }}
+      sector_identifier: 'home.tremoureux.fr'
+      consent_mode: 'implicit'
+      public: false
+      authorization_policy: 'two_factor'
+      redirect_uris:
+      - 'https://nextcloud.home.tremoureux.fr/apps/oidc_login/oidc'
+      scopes:
+      - 'openid'
+      - 'email'
+      - 'profile'
+      - 'groups'
+      grant_types:
+      - 'refresh_token'
+      - 'authorization_code'
+      response_types:
+      - 'code'
+      userinfo_signing_algorithm: none

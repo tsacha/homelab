@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: ingress-nginx
+      sourceRef:
+        kind: HelmRepository
+        name: ingress-nginx
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      remediateLastFailure: true
+      retries: 5
+      strategy: rollback
+  uninstall:
+    keepHistory: false
+  values:
+#    tcp:
+#      "22": "default/gitea-ssh:22"
+    controller:
+      service:
+        annotations:
+          "io.cilium/lb-ipam-ips": "172.16.238.1,2a01:e0a:1c0:da86:2::1"
+        ipFamilyPolicy: PreferDualStack
+        ipFamilies:
+          - IPv6
+          - IPv4
+      extraArgs:
+        default-ssl-certificate: certs/wildcard-cert

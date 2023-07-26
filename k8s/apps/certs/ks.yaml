@@ -1,0 +1,64 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: certs-cert-manager
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: monitoring-crds
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/certs/cert-manager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: certs-issuers
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: certs-cert-manager
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/certs/issuers
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: certs-certificates
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: certs-issuers
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/certs/certificates
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

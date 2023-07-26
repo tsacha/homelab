@@ -1,0 +1,41 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: auth-lldap
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/auth/lldap
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: auth-authelia
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/auth/authelia
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

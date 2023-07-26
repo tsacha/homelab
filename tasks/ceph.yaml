@@ -1,0 +1,51 @@
+---
+version: '3'
+
+tasks:
+  nuke:
+    cmds:
+      - cmd: flux suspend -n flux-system kustomization ceph-cluster
+        ignore_error: true
+      - cmd: flux suspend -n flux-system kustomization ceph-operator
+        ignore_error: true
+      - cmd: kubectl --namespace storage patch cephcluster rook-ceph --type merge -p '{"spec":{"cleanupPolicy":{"confirmation":"yes-really-destroy-data"}}}'
+        ignore_error: true
+      - cmd: kubectl delete storageclasses ceph-block ceph-bucket ceph-filesystem
+        ignore_error: true
+      - cmd: kubectl --namespace storage delete cephblockpools ceph-blockpool
+        ignore_error: true
+      - cmd: kubectl --namespace storage delete cephobjectstore ceph-objectstore
+        ignore_error: true
+      - cmd: kubectl --namespace storage delete cephfilesystem ceph-filesystem
+        ignore_error: true
+      - cmd: kubectl --namespace storage-ceph delete cephcluster rook-ceph
+        ignore_error: true
+      - cmd: kubectl delete --force -f ./k8s/apps/storage/cluster/
+        ignore_error: true
+      - cmd: helm uninstall -n storage rook-ceph-operator
+        ignore_error: true
+      - cmd: |
+          for CRD in $(kubectl get crd -n storage | awk '/ceph.rook.io/ {print $1}'); do
+            kubectl get -n storage "$CRD" -o name | xargs -I {} kubectl patch -n storage {} --type merge -p '{"metadata":{"finalizers":[]}}'
+          done
+        ignore_error: true
+      - cmd: kubectl patch -n storage configmaps rook-ceph-mon-endpoints --type merge -p '{"metadata":{"finalizers":[]}}'
+        ignore_error: true
+      - cmd: kubectl patch -n storage secrets rook-ceph-mon --type merge -p '{"metadata":{"finalizers":[]}}'
+        ignore_error: true
+      - cmd: kubectl api-resources --verbs=list --namespaced -o name | xargs -n 1 kubectl get --show-kind --ignore-not-found -n storage
+        ignore_error: true
+      - cmd: kubectl delete namespaces storage
+        ignore_error: true
+      - cmd: |
+          for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
+            kubectl delete -n kube-system pod/disk-wipe-$node || /bin/true
+            kubectl delete -n kube-system pod/node-wipe-$node || /bin/true
+            NODE=$node gomplate -d secrets.yaml -f templates/ceph/node-wipe.yaml.template -o - | kubectl apply -f -
+            NODE=$node gomplate -d secrets.yaml -f templates/ceph/disk-wipe.yaml.template -o - | kubectl apply -f -
+          done
+        ignore_error: true
+      - cmd: flux resume -n flux-system kustomization ceph-cluster
+        ignore_error: true
+      - cmd: flux resume -n flux-system kustomization ceph-operator
+        ignore_error: true

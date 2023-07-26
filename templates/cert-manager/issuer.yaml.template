@@ -1,0 +1,20 @@
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: acme
+spec:
+  acme:
+    email: {{ (datasource "secrets").mail }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: acme-key
+    solvers:
+      - dns01:
+          rfc2136:
+            nameserver: {{ (datasource "secrets").gw_fqdn }}
+            tsigKeyName: rndc-key
+            tsigAlgorithm: HMACSHA256
+            tsigSecretSecretRef:
+              name: rndc-key
+              key: rndc-key

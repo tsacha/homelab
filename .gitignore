@@ -1,10 +1,4 @@
-talos/data/*.yaml
-talos/data/talosconfig
-talos/data/nodes/*.yaml
-ansible/inventory/*.yaml
-boot/kea-config/*.json
-boot/assets/nodes
-boot/assets/snponly.efi
-boot/assets/initramfs.xz
-boot/assets/vmlinuz
-secrets.yaml
+/talos/
+/boot/
+/ansible/inventory/*.yaml
+/secrets.yaml

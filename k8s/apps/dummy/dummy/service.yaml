@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dummy-service
+  namespace: dummy
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack
+  selector:
+    app: dummy
+  ports:
+  - name: dummy-web
+    protocol: TCP
+    port: 80
+    targetPort: dummy-web

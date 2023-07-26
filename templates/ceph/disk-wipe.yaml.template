@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-wipe-{{ (env.Getenv "NODE") }}
+  namespace: kube-system
+spec:
+  restartPolicy: Never
+  nodeName: {{ (env.Getenv "NODE") }}
+  containers:
+  - name: disk-wipe
+    image: alpine
+    securityContext:
+      privileged: true
+    command: ["/bin/sh", "-c", "apk add -u parted sgdisk; blkdiscard {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).data_disk }}; sgdisk --zap-all {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).data_disk }}; dd if=/dev/zero bs=1M count=1000 oflag=direct of={{ (index (datasource "secrets").nodes (env.Getenv "NODE")).data_disk }}; partprobe {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).data_disk }};"]

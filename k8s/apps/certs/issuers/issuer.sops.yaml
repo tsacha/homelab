@@ -1,0 +1,39 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+    name: acme
+spec:
+    acme:
+        email: ENC[AES256_GCM,data:TAiipsqqaE1Y4TbiNViJuat7xg==,iv:nHmmHFTWNTI1S9WOiFLxOEcO33szf6H1slexlXlnSnc=,tag:UAAAGlLefSlN/iSE3Vs4/g==,type:str]
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretRef:
+            name: acme-key
+        solvers:
+            - dns01:
+                rfc2136:
+                    nameserver: ENC[AES256_GCM,data:6GfmnDOxJ2EAvBFfQjxFgw==,iv:FkUX5jfqKlgsP/3sAMCgt6wgVZyO++p5fShO3MMHSUs=,tag:mkSNtQyHxT3UFfvu8GeVfg==,type:str]
+                    tsigKeyName: rndc-key
+                    tsigAlgorithm: HMACSHA256
+                    tsigSecretSecretRef:
+                        name: rndc-key
+                        key: rndc-key
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAxMnpXU2pCeDJENzJLanlz
+            eHh4TURZcVR1OEcyMzZuV3VkL1I0V1R3WXk4ClFiRnM5cHUzRkh6NEVualZrSnJo
+            UzVnZjZuWXRSSmpzYm9Rd0pOcHFoVG8KLS0tIHNiZkx4R0FDNGZ1M2gvd3E3RHlj
+            bVpLK0ZORXVvZnJaMGU0aHpLL1RTWVkKhRhmfRKWDjl+MuVnwpx5iI6zpqnViEJ+
+            nJsSrym99u3GFcQPNtOgdl/PL77Z57tRBY3OuOhXt2WKMG5QL9VHDg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-08-07T19:52:49Z"
+    mac: ENC[AES256_GCM,data:0EKwCeAbcwdsdfYzI1tkcT6ALAQnwEXqhUJZETeNVeQxd2hojRlOzeBX94IEQR3qYQiNgiLX1BqS5ell63Eg74Cs0qSlVx2Zqq/emcjAJdNgJB4b2c7G76xs57vfHtUHrFiM+HAr2Mc/pec8Eddw/SMVPcEFB5xfiWv5JDtqqi8=,iv:x15EykXMd10+0BRQ6c9TWWl6U2J3R0PdLSlnIXQW6Xk=,tag:KQ4CrPKwkL9HYo4kFSL/Tw==,type:str]
+    pgp: []
+    encrypted_regex: ^(nameserver|email)$
+    version: 3.7.3

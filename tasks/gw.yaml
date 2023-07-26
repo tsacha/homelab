@@ -1,0 +1,9 @@
+---
+version: '3'
+
+tasks:
+  # Gateway things
+  dns:
+    dir: ansible/
+    cmds:
+      - ansible-playbook -i inventory/gw.yaml gw.yaml -t dns-restart

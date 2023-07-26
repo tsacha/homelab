@@ -6,3 +6,8 @@
 {{ node }} AAAA {{ nodes[node]["ip6"].split("/")[0] }}
 {{ kube.endpoint }}. AAAA {{ nodes[node]["ip6"].split("/")[0] }}
 {% endfor %}
+
+dummy    AAAA 2a01:e0a:1c0:da86:2::1
+lldap    AAAA 2a01:e0a:1c0:da86:2::1
+auth     AAAA 2a01:e0a:1c0:da86:2::1
+grafana  AAAA 2a01:e0a:1c0:da86:2::1

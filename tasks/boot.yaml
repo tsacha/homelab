@@ -1,0 +1,28 @@
+---
+version: '3'
+
+tasks:
+  web:
+    cmds:
+      - mkdir -p boot/assets/nodes
+      - curl -L http://boot.ipxe.org/snponly.efi -o boot/assets/snponly.efi
+      - curl -L https://github.com/siderolabs/talos/releases/download/v1.4.7/vmlinuz-amd64 -o boot/assets/vmlinuz
+      - curl -L https://github.com/siderolabs/talos/releases/download/v1.4.7/initramfs-amd64.xz -o boot/assets/initramfs.xz
+      - cp -f templates/boot/*.ipxe boot/assets/
+      - |
+        for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
+          NODE=$node gomplate -d secrets.yaml -f templates/boot/ipxe.template -o boot/assets/nodes/$(yq -r --arg node $node '.nodes[$node].mac| gsub(":"; "-")' secrets.yaml).pxe
+          ln -f talos/nodes/$node.yaml boot/assets/nodes/
+        done;
+      - caddy file-server --listen "[::]:8080" --access-log --root boot/assets
+  dhcp:
+    cmds:
+      - gomplate --experimental -d secrets.yaml -f templates/boot/dhcp6.json.template -o boot/kea-config/dhcp6.json
+      - sudo kea-dhcp6 -d -c boot/kea-config/dhcp6.json
+  dhcp-format:
+    cmds:
+      - FORMAT=true gomplate --experimental -d secrets.yaml -f templates/boot/dhcp6.json.template -o boot/kea-config/dhcp6.json
+      - sudo kea-dhcp6 -d -c boot/kea-config/dhcp6.json
+  tftp:
+    cmds:
+      - sudo in.tftpd -6 -L -s boot/assets
