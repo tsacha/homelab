@@ -10,6 +10,8 @@ spec:
   retryInterval: 1m0s
   path: ./k8s/apps/storage/operator
   prune: true
+  dependsOn:
+    - name: monitoring-crds
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -27,30 +29,9 @@ spec:
   retryInterval: 1m0s
   path: ./k8s/apps/storage/cluster
   prune: false
-  wait: true
+  wait: false
   dependsOn:
-    - name: monitoring-crds
     - name: ceph-operator
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: ceph-manager
-  namespace: flux-system
-spec:
-  interval: 5m0s
-  timeout: 3m0s
-  retryInterval: 1m0s
-  path: ./k8s/apps/storage/manager
-  prune: true
-  wait: true
-  dependsOn:
-    - name: monitoring-crds
   sourceRef:
     kind: GitRepository
     name: flux-system
