@@ -1,0 +1,36 @@
+autoDirectNodeRoutes: true
+ipv4NativeRoutingCIDR: {{ (datasource "secrets").boot.kube.podsubnet4 }}
+ipv6NativeRoutingCIDR: {{ (datasource "secrets").boot.kube.podsubnet6 }}
+ipv4:
+  enabled: true
+ipv6:
+  enabled: true
+enableIPv4Masquerade: false
+enableIPv6Masquerade: false
+
+operator:
+  replicas: 1
+
+ipam:
+  mode: cluster-pool
+  operator:
+    clusterPoolIPv4PodCIDRList: {{ (datasource "secrets").boot.kube.podsubnet4 }}
+    clusterPoolIPv4MaskSize: {{ (datasource "secrets").boot.kube.podmask4 }}
+    clusterPoolIPv6PodCIDRList: {{ (datasource "secrets").boot.kube.podsubnet6 }}
+    clusterPoolIPv6MaskSize: {{ (datasource "secrets").boot.kube.podmask6 }}
+tunnel: disabled
+kubeProxyReplacement: strict
+bgpControlPlane:
+  enabled: true
+bpf:
+  masquerade: true
+securityContext:
+  privileged: true
+
+cgroup:
+  hostRoot: /sys/fs/cgroup
+  autoMount:
+    enabled: false
+
+k8sServiceHost: {{ (datasource "secrets").boot.kube.endpoint }}
+k8sServicePort: 6443

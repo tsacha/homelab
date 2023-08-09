@@ -1,0 +1,150 @@
+---
+- name: Install boot packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - curl
+      - docker.io
+      - docker-compose
+      - emacs-nox
+      - git
+      - jool-dkms
+      - jool-tools
+    update_cache: yes
+
+- name: Install yq
+  ansible.builtin.get_url:
+    url: https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64
+    dest: /usr/local/bin/yq
+    mode: 0755
+
+- name: Configure Emacs backups directory
+  ansible.builtin.template:
+    content: "(setq backup-directory-alist '((\".\" . \"~/.emacs.d/backups\")))"
+    dest: /usr/share/emacs/site-lisp/backup.el
+
+- name: Create root Emacs backups directory
+  ansible.builtin.file:
+    path: /root/.emacs.d/backups
+    state: directory
+
+# Free up port 53
+- name: Configure public DNS
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: 'DNS='
+    line: DNS=2620:fe::fe
+  notify: Restart systemd-resolved
+
+- name: Disable DNS stub listener
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: 'DNSStubListener='
+    line: DNSStubListener=no
+  notify: Restart systemd-resolved
+
+- meta: flush_handlers
+
+- name: Boot directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/boot
+    - /opt/boot/kea
+    - /opt/boot/assets
+    - /opt/boot/assets/nodes
+
+- name: Download boot assets
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "/opt/boot/assets/{{ item.dest }}"
+  loop:
+    -
+      url: http://boot.ipxe.org/snponly.efi
+      dest: snponly.efi
+    -
+      url: http://boot.ipxe.org/arm64-efi/snponly.efi
+      dest: snponly-arm64.efi
+    -
+      url: https://github.com/siderolabs/talos/releases/download/v1.5.1/vmlinuz-amd64
+      dest: vmlinuz
+    -
+      url: https://github.com/siderolabs/talos/releases/download/v1.5.1/initramfs-amd64.xz
+      dest: initramfs.xz
+    -
+      url: https://github.com/siderolabs/talos/releases/download/v1.5.1/vmlinuz-arm64
+      dest: vmlinuz-arm64
+    -
+      url: https://github.com/siderolabs/talos/releases/download/v1.5.1/initramfs-arm64.xz
+      dest: initramfs-arm64.xz
+
+- name: Boot docker-compose
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/boot/docker-compose.yaml
+
+- name: Caddy docker registry proxy
+  ansible.builtin.template:
+    src: Caddyfile.docker.j2
+    dest: /opt/boot/Caddyfile.docker
+
+- name: Caddy boot proxy
+  ansible.builtin.template:
+    src: Caddyfile.boot.j2
+    dest: /opt/boot/Caddyfile.boot
+
+- name: Boot iPXE menu
+  ansible.builtin.template:
+    src: menu.ipxe.j2
+    dest: /opt/boot/assets/menu.ipxe
+
+- name: Talos iPXE
+  ansible.builtin.template:
+    src: talos.ipxe.j2
+    dest: "/opt/boot/assets/nodes/{{ item.value.mac|replace(':', '-') }}.ipxe"
+  loop: "{{ nodes|dict2items }}"
+
+- name: Kea DHCPv6 configuration file
+  ansible.builtin.template:
+    src: dhcp6.json.j2
+    dest: /opt/boot/kea/dhcp6.json
+
+- name: DNS configuration file
+  ansible.builtin.template:
+    src: named.conf.j2
+    dest: /opt/boot/named.conf
+
+- name: Systemd unit
+  ansible.builtin.template:
+    src: unit.j2
+    dest: /etc/systemd/system/boot.service
+
+# Start Gateway
+- name: Start boot services
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: boot
+
+# NAT64/DNS64 things
+- name: Jool directory
+  ansible.builtin.file:
+    path: /etc/jool
+    state: directory
+
+- name: Jool configuration
+  ansible.builtin.template:
+    src: jool.conf.j2
+    dest: /etc/jool/jool.conf
+
+- name: Add the jool module
+  community.general.modprobe:
+    name: jool
+    state: present
+
+- name: Enable & start Jool
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: jool

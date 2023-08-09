@@ -5,6 +5,12 @@ options {
   dnssec-validation auto;
   listen-on { any; };
   listen-on-v6 { any; };
+
+  dns64 {{ nat64_prefix }} {
+    clients { any; };
+    break-dnssec yes;
+    recursive-only yes;
+  };
 };
 
 zone "{{ zone }}" {

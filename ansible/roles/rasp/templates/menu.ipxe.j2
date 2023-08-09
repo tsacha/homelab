@@ -1,0 +1,27 @@
+#!ipxe
+
+set menu-timeout 9000000
+set submenu-timeout ${menu-timeout}
+isset ${menu-default} || set menu-default install
+
+menu
+item install Install
+item format Format
+item shell Shell iPXE
+item exit  Exit
+
+choose --timeout ${menu-timeout} --default ${menu-default} target && goto ${target}
+
+:install
+chain nodes/${mac:hexhyp}.ipxe
+
+:format
+kernel /vmlinuz initrd=initramfs.xz slab_nomerge pti=on talos.platform=metal talos.experimental.wipe=system
+initrd /initramfs.xz
+boot
+
+:shell
+shell
+
+:exit
+exit

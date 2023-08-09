@@ -1,0 +1,4 @@
+#!ipxe
+kernel /vmlinuz initrd=initramfs.xz slab_nomerge pti=on talos.platform=metal talos.config=http://[{{ boot.host }}]:8082/nodes/{{ item.key }}.yaml ip=[{{ item.value.ip6.split("/")[0] }}]::[{{ kube.gw6 }}]::{{ item.key }}:::[{{ kube.gw6_wan }}]::
+initrd /initramfs.xz
+boot

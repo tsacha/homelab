@@ -1,4 +1,5 @@
-/talos/
-/boot/
+/talos
+/boot/assets
+/boot/kea/config/dhcp6.json
 /ansible/inventory/*.yaml
 /secrets.yaml

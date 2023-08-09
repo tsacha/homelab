@@ -2,7 +2,7 @@
   "Dhcp6": {
     "interfaces-config": {
       "interfaces": [
-        "{{ (datasource "secrets").boot.interface }}"
+        "{{ ansible_default_ipv6.interface }}"
       ]
     },
     "lease-database": {
@@ -31,11 +31,7 @@
             "code": 59,
             "space": "dhcp6",
             "csv-format": true,
-{{- if index .Env "FORMAT" }}
-            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/format.ipxe"
-{{- else }}
-            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/boot.ipxe"
-{{ end }}
+            "data": "http://[{{ boot.host }}]:8082/menu.ipxe"
           }
         ]
       },
@@ -48,7 +44,20 @@
             "code": 59,
             "space": "dhcp6",
             "csv-format": true,
-            "data": "tftp://[{{ (datasource "secrets").boot.host }}]/snponly.efi"
+            "data": "tftp://[{{ boot.host }}]/snponly.efi"
+          }
+        ]
+      },
+      {
+        "name": "uefi_arm64_ftp",
+        "test": "option[client-arch-type].hex == 0x0029",
+        "option-data": [
+          {
+            "name": "bootfile-url",
+            "code": 59,
+            "space": "dhcp6",
+            "csv-format": true,
+            "data": "tftp://[{{ boot.host }}]/snponly-arm64.efi"
           }
         ]
       },
@@ -68,14 +77,14 @@
             "code": 59,
             "space": "dhcp6",
             "csv-format": true,
-            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/assets/snponly.efi"
+            "data": "http://[{{ boot.host }}]:8082/assets/snponly.efi"
           },
           {
             "name": "bootfile-url",
             "code": 59,
             "space": "dhcp6",
             "csv-format": true,
-            "data": "http://[{{ (datasource "secrets").boot.host }}]:8080/assets/snponly.efi"
+            "data": "http://[{{ boot.host }}]:8082/assets/snponly.efi"
           }
         ]
       }
@@ -83,18 +92,18 @@
     "option-data": [
       {
         "name": "dns-servers",
-        "data": "{{ (datasource "secrets").boot.dns0 }}"
+        "data": "{{ kube.gw6_wan }}"
       }
     ],
     "subnet6": [
       {
         "pools": [
           {
-            "pool": "{{ index ((datasource "secrets").kube.nodesubnet6 | net.CIDRSubnets 16) 256 }}" # far away
+            "pool": "{{ kube.nodesubnet6|ansible.utils.ipsubnet(80, 256) }}"
           }
         ],
-        "subnet": "{{ (datasource "secrets").kube.nodesubnet6 }}",
-        "interface": "{{ (datasource "secrets").boot.interface }}"
+        "subnet": "{{ kube.nodesubnet6 }}",
+        "interface": "{{ ansible_default_ipv6.interface }}"
       }
     ]
   }

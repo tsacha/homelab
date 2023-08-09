@@ -1,0 +1,66 @@
+---
+version: "3.9"
+services:
+  dhcpv6:
+    image: ghcr.io/tsacha/kea:latest
+    container_name: dhcpv6
+    network_mode: host
+    volumes:
+      - /opt/boot/kea:/config
+  dns:
+    image: docker.io/ubuntu/bind9:latest
+    container_name: dns
+    network_mode: host
+    volumes:
+      - dns-cache:/var/cache/bind
+      - dns-run:/run/named
+      - /opt/boot/named.conf:/etc/bind/named.conf
+  tftp:
+    image: ghcr.io/tsacha/tftp:latest
+    network_mode: host
+    volumes:
+      - /opt/boot/assets:/assets
+  boot:
+    image: caddy
+    container_name: boot
+    volumes:
+      - /opt/boot/Caddyfile.boot:/etc/caddy/Caddyfile:ro
+      - /opt/boot/assets:/web
+    ports:
+      - 8082:8082
+  reverse:
+    image: caddy
+    container_name: reverse
+    volumes:
+      - /opt/boot/Caddyfile.docker:/etc/caddy/Caddyfile:ro
+    ports:
+      - 5000:5000
+      - 5001:5001
+      - 5003:5003
+      - 5004:5004
+  registry-docker.io:
+    image: registry:2
+    container_name: registry-docker.io
+    environment:
+      - REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io
+  registry-k8s.io:
+    image: registry:2
+    container_name: registry-k8s.io
+    environment:
+      - REGISTRY_PROXY_REMOTEURL=https://registry.k8s.io
+  registry-gcr.io:
+    image: registry:2
+    container_name: registry-gcr.io
+    environment:
+      - REGISTRY_PROXY_REMOTEURL=https://gcr.io
+  registry-ghcr.io:
+    image: registry:2
+    container_name: registry-ghcr.io
+    environment:
+      - REGISTRY_PROXY_REMOTEURL=https://ghcr.io
+networks:
+  boot:
+
+volumes:
+  dns-run:
+  dns-cache:

@@ -8,11 +8,13 @@ spec:
    matchLabels:
      kubernetes.io/os: linux
  virtualRouters:
- - localASN: {{ (datasource "secrets").kube.asn }}
+ - localASN: {{ (datasource "secrets").boot.kube.asn }}
    exportPodCIDR: true
    serviceSelector:
       matchExpressions:
          - {key: somekey, operator: NotIn, values: ['never-used-value']}
    neighbors:
-    - peerAddress: {{ (datasource "secrets").kube.gw6_wan }}/64
-      peerASN: {{ (datasource "secrets").kube.asn }}
+    - peerAddress: {{ (datasource "secrets").boot.kube.gw4 }}/32
+      peerASN: {{ (datasource "secrets").boot.kube.asn }}
+    - peerAddress: {{ (datasource "secrets").boot.kube.gw6_wan }}/64
+      peerASN: {{ (datasource "secrets").boot.kube.asn }}

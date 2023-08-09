@@ -1,0 +1,27 @@
+{
+  local_certs
+}
+
+https://{{ boot.endpoint }}:5000 {
+  reverse_proxy http://registry-docker.io:5000 {
+    header_up Host {upstream_hostport}
+  }
+}
+
+https://{{ boot.endpoint }}:5001 {
+  reverse_proxy http://registry-k8s.io:5000 {
+    header_up Host {upstream_hostport}
+  }
+}
+
+https://{{ boot.endpoint }}:5003 {
+  reverse_proxy http://registry-gcr.io:5000 {
+    header_up Host {upstream_hostport}
+  }
+}
+
+https://{{ boot.endpoint }}:5004 {
+  reverse_proxy http://registry-ghcr.io:5000 {
+    header_up Host {upstream_hostport}
+  }
+}

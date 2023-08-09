@@ -3,31 +3,48 @@ machine:
   kubelet:
     clusterDNS:
       - {{ (datasource "secrets").kube.dns6 }}
-      - {{ (datasource "secrets").kube.dns4 }}
     nodeIP:
       validSubnets:
         - {{ (datasource "secrets").kube.nodesubnet6 }}
-        - {{ (datasource "secrets").kube.nodesubnet4 }}
   network:
     nameservers:
-      - 1.1.1.1
-      - 2620:fe::fe
-    interfaces:
-      - interface: eth0
-        routes:
-          - network: ::/0
-            gateway: {{ (datasource "secrets").kube.gw6 }}
-          - network: 0.0.0.0/0
-            gateway: {{ (datasource "secrets").kube.gw4 }}
+      - {{ (datasource "secrets").boot.host }}
   time:
     disabled: false
     servers:
-        - {{ (datasource "secrets").kube.gw6_wan }}
+      - {{ (datasource "secrets").kube.gw6_wan }}
+
+  registries:
+    config:
+      {{ (datasource "secrets").boot.endpoint }}:5000:
+        tls:
+          insecureSkipVerify: true
+      {{ (datasource "secrets").boot.endpoint }}:5001:
+        tls:
+          insecureSkipVerify: true
+      {{ (datasource "secrets").boot.endpoint }}:5003:
+        tls:
+          insecureSkipVerify: true
+      {{ (datasource "secrets").boot.endpoint }}:5004:
+        tls:
+          insecureSkipVerify: true
+    mirrors:
+      docker.io:
+        endpoints:
+          - https://{{ (datasource "secrets").boot.endpoint }}:5000
+      registry.k8s.io:
+        endpoints:
+          - https://{{ (datasource "secrets").boot.endpoint }}:5001
+      gcr.io:
+        endpoints:
+          - https://{{ (datasource "secrets").boot.endpoint }}:5003
+      ghcr.io:
+        endpoints:
+          - https://{{ (datasource "secrets").boot.endpoint }}:5004
+
 cluster:
   network:
     podSubnets:
       - {{ (datasource "secrets").kube.podsubnet6 }}
-      - {{ (datasource "secrets").kube.podsubnet4 }}
     serviceSubnets:
       - {{ (datasource "secrets").kube.svcsubnet6 }}
-      - {{ (datasource "secrets").kube.svcsubnet4 }}

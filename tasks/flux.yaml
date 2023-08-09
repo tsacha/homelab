@@ -2,10 +2,6 @@
 version: '3'
 
 tasks:
-  install:
-    cmds:
-      - flux bootstrap github --owner=$GITHUB_USER --repository=homelab --branch=main --path=./k8s/cluster --personal
-      - cat ~/.age | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin || /bin/true
   apply:
     cmds:
       - flux reconcile -n flux-system source git flux-system

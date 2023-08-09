@@ -1,7 +1,7 @@
 ---
 machine:
   certSANs:
-    - kube.home.tremoureux.fr
+    - {{ (datasource "secrets").kube.endpoint }}
 
 cluster:
   allowSchedulingOnControlPlanes: true

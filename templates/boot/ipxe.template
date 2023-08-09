@@ -1,4 +1,0 @@
-#!ipxe
-kernel /vmlinuz initrd=initramfs.xz slab_nomerge pti=on talos.platform=metal talos.config=http://[{{  (datasource "secrets").boot.host }}]:8080/nodes/{{ (env.Getenv "NODE") }}.yaml ip=[{{ index ( (index (datasource "secrets").nodes (env.Getenv "NODE")).ip6 | strings.Split "/" ) 0 }}]::[{{ (datasource "secrets").kube.gw6 }}]::{{ (env.Getenv "NODE") }}:::[{{ (datasource "secrets").boot.dns0 }}]:[{{ (datasource "secrets").boot.dns1 }}]:
-initrd /initramfs.xz
-boot

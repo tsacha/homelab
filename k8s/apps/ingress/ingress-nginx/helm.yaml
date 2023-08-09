@@ -32,10 +32,9 @@ spec:
     controller:
       service:
         annotations:
-          "io.cilium/lb-ipam-ips": "172.16.238.1,2a01:e0a:1c0:da86:2::1"
+          "io.cilium/lb-ipam-ips": "2a01:e0a:1c0:da86:2::1"
         ipFamilyPolicy: PreferDualStack
         ipFamilies:
           - IPv6
-          - IPv4
       extraArgs:
         default-ssl-certificate: certs/wildcard-cert

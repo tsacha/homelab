@@ -2,10 +2,11 @@
 @ 60 IN NS  {{ gw_fqdn }}.
 
 {% for node in nodes %}
-{{ node }} A {{ nodes[node]["ip4"].split("/")[0] }}
 {{ node }} AAAA {{ nodes[node]["ip6"].split("/")[0] }}
 {{ kube.endpoint }}. AAAA {{ nodes[node]["ip6"].split("/")[0] }}
 {% endfor %}
+
+{{ boot.endpoint }}. AAAA {{ boot.host }}
 
 dummy    AAAA 2a01:e0a:1c0:da86:2::1
 lldap    AAAA 2a01:e0a:1c0:da86:2::1

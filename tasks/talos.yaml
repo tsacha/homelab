@@ -8,12 +8,14 @@ tasks:
       - talosctl gen secrets --force -o talos/data/secrets.yaml
   genconfig:
     vars:
+      boot_endpoint:
+        sh: yq -r ".boot.endpoint" secrets.yaml
       endpoint:
         sh: yq -r ".kube.endpoint" secrets.yaml
       cluster:
         sh: yq -r ".kube.cluster" secrets.yaml
     cmds:
-      - mkdir -p talos/patch
+      - mkdir -p talos/patch talos/patch/nodes talos/nodes
       - gomplate -d secrets.yaml -f templates/talos/all.patch.template -o talos/patch/all.yaml
       - gomplate -d secrets.yaml -f templates/talos/cp.patch.template -o talos/patch/cp.yaml
       - |
@@ -24,13 +26,12 @@ tasks:
           --config-patch @talos/patch/all.yaml \
           --config-patch-control-plane=@talos/patch/cp.yaml \
           --output-dir talos/data/
-  gennodes:
-    cmds:
-      - mkdir -p talos/patch/nodes talos/nodes
       - |
         for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
           NODE=$node gomplate -d secrets.yaml -f templates/talos/node.patch.template -o talos/patch/nodes/$node.yaml
           talosctl machineconfig patch talos/data/controlplane.yaml --patch @talos/patch/nodes/$node.yaml --output talos/nodes/$node.yaml
+          rsync -vh --rsync-path="sudo rsync" talos/nodes/$node.yaml {{ .boot_endpoint }}:/opt/boot/assets/nodes/
+
         done;
       - talosctl --talosconfig talos/data/talosconfig config endpoint $(yq -r '[.nodes[].hostname]|join(" ")' secrets.yaml)
       - talosctl --talosconfig talos/data/talosconfig config nodes $(yq -r '[.nodes[].hostname]|join(" ")' secrets.yaml)
@@ -45,13 +46,17 @@ tasks:
       - talosctl --talosconfig talos/data/talosconfig kubeconfig -f -n {{ .endpoint }}
   network:
     cmds:
+      - |
+        for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
+          kubectl annotate node/$node cilium.io/bgp-virtual-router.$(yq -r '.kube.asn' secrets.yaml)="router-id=$(yq -r --arg node $node '.nodes[$node].ip4' secrets.yaml | awk -F '/' '{print $1}')" || /bin/true
+        done;
       - helm repo add cilium https://helm.cilium.io/
       # Cilium without monitoring CRD
-      - gomplate -d secrets.yaml -f templates/cilium/cilium-options.yaml.template -o - | helm install --create-namespace cilium cilium/cilium --namespace cilium -f -
+      - gomplate -d secrets.yaml -f templates/cilium/cilium-options.yaml.template -o - | helm install --create-namespace cilium cilium/cilium --namespace cilium -f - || /bin/true
+      - gomplate -d secrets.yaml -f templates/cilium/bgp.yaml.template -o - | kubectl apply -f -
   postinstall:
     cmds:
       - flux install
-      - gomplate -d secrets.yaml -f templates/cilium/bgp.yaml.template -o - | kubectl apply -f -
       - cat ~/.age | kubectl create secret generic sops-age --namespace=flux-system --from-file=age.agekey=/dev/stdin || /bin/true
       - sops -d k8s/bootstrap/ssh.yaml | kubectl apply -f -
       - kubectl apply --server-side --kustomize k8s/cluster/flux-system/

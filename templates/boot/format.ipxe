@@ -1,4 +1,0 @@
-#!ipxe
-kernel /vmlinuz initrd=initramfs.xz slab_nomerge pti=on talos.platform=metal talos.experimental.wipe=system
-initrd /initramfs.xz
-boot
