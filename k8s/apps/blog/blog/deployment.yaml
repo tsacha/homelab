@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog
+  labels:
+    app: blog
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: blog
+  template:
+    metadata:
+      labels:
+        app: blog
+    spec:
+      containers:
+      - name: blog
+        image: ghcr.io/tsacha/blog:latest
+        ports:
+        - containerPort: 80
+          name: blog-web

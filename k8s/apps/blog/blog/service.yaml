@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog-service
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack
+  selector:
+    app: blog
+  ports:
+  - name: blog-web
+    protocol: TCP
+    port: 80
+    targetPort: blog-web

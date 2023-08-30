@@ -6,3 +6,4 @@ namespace: certs
 resources:
   - rndc-key.sops.yaml
   - issuer.sops.yaml
+  - http-issuer.sops.yaml

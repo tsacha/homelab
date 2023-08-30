@@ -1,0 +1,28 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blog-web
+  namespace: blog
+  annotations:
+    cert-manager.io/cluster-issuer: "acme-http"
+spec:
+  ingressClassName: nginx
+  tls:
+    -
+      secretName: blog-cert
+      hosts:
+        - s.tremoureux.fr
+        - sacha.tremoureux.fr
+  rules:
+  -
+    host: s.tremoureux.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: blog-service
+            port:
+              number: 80
