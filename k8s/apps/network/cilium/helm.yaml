@@ -29,9 +29,10 @@ spec:
     keepHistory: false
   values:
     autoDirectNodeRoutes: true
+    ipv4NativeRoutingCIDR: 172.16.240.0/20
     ipv6NativeRoutingCIDR: 2a01:e0a:1c0:da87::/64
     ipv4:
-      enabled: false
+      enabled: true
     ipv6:
       enabled: true
     enableIPv4Masquerade: false
@@ -39,6 +40,8 @@ spec:
     ipam:
       mode: cluster-pool
       operator:
+        clusterPoolIPv4PodCIDRList: 172.16.240.0/20
+        clusterPoolIPv4MaskSize: 24
         clusterPoolIPv6PodCIDRList: 2a01:e0a:1c0:da87::/64
         clusterPoolIPv6MaskSize: 80
     tunnel: disabled

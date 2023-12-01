@@ -14,5 +14,7 @@ spec:
       matchExpressions:
          - {key: somekey, operator: NotIn, values: ['never-used-value']}
    neighbors:
+    - peerAddress: {{ (datasource "secrets").kube.gw4 }}/32
+      peerASN: {{ (datasource "secrets").kube.asn }}
     - peerAddress: {{ (datasource "secrets").kube.gw6_wan }}/64
       peerASN: {{ (datasource "secrets").kube.asn }}

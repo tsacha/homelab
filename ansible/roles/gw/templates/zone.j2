@@ -2,6 +2,7 @@
 @ 60 IN NS  {{ gw_fqdn }}.
 
 {% for node in nodes %}
+{{ node }} A {{ nodes[node]["ip4"].split("/")[0] }}
 {{ node }} AAAA {{ nodes[node]["ip6"].split("/")[0] }}
 {{ kube.endpoint }}. AAAA {{ nodes[node]["ip6"].split("/")[0] }}
 {% endfor %}

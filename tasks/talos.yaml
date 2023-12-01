@@ -43,16 +43,16 @@ tasks:
         sh: yq -r ".nodes[]|select(.first_node==true).hostname" secrets.yaml
     cmds:
       - talosctl --talosconfig talos/data/talosconfig -n {{ .install_node }} bootstrap
-      - talosctl --talosconfig talos/data/talosconfig kubeconfig -f -n {{ .endpoint }}
+      - talosctl --talosconfig talos/data/talosconfig kubeconfig -f -n {{ .install_node }}
   network:
     cmds:
+      - helm repo add cilium https://helm.cilium.io/
+      # Cilium without monitoring CRD
+      - gomplate -d secrets.yaml -f templates/cilium/cilium-options.yaml.template -o - | helm install --create-namespace cilium cilium/cilium --namespace cilium -f - || /bin/true
       - |
         for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
           kubectl annotate node/$node cilium.io/bgp-virtual-router.$(yq -r '.kube.asn' secrets.yaml)="router-id=$(yq -r --arg node $node '.nodes[$node].ip4' secrets.yaml | awk -F '/' '{print $1}')" || /bin/true
         done;
-      - helm repo add cilium https://helm.cilium.io/
-      # Cilium without monitoring CRD
-      - gomplate -d secrets.yaml -f templates/cilium/cilium-options.yaml.template -o - | helm install --create-namespace cilium cilium/cilium --namespace cilium -f - || /bin/true
       - gomplate -d secrets.yaml -f templates/cilium/bgp.yaml.template -o - | kubectl apply -f -
   postinstall:
     cmds:

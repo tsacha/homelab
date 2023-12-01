@@ -6,9 +6,12 @@ machine:
       - interface: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).interface }}
         addresses:
           - {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).ip6 }}
+          - {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).ip4 }}
         routes:
           - network: ::/0
             gateway: {{ (datasource "secrets").kube.gw6 }}
+          - network: 0.0.0.0/0
+            gateway: {{ (datasource "secrets").kube.gw4 }}
   install:
     disk: {{ (index (datasource "secrets").nodes (env.Getenv "NODE")).system_disk }}
     wipe: false
