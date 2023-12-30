@@ -4,8 +4,6 @@ kind: Service
 metadata:
   name: dummy-service
 spec:
-  type: LoadBalancer
-  ipFamilyPolicy: PreferDualStack
   selector:
     app: dummy
   ports:

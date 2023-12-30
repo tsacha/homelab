@@ -7,3 +7,4 @@ resources:
   - helm.yaml
   - bgp.yaml
   - pools.yaml
+  - gw.yaml

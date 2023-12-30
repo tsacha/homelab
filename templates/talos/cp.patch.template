@@ -36,3 +36,5 @@ cluster:
   etcd:
     advertisedSubnets:
       - {{ (datasource "secrets").kube.nodesubnet6 }}
+  extraManifests:
+    - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml

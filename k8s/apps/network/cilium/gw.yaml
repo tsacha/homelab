@@ -1,0 +1,31 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: gateway
+  annotations:
+    cert-manager.io/cluster-issuer: "acme"
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      "io.cilium/lb-ipam-ips": "2a01:e0a:1c0:da86:2::1,172.16.238.1"
+  listeners:
+  - protocol: HTTP
+    port: 80
+    name: gw-http
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: gw-https
+    hostname: "*.home.tremoureux.fr"
+    port: 443
+    protocol: HTTPS
+    allowedRoutes:
+      namespaces:
+        from: All
+    tls:
+      mode: Terminate
+      certificateRefs:
+        - name: wildcard-cert
+
