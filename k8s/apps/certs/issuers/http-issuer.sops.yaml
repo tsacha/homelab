@@ -10,8 +10,11 @@ spec:
             name: acme-key
         solvers:
             - http01:
-                ingress:
-                    ingressClassName: nginx
+                gatewayHTTPRoute:
+                  parentRefs:
+                  - kind: Gateway
+                    name: gateway
+                    namespace: cilium
 sops:
     kms: []
     gcp_kms: []

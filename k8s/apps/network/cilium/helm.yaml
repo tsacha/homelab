@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: 1.14.0
+      version: 1.15.0-pre.3
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -28,15 +28,15 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    autoDirectNodeRoutes: true
+    routingMode: native
     ipv4NativeRoutingCIDR: 172.16.240.0/20
     ipv6NativeRoutingCIDR: 2a01:e0a:1c0:da87::/64
     ipv4:
       enabled: true
     ipv6:
       enabled: true
-    enableIPv4Masquerade: false
-    enableIPv6Masquerade: false
+    envoy:
+      enabled: true
     ipam:
       mode: cluster-pool
       operator:
@@ -45,11 +45,11 @@ spec:
         clusterPoolIPv6PodCIDRList: 2a01:e0a:1c0:da87::/64
         clusterPoolIPv6MaskSize: 80
     tunnel: disabled
-    kubeProxyReplacement: strict
+    kubeProxyReplacement: true
+    gatewayAPI:
+      enabled: true
     bgpControlPlane:
       enabled: true
-    bpf:
-      masquerade: true
     securityContext:
       privileged: true
 

@@ -1,0 +1,38 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: dummy-http
+spec:
+  parentRefs:
+    - name: gateway
+      namespace: cilium
+      sectionName: gw-http
+  hostnames:
+  - dummy.home.tremoureux.fr
+  rules:
+  - filters:
+      - type: RequestRedirect
+        requestRedirect:
+          scheme: https
+          port: 443
+          statusCode: 301
+  - backendRefs:
+    - name: dummy-service
+      port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: dummy-https
+spec:
+  parentRefs:
+    - name: gateway
+      namespace: cilium
+      sectionName: gw-https
+  hostnames:
+  - dummy.home.tremoureux.fr
+  rules:
+  - backendRefs:
+    - name: dummy-service
+      port: 80

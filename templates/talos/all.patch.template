@@ -21,5 +21,7 @@ cluster:
   network:
     podSubnets:
       - {{ (datasource "secrets").kube.podsubnet6 }}
+      - {{ (datasource "secrets").kube.podsubnet4 }}
     serviceSubnets:
       - {{ (datasource "secrets").kube.svcsubnet6 }}
+      - {{ (datasource "secrets").kube.svcsubnet4 }}
