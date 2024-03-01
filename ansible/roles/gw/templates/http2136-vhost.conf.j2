@@ -1,5 +1,6 @@
 server {
-    listen 2136 ssl http2;
+    listen 2136 ssl;
+    http2 on;
     server_name {{ http2136_vhost }};
 
     ssl_certificate /etc/nginx/cert.pem;
