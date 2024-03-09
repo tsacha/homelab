@@ -104,7 +104,7 @@
       - /opt/gateway:/opt/gateway
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
-    command: "certonly --dns-ovh --dns-ovh-credentials /opt/gateway/certbot-ovh-credentials.ini -d {{ http2136_vhost }} -m {{ mail }} --agree-to"
+    command: "certonly --dns-ovh --dns-ovh-credentials /opt/gateway/certbot-ovh-credentials.ini -d {{ http2136_vhost }} -m {{ mail }} --non-interactive --agree-to"
   when: not result.stat.exists
 
 - name: Renew certificates daily

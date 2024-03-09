@@ -20,8 +20,22 @@ services:
       - /opt/boot/assets:/web
     ports:
       - 8082:8082
-networks:
-  boot:
+  lb:
+    image: caddy
+    container_name: lb
+    volumes:
+      - /opt/bitwarden/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - 443:443
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    volumes:
+      - /opt/bitwarden:/data
+      - /etc/letsencrypt:/etc/letsencrypt
+    environment:
+      - DOMAIN=https://{{ bitwarden_vhost }}
 
 volumes:
   dns-run:

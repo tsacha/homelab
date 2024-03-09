@@ -5,10 +5,10 @@ After=docker.service
 
 [Service]
 Type=oneshot
-WorkingDirectory=/opt/gateway
+WorkingDirectory=/opt/bitwarden
 ExecStart=/usr/bin/docker run --rm --name certbot \
 	-v "/etc/letsencrypt:/etc/letsencrypt" \
-	-v "/opt/gateway:/opt/gateway" \
+	-v "/opt/bitwarden:/opt/bitwarden" \
 	-v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
 	certbot/dns-ovh renew
-ExecStartPost=docker-compose kill -s SIGHUP lb
+ExecStartPost=docker kill -s SIGHUP lb
