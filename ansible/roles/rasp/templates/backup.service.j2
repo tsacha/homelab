@@ -13,3 +13,14 @@ ExecStart=/usr/bin/docker run --rm --name backup \
 	-e AWS_DEFAULT_REGION={{ backup_region }} \
 	-e RESTIC_PASSWORD={{ backup_password }} \
 	restic/restic -r s3:{{ backup_endpoint }}/rasp backup /opt/bitwarden
+ExecStartPost=/usr/bin/docker run --rm --name backup \
+	-v /opt/bitwarden/:/opt/bitwarden \
+	-e AWS_ACCESS_KEY_ID={{ backup_ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backup_sk }} \
+	-e AWS_DEFAULT_REGION={{ backup_region }} \
+	-e RESTIC_PASSWORD={{ backup_password }} \
+	restic/restic -r s3:{{ backup_endpoint }}/rasp forget \
+		--keep-hourly 48 \
+		--keep-daily 7 \
+		--keep-monthly 12 \
+		--keep-yearly 1
