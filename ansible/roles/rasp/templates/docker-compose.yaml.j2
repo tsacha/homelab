@@ -12,22 +12,16 @@ services:
     network_mode: host
     volumes:
       - /opt/boot/assets:/assets
-  boot:
+  reverse:
     image: caddy
-    container_name: boot
+    container_name: reverse
     volumes:
-      - /opt/boot/Caddyfile.boot:/etc/caddy/Caddyfile:ro
+      - /opt/rasp/Caddyfile:/etc/caddy/Caddyfile:ro
       - /opt/boot/assets:/web
-    ports:
-      - 8082:8082
-  lb:
-    image: caddy
-    container_name: lb
-    volumes:
-      - /opt/bitwarden/Caddyfile:/etc/caddy/Caddyfile:ro
       - /etc/letsencrypt:/etc/letsencrypt
     ports:
       - 443:443
+      - 8082:8082
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden

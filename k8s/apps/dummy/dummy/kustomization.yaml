@@ -6,4 +6,4 @@ namespace: dummy
 resources:
   - deployment.yaml
   - service.yaml
-  - ingress.yaml
+  - route.yaml

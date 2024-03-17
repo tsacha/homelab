@@ -28,6 +28,29 @@
 
 - meta: flush_handlers
 
+# Common resources
+- name: Common directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/rasp
+
+- name: Rasp docker-compose
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/rasp/docker-compose.yaml
+
+- name: Reverse proxy configuration
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: /opt/rasp/Caddyfile
+
+- name: Systemd unit
+  ansible.builtin.template:
+    src: unit.j2
+    dest: /etc/systemd/system/rasp.service
+
 - name: Boot directories
   ansible.builtin.file:
     path: "{{ item }}"
@@ -50,27 +73,17 @@
       url: http://boot.ipxe.org/arm64-efi/snponly.efi
       dest: snponly-arm64.efi
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.5/vmlinuz-amd64
+      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/vmlinuz-amd64
       dest: vmlinuz
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.5/initramfs-amd64.xz
+      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/initramfs-amd64.xz
       dest: initramfs.xz
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.5/vmlinuz-arm64
+      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/vmlinuz-arm64
       dest: vmlinuz-arm64
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.5/initramfs-arm64.xz
+      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/initramfs-arm64.xz
       dest: initramfs-arm64.xz
-
-- name: Boot docker-compose
-  ansible.builtin.template:
-    src: docker-compose.yaml.j2
-    dest: /opt/boot/docker-compose.yaml
-
-- name: Caddy boot proxy
-  ansible.builtin.template:
-    src: Caddyfile.boot.j2
-    dest: /opt/boot/Caddyfile.boot
 
 - name: Boot iPXE menu
   ansible.builtin.template:
@@ -87,11 +100,6 @@
   ansible.builtin.template:
     src: dhcp6.json.j2
     dest: /opt/boot/kea/dhcp6.json
-
-- name: Systemd unit
-  ansible.builtin.template:
-    src: unit.j2
-    dest: /etc/systemd/system/boot.service
 
 # Bitwarden
 - name: Gateway directory
@@ -145,21 +153,20 @@
     src: backup.timer
     dest: /etc/systemd/system/backup.timer
 
-- name: Start Renew timer
+- name: Start Bitwarden renew certificate timer
   ansible.builtin.systemd:
     state: started
     enabled: true
     name: renew.timer
 
-- name: Start Backup timer
+- name: Start Bitwarden backup timer
   ansible.builtin.systemd:
     state: started
     enabled: true
     name: backup.timer
 
-# Start Gateway
-- name: Start boot services
+- name: Start rasp services
   ansible.builtin.systemd:
     state: started
     enabled: true
-    name: boot
+    name: rasp

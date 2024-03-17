@@ -10,6 +10,7 @@ tasks:
       - sops --encrypt ansible/inventory/gw.yaml > encrypted/ansible/inventory/gw.yaml
       - sops --encrypt ansible/inventory/rasp.yaml > encrypted/ansible/inventory/rasp.yaml
       - sops --encrypt talos/data/talosconfig > encrypted/talos/data/talosconfig
+      - gpg --output encrypted/talos/data/age.txt -a -r sacha@tremoureux.fr --encrypt talos/data/age.txt
   decrypt:
     cmds:
       - mkdir -p ansible/inventory talos/data
@@ -17,3 +18,4 @@ tasks:
       - sops --input-type yaml --output-type yaml --decrypt encrypted/ansible/inventory/gw.yaml > ansible/inventory/gw.yaml
       - sops --input-type yaml --output-type yaml --decrypt encrypted/ansible/inventory/rasp.yaml > ansible/inventory/rasp.yaml
       - sops --input-type yaml --output-type yaml --decrypt encrypted/talos/data/talosconfig > talos/data/talosconfig
+      - gpg -d encrypted/talos/data/age.txt > talos/data/age.txt

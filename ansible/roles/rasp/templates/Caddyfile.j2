@@ -1,0 +1,9 @@
+http://*:8082 {
+  root * /web
+  file_server
+}
+
+{{ bitwarden_vhost }} {
+  tls /etc/letsencrypt/live/{{ bitwarden_vhost }}/fullchain.pem /etc/letsencrypt/live/{{ bitwarden_vhost }}/privkey.pem
+  reverse_proxy http://vaultwarden
+}

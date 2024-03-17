@@ -1,12 +1,12 @@
 [Unit]
-Description=Boot services
+Description=Raspberry services
 PartOf=docker.service
 After=docker.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=true
-WorkingDirectory=/opt/boot
+WorkingDirectory=/opt/rasp
 ExecStart=docker-compose up -d --remove-orphans
 ExecStop=docker-compose down
 

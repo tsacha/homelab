@@ -4,34 +4,34 @@ metadata:
     name: acme-http
 spec:
     acme:
-        email: ENC[AES256_GCM,data:31YGG7GeFxJJtNAFOzxSObjNew==,iv:P07XQiXEmFxth58aT5NfzwqH4Swt9lpPTMVcEi4JC94=,tag:gQA5jSDAjUBLvreiMEt/6A==,type:str]
+        email: ENC[AES256_GCM,data:KDJIWvyi99ngSFyLb8ZC0H77zQ==,iv:J3wWx0Sxag5VowmYqM5UZNrM7xZ8Yjr4AqezXAKly0g=,tag:fFKYrMnQGH0Prg0muZcKqw==,type:str]
         server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretRef:
             name: acme-key
         solvers:
             - http01:
                 gatewayHTTPRoute:
-                  parentRefs:
-                  - kind: Gateway
-                    name: gateway
-                    namespace: cilium
+                    parentRefs:
+                        - kind: Gateway
+                          name: gateway
+                          namespace: cilium
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age:
-        - recipient: age1pch6mmgqfw7ll7hhfk82kg7r8gc7njl6vv9sutvu7llrapjvpqnq84ne2e
+        - recipient: age1g7ehhg7p0xsxnsdggen9plw5p20rxs89pdy3fmwafr84dh4qdylstwad7z
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwTVBjSjljSzNoaG1MMXZF
-            QTJJOVVTQlQ3VFh0Zmowbkdnd1VnWEFUY1hnCkZzRGNXWGFycnJhQk0ybVo2Z1hs
-            a1hDMkdZY1pTT2NrWTNpTXRFUVVnbGsKLS0tIGdXc0daMjBkL2ZnbXF6b3lTNC8x
-            aWsrbzZySkJzdThDZXM4Y1VUWllVYncKBqZUnF5D4LfoPyO2GwboJakl0DYNzUD3
-            RURHJVIJtK1U9dRVIY8mkquDpfW/ao8SiGdcbfCj7DHUnH/VK4bl/w==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWek15TjM4VUhUWmRkYkx6
+            VzQ2d1Y5cjhnWHVybDN1Yy84RTVpRGRRNUhjCkN0dXgwSThnV3JyMTZWYTBDNHJz
+            Z0tWcGdRN0FHbGp3Q1ZnVzQvdEdiajQKLS0tIFltU1BLUHdBMHUvcGlqQ1JNRkNw
+            d1A2OE01OGlwRXIwOElqbTBLRGZ5NUUKHbzfZnIF51XVrmR1+klne8a1LycS4Kba
+            R94+fDSTv84ULZMxwRBKVGHFIo2jemiLuK/wvnVEjIwSvGFHUB/h2g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-08-30T11:35:50Z"
-    mac: ENC[AES256_GCM,data:HZ+dbdTuBcACHg4l3s/3Q1HyLI7DcWbofpc/5b/beeh3L6W8J+D0PsTf9mAaN9sEAXu5RB8LEZrz+CmJPT4sBZCwN7mQpnduPMi66goURtxNkaOS2iQWIbI7coip1UARUrQ+rcPjJI8yiBfCY4WDd4GEaJ81sZHC32x2ZE1Qz2k=,iv:XhXC1nWFEGp9B1UAecNYGhzvORrpoPub1XVrUXFeP9k=,tag:yIhhqNDiEdklhPaigB58rA==,type:str]
+    lastmodified: "2024-03-17T22:21:38Z"
+    mac: ENC[AES256_GCM,data:oszw4ANcvtnbq52pkU0INsNKBygOc0OUHd/pjYpgQTB7Gxlr4gLx5h3vpi5+Umn9LhDzsvO0hM8du8D6VTPc5E/Cyta5+lIvZcmzDZZ3Dk9cv2Fu183U5oUZsSCb8WgK2MJ+xNv48f+q/aoZ0w2idb12Uio6mUNrMC2ecgXZtwU=,iv:AK0XziRFcx/6dufMlWsRLAr7jewP6cjVH3YuNKAFF7o=,tag:eoLGY7Elw8dDlyCS/4nmpQ==,type:str]
     pgp: []
     encrypted_regex: ^(email)$
-    version: 3.7.3
+    version: 3.8.1
