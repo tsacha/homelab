@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: grafana-web
   annotations:
-    cert-manager.io/issuer: "acme"
+    cert-manager.io/cluster-issuer: "acme"
 spec:
   ingressClassName: nginx
   tls:

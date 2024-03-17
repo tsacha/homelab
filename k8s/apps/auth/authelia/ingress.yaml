@@ -4,13 +4,14 @@ kind: Ingress
 metadata:
   name: authelia
   annotations:
-    cert-manager.io/issuer: "acme"
+    cert-manager.io/cluster-issuer: "acme"
 spec:
   ingressClassName: nginx
   tls:
     -
       hosts:
         - auth.home.tremoureux.fr
+      secretName: wildcard-cert
   rules:
   -
     host: auth.home.tremoureux.fr

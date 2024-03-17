@@ -2,7 +2,6 @@
 machine:
   certSANs:
     - {{ (datasource "secrets").kube.endpoint }}
-
 cluster:
   allowSchedulingOnControlPlanes: true
   controlPlane:
