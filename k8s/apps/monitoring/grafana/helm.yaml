@@ -13,18 +13,10 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
     crds: CreateReplace
   upgrade:
     crds: CreateReplace
-    remediation:
-      remediateLastFailure: true
-      retries: 5
-      strategy: rollback
-  uninstall:
-    keepHistory: false
   values:
     persistence:
       type: pvc
@@ -50,10 +42,16 @@ spec:
         name_attribute_path: name
         use_pkce: true
         role_attribute_path: contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'user') && 'Editor' || 'Viewer'
-
     extraSecretMounts:
       - name: grafana-secrets
         secretName: grafana-secrets
         defaultMode: 0440
         mountPath: /secrets/grafana-secrets
         readOnly: true
+    sidecar:
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+      alerts:
+        enabled: true
+        searchNamespace: ALL

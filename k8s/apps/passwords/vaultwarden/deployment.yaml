@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vaultwarden
+  labels:
+    app.kubernetes.io/name: vaultwarden
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vaultwarden
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vaultwarden
+    spec:
+      containers:
+      - name: vaultwarden
+        image: timshel/vaultwarden:latest
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+        - name: DOMAIN
+          value: "https://vaultwarden.home.tremoureux.fr"
+        - name: ROCKET_ADDRESS
+          value: "::"
+        - name: SSO_ENABLED
+          value: "true"
+        - name: SSO_ONLY
+          value: "true"
+        - name: SSO_FRONTEND
+          value: "override"
+        - name: SSO_SCOPES
+          value: "email profile offline_access"
+        - name: SSO_AUTHORITY
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden-secrets
+              key: oidc_url
+        - name: SSO_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden-secrets
+              key: oidc_id
+        - name: SSO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: vaultwarden-secrets
+              key: oidc_secret
+        volumeMounts:
+        - name: vaultwarden
+          mountPath: /data
+      volumes:
+        - name: vaultwarden
+          persistentVolumeClaim:
+            claimName: vaultwarden
+

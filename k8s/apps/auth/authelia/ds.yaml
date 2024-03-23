@@ -48,7 +48,7 @@ spec:
           value: /secrets/OIDC_HMAC_SECRET
         - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE
           value: /secrets/OIDC_PRIVATE_KEY
-        image: ghcr.io/authelia/authelia:4.37.5
+        image: ghcr.io/authelia/authelia:4.38.6
         imagePullPolicy: IfNotPresent
         name: authelia
         ports:

@@ -12,4 +12,3 @@ resources:
   - ./ceph-csi.yaml
   - ./rook-ceph.yaml
   - ./prometheus-community.yaml
-  - ./guerzon-vaultwarden.yaml

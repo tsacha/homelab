@@ -7,11 +7,6 @@ metadata:
     cert-manager.io/cluster-issuer: "acme"
 spec:
   ingressClassName: nginx
-  tls:
-    -
-      hosts:
-        - lldap.home.tremoureux.fr
-      secretName: wildcard-cert
   rules:
   -
     host: lldap.home.tremoureux.fr

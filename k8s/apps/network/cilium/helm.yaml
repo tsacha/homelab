@@ -75,13 +75,9 @@ spec:
       preferIpv6: true
       metrics:
         enabled:
-          - dns
-          - drop
-          - tcp
-          - flow
-          - icmp
-          - httpV2
-          - port-distribution
+          - "httpV2:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+          - "kafka:sourceContext=workload-name|pod-name|reserved-identity;destinationContext=workload-name|pod-name|reserved-identity;labelsContext=source_namespace,destination_namespace,traffic_direction"
+        enableOpenMetrics: true
         serviceMonitor:
           enabled: true
       relay:

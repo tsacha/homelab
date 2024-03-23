@@ -7,10 +7,6 @@ metadata:
     cert-manager.io/cluster-issuer: "acme"
 spec:
   ingressClassName: nginx
-  tls:
-    -
-      hosts:
-        - grafana.home.tremoureux.fr
   rules:
   -
     host: grafana.home.tremoureux.fr

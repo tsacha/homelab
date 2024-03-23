@@ -62,7 +62,7 @@ data:
         tls:
           server_name: ''
           skip_verify: false
-          minimum_version: TLS1.2
+          minimum_version: TLS1.3
           maximum_version: TLS1.3
         username_attribute: uid
         additional_users_dn: ou=people

@@ -2,20 +2,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: authelia
+  name: vaultwarden
   annotations:
     cert-manager.io/cluster-issuer: "acme"
 spec:
   ingressClassName: nginx
   rules:
   -
-    host: auth.home.tremoureux.fr
+    host: vaultwarden.home.tremoureux.fr
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: authelia
+            name: vaultwarden
             port:
               number: 80

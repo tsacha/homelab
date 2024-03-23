@@ -37,5 +37,6 @@ spec:
         ipFamilies:
           - IPv6
           - IPv4
+      allowSnippetAnnotations: true
       extraArgs:
         default-ssl-certificate: certs/wildcard-cert
