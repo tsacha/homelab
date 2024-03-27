@@ -1,6 +1,16 @@
 @ 60 IN SOA {{ gw_fqdn }}. {{ gw_fqdn }}. 2022102109 3600 600 2600 30
 @ 60 IN NS  {{ gw_fqdn }}.
 
+@ MX 10 blackhole.scw-tem.cloud.
+@ TXT "v=spf1 include:_spf.scw-tem.cloud -all"
+94439c4a-e008-4e8c-abe3-b6ca611965c3._domainkey TXT ("v=DKIM1\; h=sha256\; k=rsa\;"
+    "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1L4bjTPECVZuX48pfwymbiZXTZf6fX9"
+    "P8V7TErYl7kWJCOEgsMnPx0hr/EThWhuD+IuFFORPkdYEeB2BszGs7/UaxcTj8cF462TLU3b3P4Hs"
+    "0N9coIULJF7jiGjNHuKQzODSuwSHKjnZwYQ/BD0LmpebJjYmfHOJZqIUdA38n10+8S/7NH19wFUY6"
+    "/3wmH9x5WAXF+Rc6l/AHmHjn04XGrUMUkSjCHJSbFAZPfOluBGYgNgOfLvTK/a8UOaat9y4KmBgEJ"
+    "5Ye0f/kacA00n+ITIx1XVvHP1xIbcWHNvYpVbImUFzxj6fc78YByt/Fbvio9p8JsY/FWBdg80oN8Z"
+    "qDwIDAQAB")
+
 {% for node in nodes %}
 {{ node }} A {{ nodes[node]["ip4"].split("/")[0] }}
 {{ node }} AAAA {{ nodes[node]["ip6"].split("/")[0] }}

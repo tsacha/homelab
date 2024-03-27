@@ -4,7 +4,7 @@ metadata:
     name: acme-http
 spec:
     acme:
-        email: ENC[AES256_GCM,data:KDJIWvyi99ngSFyLb8ZC0H77zQ==,iv:J3wWx0Sxag5VowmYqM5UZNrM7xZ8Yjr4AqezXAKly0g=,tag:fFKYrMnQGH0Prg0muZcKqw==,type:str]
+        email: ENC[AES256_GCM,data:AP8rpXP/DFO9uxt/baQiqT9ZbQ==,iv:1pJFld2QBOXeLyvQbJG61ybRCR2l32mvFxOABlyj4Ik=,tag:VV9DU5lex/WnlESNPmdLxA==,type:str]
         server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretRef:
             name: acme-key
@@ -24,14 +24,14 @@ sops:
         - recipient: age1g7ehhg7p0xsxnsdggen9plw5p20rxs89pdy3fmwafr84dh4qdylstwad7z
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWek15TjM4VUhUWmRkYkx6
-            VzQ2d1Y5cjhnWHVybDN1Yy84RTVpRGRRNUhjCkN0dXgwSThnV3JyMTZWYTBDNHJz
-            Z0tWcGdRN0FHbGp3Q1ZnVzQvdEdiajQKLS0tIFltU1BLUHdBMHUvcGlqQ1JNRkNw
-            d1A2OE01OGlwRXIwOElqbTBLRGZ5NUUKHbzfZnIF51XVrmR1+klne8a1LycS4Kba
-            R94+fDSTv84ULZMxwRBKVGHFIo2jemiLuK/wvnVEjIwSvGFHUB/h2g==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBwUVprUTUwZGZPdUdyZWcr
+            SVFSU0dTSWM0NTRXZzlJRmVDL0F0Q3hVUXhRCi9aOW0yRU1JT1grZUtOdXJqSkJt
+            YjZ4R0VIZFFUa3RFeHk4R3B5UjdmeFkKLS0tIDMxUDNNWkZBMmdremxjeGI1d3pP
+            Vml6RGszOUl1V2lnejJXY3Q5QWpBWHcKlmT5wMQDEYdZPSTIs24TE3+Dgyazm9/9
+            iZoB/c+3nxdubRM+4rN2uVFi66aGjZPZbe3P2DiieUDfJ+0tS475MA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-03-17T22:21:38Z"
-    mac: ENC[AES256_GCM,data:oszw4ANcvtnbq52pkU0INsNKBygOc0OUHd/pjYpgQTB7Gxlr4gLx5h3vpi5+Umn9LhDzsvO0hM8du8D6VTPc5E/Cyta5+lIvZcmzDZZ3Dk9cv2Fu183U5oUZsSCb8WgK2MJ+xNv48f+q/aoZ0w2idb12Uio6mUNrMC2ecgXZtwU=,iv:AK0XziRFcx/6dufMlWsRLAr7jewP6cjVH3YuNKAFF7o=,tag:eoLGY7Elw8dDlyCS/4nmpQ==,type:str]
+    lastmodified: "2024-03-27T17:00:55Z"
+    mac: ENC[AES256_GCM,data:EUUaHdg2ophpbMyO27yLIXs0GuX5WuDtudLobCJY3v92qhGUvY7Spcz0OH8JhFKa9GBp8uIAnsCJSmuefovTFLoZVdh+NtqwAblqnW8/SsmWXzRb58omnt6eSmWxracitxoA0iNUzTTKjame8FPsMXcIrWreO6X+wZI4JEDvBL8=,iv:Ik2dPLSNw1c6Te1bsddJFDiso2QnWaxeGV4mNlh9WuU=,tag:a09b7e3ynUGrTmGVvuzjiA==,type:str]
     pgp: []
     encrypted_regex: ^(email)$
     version: 3.8.1

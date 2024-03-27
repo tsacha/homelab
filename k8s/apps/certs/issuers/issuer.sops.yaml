@@ -4,14 +4,14 @@ metadata:
     name: acme
 spec:
     acme:
-        email: ENC[AES256_GCM,data:uD6eYIPBrPyhlq9koc0INiMz/g==,iv:m7miwdxBA/q/6pdIRIrbaAfOvoQ5RQd/3yfvr6ooXHw=,tag:jDTmlnNraQTxcrkyc0ub3g==,type:str]
+        email: ENC[AES256_GCM,data:gMnZltTioiwTxvUNbFsY98xCHA==,iv:5we6VqrOGqL011XUUCFrhfKU5U04K8cRasWVrfMkBm4=,tag:Rf1nowXynunRdhWIOz3DIg==,type:str]
         server: https://acme-v02.api.letsencrypt.org/directory
         privateKeySecretRef:
             name: acme-key
         solvers:
             - dns01:
                 rfc2136:
-                    nameserver: ENC[AES256_GCM,data:/1OXQrMr+pgnO+telT0OQA==,iv:P4AXhioSwt/B1VxfRseMBNnHYQoGEAxSOZ7ymiHHp3c=,tag:doiSJQD/fo5k7yS5GHydCw==,type:str]
+                    nameserver: ENC[AES256_GCM,data:iai11Bti5ZMdjZZe+esIMg==,iv:yrN1tFIjmcmfMpBvs16U3d+Dda9O7X9Z9oVIHIHlUzg=,tag:gnINj5DsNaRh3ZXP4iJ6Vw==,type:str]
                     tsigKeyName: rndc-key
                     tsigAlgorithm: HMACSHA256
                     tsigSecretSecretRef:
@@ -26,14 +26,14 @@ sops:
         - recipient: age1g7ehhg7p0xsxnsdggen9plw5p20rxs89pdy3fmwafr84dh4qdylstwad7z
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBBc200WTZCT0Z3ejREeEV0
-            Rk5hdFJ6bEU5MEVwQkFuTDl0OVUvVW1SNEZrCkdvZUtyMHRNWHBYcGx1YUN2YkRG
-            bDd3NGJuaVowREoyenZNOFJ1Q3hvMjAKLS0tIG1SM1NSTVRHV3d5anVzUHNHSEgx
-            QXJiU016WEtKNWFRSGY0TmVlSFVaNXMKST1QHc8cyd7BHzHp9cEkJylhfN8wWfji
-            qXVK/E0kXKWfD7PXw+Nc1y9ImbRNtVeh65tkfO7dFsCR4K3TEfwQBA==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBXcFJ6ekk5aWFCRFFXcE44
+            OFZSSERiUU41RGlDckxwZ0JCamZNbjIyclI0Ckh5c0tjb1dNc1dicmxJb1BnWVZZ
+            cWRod3BGbGFMMWdmeVNYdUFiQ1IxTEUKLS0tIGltb2xwY3dxbWVFQTkzbkZMREtC
+            WkpwV0xPZkg5Y2twaEdTRHgwdjJsOUkKIP+t+RUZdOki+p3DZqe2plc8+ok7Gx/H
+            XEdra218m4q+aAjA1YiNPnmJfd/Iw3bcr9OZNkMaeIxatOuo2MyDng==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-03-17T22:21:38Z"
-    mac: ENC[AES256_GCM,data:FzNNh7iRueMcB0ATngi3bqsh7CmYttU/GlwxHsbOVRt6kWDzBvC0RevH+UtujcEK4Tj3YzbB0a81AP9TROHymEGmOekS7m3lOEnZDN9X8DS3ynu7EAMiAtyp//y+jr6468YrjFu6rMJfvGICrGB7rldxZusKE2YV8zfECoTZv5E=,iv:lBICc9faWZiXeZszopYwqZhY2GHNtR7FGq5+m/E27CU=,tag:uJYjPzs776XjGwt4NdfY1Q==,type:str]
+    lastmodified: "2024-03-27T17:00:55Z"
+    mac: ENC[AES256_GCM,data:3mycXl8LFJLsfpq3p2y93AGMRHJuFusHBswiWRgIf5BxO/CkM9ijyb69SUDo1fuw08gkD9oSpwJ003nYs4bWcFaL0qPKIX173oVYEL5Y4y7Aeqi8pbRlwvn7FicvlHD2fkQJPcsCyr20roJSrwDyUAQk7Az+rwBtUc2ubyPBd5E=,iv:u2m0jUNY+S715s468Eo1KPsusjeaebsNYWdwCmi50ww=,tag:3NdGgpmUnd9mvsnMY/Y9Dw==,type:str]
     pgp: []
     encrypted_regex: ^(nameserver|email)$
     version: 3.8.1

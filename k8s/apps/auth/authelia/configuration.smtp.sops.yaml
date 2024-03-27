@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+    configuration.smtp.yaml: ENC[AES256_GCM,data:LiYUBMsc4Yk4ib9FA9PrjzyAlbppFjcTe2AbS6q8/8zINzYg90WlFaUzWXQKE1NrxmZDbqOwxBpUcKibkcR3zM1DQ623Nqc0jVIgz35GRhP/DcduDy+3PpWACVoa9XX36ZaZPOLo8OR3QeNKddxMCxtwlZdV26e9zxQ47WkuYm66xN3A8VgQ/Uqzae3HTnJINkFNEWNxIX2zqW7VIKpUO7qeEYk6r7uJYYpbzfuEtX3maykXHZmYbh2Xx99LwvS02rBEqXJ6rOD/r4k2GQ0f3fM5zxAgveOofjZ09wkEUD1j77xTDtavLr6QtlC3a0tYJh900zPrDbav32voi/SiP5sPDlMFFhNQ2lGkkieVLeYh0+c+XgG4lU83YLO7QXNGXVDeJMlSgmtJOaGDYN+IjblLh2TEJai4AUdj7awI0SDva5dF9AE0BcNVWPQsZJSUaKq6cj5hd2cyQQfxnP/f1buflGyb+BWjh29D/Fsx63ZF4FkeE5GIwt0vg023VqGI2lbdcMoFutj+E9Jiaid4yBOuVAGUm86Org4i98RmiEVUWe+BdRFvldwf0WfeNdjuVdCBkEED7EZV7KWcweteP4PROr1PaMSLb6sg0tI0trUl8LJ3/3IrMkZYNMUnjECdfDQStFu9HvVoTYDFcL5LOZmjP0mY/B/Rb8tNxhqK4Zo4JwdFun7klkIaJGwGqsHu1utrxUld++DQWvoLTPQ2tLE7vnU8jdhAgBlBxmsqWNR0+ZUzj9g0plL/+3/3nP9e6a8MP2/IrSald7VT,iv:s6aCPvF93/XzWr0rQVHRUpkfeH48tFLDbn5MPhPVoy4=,tag:IssHyemZL4Y99NeEFOkMug==,type:str]
+kind: Secret
+metadata:
+    creationTimestamp: null
+    name: authelia-smtp
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1g7ehhg7p0xsxnsdggen9plw5p20rxs89pdy3fmwafr84dh4qdylstwad7z
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsa1REZ2EzOHNQY0tVbGw5
+            Q1c3bEdBaEFMdnNEVGJ5RVEyYTdheWdpTG5JCmVacjd6RkRDVjFUUHQ2cW15eGlQ
+            TDVDZFFqaldlM3l1b3FNaW5NR0Z0OE0KLS0tIFlaN1B6L3FSRUtOY3ZsYmNZR0Ix
+            YmI1clFMN1RBdThaRlY0Tk8yVEtjNFkK0JXD6yKxVAsmDWtci/8R1yFGa0aqKZTj
+            OMm5H87zSh35TJUS8kKSNdFoP5j/KUx6KbF5J4WqUyuKq3TntYqyFA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-03-27T17:00:56Z"
+    mac: ENC[AES256_GCM,data:E7LK+E5b5S4BJnrVH0ApzHXdjWGLw7BUjIA7D+1RDHWdS8EJUR/CQkrcYRd8p1Gu9sY6ixN4hNTHPDmgZgb3JBABSAh8Bzl1DmWEZ408MVPvqmhwLbxhH3DGC3j4oUlnzm2pmQaTA4SiAW8PRyKWrh/iBEEBEQf+9j/H6VG7e8M=,iv:Zp3thb6Mws5bmQ0JpMGcrrO1lXf+NJMIv5kXsrqp5O0=,tag:UKd34Lm7H+IpbpxMzA7rhQ==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1

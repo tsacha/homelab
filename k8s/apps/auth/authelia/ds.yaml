@@ -17,6 +17,7 @@ spec:
       - args:
         - --config=/configuration.yaml
         - --config=/configuration.oidc.yaml
+        - --config=/configuration.smtp.yaml
         command:
         - authelia
         env:
@@ -48,6 +49,8 @@ spec:
           value: /secrets/OIDC_HMAC_SECRET
         - name: AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE
           value: /secrets/OIDC_PRIVATE_KEY
+        - name: AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE
+          value: /secrets/SMTP_PASSWORD
         image: ghcr.io/authelia/authelia:4.38.6
         imagePullPolicy: IfNotPresent
         name: authelia
@@ -99,6 +102,10 @@ spec:
           subPath: configuration.oidc.yaml
           name: authelia-oidc
           readOnly: true
+        - mountPath: /configuration.smtp.yaml
+          subPath: configuration.smtp.yaml
+          name: authelia-smtp
+          readOnly: true
       restartPolicy: Always
       volumes:
       - configMap:
@@ -133,6 +140,8 @@ spec:
             path: OIDC_PRIVATE_KEY
           - key: authelia-oidc-hmac-secret
             path: OIDC_HMAC_SECRET
+          - key: authelia-notifier-smtp-password
+            path: SMTP_PASSWORD
           secretName: authelia-secrets
       - name: authelia-oidc
         secret:
@@ -141,3 +150,10 @@ spec:
           - key: configuration.oidc.yaml
             path: configuration.oidc.yaml
           secretName: authelia-oidc
+      - name: authelia-smtp
+        secret:
+          defaultMode: 420
+          items:
+          - key: configuration.smtp.yaml
+            path: configuration.smtp.yaml
+          secretName: authelia-smtp

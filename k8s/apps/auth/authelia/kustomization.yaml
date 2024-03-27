@@ -6,6 +6,7 @@ namespace: auth
 resources:
   - secrets.sops.yaml
   - configuration.oidc.sops.yaml
+  - configuration.smtp.sops.yaml
   - cm.yaml
   - ds.yaml
   - ingress.yaml

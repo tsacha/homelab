@@ -1,0 +1,15 @@
+---
+notifier:
+  disable_startup_check: false
+  smtp:
+    username: '{{ (datasource "secrets").sw_smtp_username }}'
+    host: '{{ (datasource "secrets").sw_smtp_host }}'
+    port: 587
+    timeout: '5s'
+    sender: "Authelia <authelia@home.tremoureux.fr>"
+    identifier: 'auth.home.tremoureux.fr'
+    subject: "[Authelia] {title}"
+    startup_check_address: 'test@home.tremoureux.fr'
+    disable_require_tls: false
+    disable_starttls: false
+    disable_html_emails: false

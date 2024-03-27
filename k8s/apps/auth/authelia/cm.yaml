@@ -112,10 +112,6 @@ data:
         schema: public
         username: authelia
         timeout: 5s
-    notifier:
-      disable_startup_check: false
-      filesystem:
-        filename: /config/notification.txt
     identity_providers:
       oidc:
         access_token_lifespan: 1h
