@@ -1,26 +1,26 @@
 gw:
     hosts:
         gw.tremoureux.fr:
-            ansible_user: ENC[AES256_GCM,data:Rz5y4g==,iv:nbkLWvUYAZscMa7BLOeavqjHLYKMLLz3UOmgUV7ISrg=,tag:wBBXcqBYBaiFf6WrlLBSoQ==,type:str]
+            ansible_user: ENC[AES256_GCM,data:mc1oZQ==,iv:FiNMAY0BS0sg5aHOUMzelC87TjBh1F/8xzr+frqMrCo=,tag:vqqnMua797lj8zs4wRNxpQ==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-03-17T14:58:00Z"
-    mac: ENC[AES256_GCM,data:zTpy8sX60OoZ1QhjFHYJ/S0gwovGsQZ0i7BB8ZRpM99mlRkZea7oMFyzjbXdzS3ikN1duzzWGCqACJ9vdrqx2Lvph3aUqaLGzhUZSYuCzQAPf2VcR8q61J/al45KvDqbPl4fvaEY8zVF3QiMpEEWzVZkqKIm/ntW27iIWUJLIQE=,iv:TZ7gWs6RzkgNjko5h+to4/aBJy3ql9kEHEFdYURJ3Xs=,tag:YMWtpgtBcIXdoUVSOPRX4g==,type:str]
+    lastmodified: "2024-03-27T12:26:18Z"
+    mac: ENC[AES256_GCM,data:nEyVdxmv7RZGAYJ2LKFDlLfME54Q9ampkxkZYPSMNYeOH3PArgrqr6EIxgAnz36gig7gPOq+GVSJOWczVTrslNnrbt9UewgM+i6w8Wah95zeaMna+b1I+Yo+o8ThX+tsvpWB7WE0TA0EAzjPdKEIsA/SCYnxuK9OfJgSugNmJfY=,iv:qpXwLV+CINHK7Z2FUYsdy1zO4wiERC79MUfq/4wvuEc=,tag:aw7tfw/1SBszTj1wyLJtXQ==,type:str]
     pgp:
-        - created_at: "2024-03-17T14:58:00Z"
+        - created_at: "2024-03-27T12:26:18Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4DUbDO5aXdI8YSAQdAj6g7R8SqEjiAX8Pd3WG4RzRXuTJQK+5+R+Cyhqg6uHMw
-            HSDXV8fgbSECtzxcQOnrpPWcE6G410VTp5IjfX0il55hc08FvxQH8zkYGEtyT939
-            1GgBCQIQij8sNltj8S0Pv/z4XffKkdf1HjNGQ475mfh/+wxpbafbfwZXaic95+7F
-            6jSNvKnFSlbI4Uwwgtqheuoa3BvvDfQ98fitS/lOdI2GA0iyZ4DZX2YSJbVmW4dC
-            gvuUSHc8c9QzrQ==
-            =5IEs
+            hF4DUbDO5aXdI8YSAQdA/FjTz5OiGjXaVURFBCJnMKnsafPUpNXFTU3+G96wCRUw
+            Ub7NtIgINcp+/LNAVEP/wPNVHtX8PcVfypQx9pHWmcRVF8Aa9zK2SqaP0CrhN/bT
+            1GgBCQIQJ56T3UvyN3K3Ig3vxyvpvyZtFyWTcp45Eyijomh5AOrBHOsCF+3jVuxi
+            Znv8ZaPgxUnmtdOgl4iDAOaCC/2gGQlBhwnnRcN9VtxaFi0dBU7jRVMbQ+pISMSK
+            cLfR//Lh08mKoQ==
+            =NcOz
             -----END PGP MESSAGE-----
           fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
     unencrypted_suffix: _unencrypted
