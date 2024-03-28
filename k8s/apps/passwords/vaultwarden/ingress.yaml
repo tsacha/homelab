@@ -5,6 +5,7 @@ metadata:
   name: vaultwarden
   annotations:
     cert-manager.io/cluster-issuer: "acme"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   rules:
