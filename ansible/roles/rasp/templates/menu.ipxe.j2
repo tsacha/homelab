@@ -5,8 +5,10 @@ set submenu-timeout ${menu-timeout}
 isset ${menu-default} || set menu-default install
 
 menu
-item install Install
-item format Format
+item install Install Talos
+item format Format Talos
+item maintenance Maintenance Talos
+item netboot Boot from netboot.xyz
 item shell Shell iPXE
 item exit  Exit
 
@@ -19,6 +21,14 @@ chain nodes/${mac:hexhyp}.ipxe
 kernel /vmlinuz initrd=initramfs.xz slab_nomerge pti=on talos.platform=metal talos.experimental.wipe=system
 initrd /initramfs.xz
 boot
+
+:maintenance
+kernel /vmlinuz initrd=initramfs.xz slab_nomerge pti=on talos.platform=metal
+initrd /initramfs.xz
+boot
+
+:netboot
+chain --autofree http://boot.netboot.xyz/ipxe/netboot.xyz-snponly.efi
 
 :shell
 shell
