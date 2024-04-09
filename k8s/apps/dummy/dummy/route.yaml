@@ -9,7 +9,7 @@ spec:
       namespace: cilium
       sectionName: gw-http
   hostnames:
-  - dummy.home.tremoureux.fr
+    - dummy.home.tremoureux.fr
   rules:
   - filters:
       - type: RequestRedirect
@@ -31,7 +31,7 @@ spec:
       namespace: cilium
       sectionName: gw-https
   hostnames:
-  - dummy.home.tremoureux.fr
+    - dummy.home.tremoureux.fr
   rules:
   - backendRefs:
     - name: dummy-service

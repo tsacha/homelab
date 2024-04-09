@@ -4,13 +4,17 @@ kind: Ingress
 metadata:
   name: vaultwarden
   annotations:
-    cert-manager.io/cluster-issuer: "acme"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "acme-http-nginx"
 spec:
   ingressClassName: nginx
+  tls:
+    -
+      secretName: vaultwarden-cert
+      hosts:
+        - pass.s.tremoureux.fr
   rules:
   -
-    host: vaultwarden.home.tremoureux.fr
+    host: pass.s.tremoureux.fr
     http:
       paths:
       - path: /

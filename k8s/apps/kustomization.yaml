@@ -9,6 +9,8 @@ resources:
   - ingress/
   - dummy/
   - storage/
+  - backups/
   - auth/
   - passwords/
+  - valheim/
   #- blog/

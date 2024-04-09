@@ -2,9 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: certs
+namespace: backups
 resources:
-  - rndc-key.sops.yaml
-  - issuer.sops.yaml
-  - http-issuer.sops.yaml
-  - http-issuer-nginx.sops.yaml
+  - helm.yaml

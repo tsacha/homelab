@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: vaultwarden
-        image: timshel/vaultwarden:latest
+        image: vaultwarden/server:latest
         ports:
         - containerPort: 80
           name: http
@@ -29,7 +29,7 @@ spec:
         - name: ROCKET_ADDRESS
           value: "::"
         - name: SSO_ENABLED
-          value: "true"
+          value: "false"
         - name: SSO_ONLY
           value: "true"
         - name: SSO_FRONTEND

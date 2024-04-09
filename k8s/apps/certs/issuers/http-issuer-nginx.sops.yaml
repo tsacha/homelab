@@ -1,0 +1,34 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+    name: acme-http-nginx
+spec:
+    acme:
+        email: ENC[AES256_GCM,data:Xtb3zc30QhnBlqgeH1SY3t0OWA==,iv:h4UCqGG0VQLCOx89uc62RKAM2/yz8y5YfNfWeTYOWso=,tag:feF8qp/fHGIrTgUHe8pYMA==,type:str]
+        server: https://acme-v02.api.letsencrypt.org/directory
+        privateKeySecretRef:
+            name: acme-key
+        solvers:
+            - http01:
+                ingress:
+                    class: nginx
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1g7ehhg7p0xsxnsdggen9plw5p20rxs89pdy3fmwafr84dh4qdylstwad7z
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBuSjE0ZFkwZ2RneEFsd1Qz
+            KzBuZDZMNXJQdGFoMHc0SVhwZG94UlluZXprCjNuU3V4R2hMdkNKUUZzUWdKNzZS
+            c1l1ejNQZnExS2RNQ05TU3dhNEE0Z0EKLS0tIFFUN3VyQ2hLaU1tODJ2VkZ3a01M
+            RjZTSFVOUUlsWHViZE9qZE5kWHRrY2sKQxBXu99szBwsx54BjGL4vCZuUiyh+4p3
+            6tPBA/4T+VpggRHbXsgkgUL7vjnIuqmGE5oBBvaILcKXHZlXPFI9xA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-04-15T19:37:19Z"
+    mac: ENC[AES256_GCM,data:SO6NwqlPjdm/YBDsBMz2nPuCrF3Wx1/Stno0C8WaqEVe9JAq6gWJ5sE5Ld+Sv1ea54sk/hbzmWJ8TdE2bzCbA/9YPv++RDEYu6W1LFPjaM0zCJDSzlC1c2cjp6Ix/CThIT41I4h18xHNxRRBi7TX/7Cl2kXvHYXt9j8uQKw+K5Y=,iv:dLqT1Qn9Y5bizlNykJtqNyb9twEdQuC5qaqvxdms2cM=,tag:LNx2p1FtEpRo+FsPqW1S3A==,type:str]
+    pgp: []
+    encrypted_regex: ^(email)$
+    version: 3.8.1

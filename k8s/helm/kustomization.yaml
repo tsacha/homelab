@@ -13,3 +13,5 @@ resources:
   - ./rook-ceph.yaml
   - ./prometheus-community.yaml
   - ./metrics-server.yaml
+  - ./volsync.yaml
+  - ./piraeus.yaml

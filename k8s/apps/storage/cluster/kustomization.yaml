@@ -5,3 +5,4 @@ kind: Kustomization
 namespace: storage
 resources:
   - helm.yaml
+  - volume-snapshot-class.yaml

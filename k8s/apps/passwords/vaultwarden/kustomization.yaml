@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: passwords
 resources:
   - storage.yaml
-  - ingress.yaml
   - service.yaml
+  - ingress.yaml
   - oidc.sops.yaml
   - deployment.yaml

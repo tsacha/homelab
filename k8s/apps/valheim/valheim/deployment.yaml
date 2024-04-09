@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valheim
+  labels:
+    app: valheim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valheim
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: valheim
+    spec:
+      containers:
+      - name: valheim
+        resources:
+          requests:
+            memory: 8192Mi
+            cpu: 2500m
+        image: ghcr.io/lloesche/valheim-server
+        ports:
+        - name: valheim-1
+          containerPort: 2456
+          protocol: UDP
+        - name: valheim-2
+          containerPort: 2457
+          protocol: UDP
+        env:
+        - name: SERVER_NAME
+          value: "Neandre Server"
+        - name: WORLD_NAME
+          value: "Neandre World"
+        - name: SERVER_PASS
+          value: "reallySecret"
+        volumeMounts:
+        - name: valheim-data
+          mountPath: /opt/valheim
+        - name: valheim-config
+          mountPath: /config
+      volumes:
+        - name: valheim-data
+          persistentVolumeClaim:
+            claimName: valheim-data
+        - name: valheim-config
+          persistentVolumeClaim:
+            claimName: valheim-config
+

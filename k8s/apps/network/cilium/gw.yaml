@@ -28,4 +28,3 @@ spec:
       mode: Terminate
       certificateRefs:
         - name: wildcard-cert
-

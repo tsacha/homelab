@@ -1,0 +1,37 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: backups-snapshot-controller
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/backups/snapshot-controller
+  prune: true
+  dependsOn:
+    - name: monitoring-crds
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: backups-volsync
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  timeout: 3m0s
+  retryInterval: 1m0s
+  path: ./k8s/apps/backups/volsync
+  prune: true
+  dependsOn:
+    - name: backups-snapshot-controller
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
