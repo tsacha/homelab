@@ -8,7 +8,7 @@ resources:
   - configuration.oidc.sops.yaml
   - configuration.smtp.sops.yaml
   - cm.yaml
-  - ds.yaml
+  - deployment.yaml
   - ingress.yaml
   - postgresql.yaml
   - redis.yaml
