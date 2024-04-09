@@ -12,3 +12,4 @@ resources:
   - ./ceph-csi.yaml
   - ./rook-ceph.yaml
   - ./prometheus-community.yaml
+  - ./metrics-server.yaml
