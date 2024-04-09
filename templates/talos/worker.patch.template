@@ -1,0 +1,4 @@
+---
+machine:
+  certSANs:
+    - {{ (datasource "secrets").kube.endpoint }}
