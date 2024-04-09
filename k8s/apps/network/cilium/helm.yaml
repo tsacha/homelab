@@ -45,6 +45,8 @@ spec:
         clusterPoolIPv6MaskSize: 80
     tunnel: disabled
     kubeProxyReplacement: true
+    bpf:
+      lbExternalClusterIP: true
     gatewayAPI:
       enabled: true
     bgpControlPlane:
