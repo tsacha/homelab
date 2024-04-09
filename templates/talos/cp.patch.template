@@ -29,6 +29,7 @@ cluster:
               - cilium
               - storage
               - monitoring
+              - iot
             runtimeClasses: []
             usernames: []
           kind: PodSecurityConfiguration

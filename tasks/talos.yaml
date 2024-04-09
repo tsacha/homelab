@@ -49,7 +49,7 @@ tasks:
     cmds:
       - helm repo add cilium https://helm.cilium.io/
       # Cilium without monitoring CRD
-      - gomplate -d secrets.yaml -f templates/cilium/cilium-options.yaml.template -o - | helm install --version 1.15.2 --create-namespace cilium cilium/cilium --namespace cilium -f - || /bin/true
+      - gomplate -d secrets.yaml -f templates/cilium/cilium-options.yaml.template -o - | helm install --version 1.16.0-pre.1 --create-namespace cilium cilium/cilium --namespace cilium -f - || /bin/true
       - |
         for node in $( yq -r ".nodes|to_entries[].key" secrets.yaml ); do
           kubectl annotate node/$node cilium.io/bgp-virtual-router.$(yq -r '.kube.asn' secrets.yaml)="router-id=$(yq -r --arg node $node '.nodes[$node].ip4' secrets.yaml | awk -F '/' '{print $1}')" || /bin/true
