@@ -13,6 +13,10 @@ spec:
    serviceSelector:
       matchExpressions:
          - {key: somekey, operator: NotIn, values: ['never-used-value']}
+   serviceAdvertisements:
+      - LoadBalancerIP
+      - ClusterIP
+      - ExternalIP
    neighbors:
     - peerAddress: 172.16.2.1/32
       peerASN: 64512

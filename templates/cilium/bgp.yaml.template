@@ -13,6 +13,10 @@ spec:
    serviceSelector:
       matchExpressions:
          - {key: somekey, operator: NotIn, values: ['never-used-value']}
+    serviceAdvertisements:
+      - LoadBalancerIP
+      - ClusterIP
+      - ExternalIP
    neighbors:
     - peerAddress: {{ (datasource "secrets").kube.gw4 }}/32
       peerASN: {{ (datasource "secrets").kube.asn }}
