@@ -1,0 +1,21 @@
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: valheim-backup
+spec:
+  sourcePVC: valheim-data
+  trigger:
+    schedule: "*/30 * * * *"
+  restic:
+    pruneIntervalDays: 1
+    repository: restic-config
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
+    copyMethod: Clone
+    volumeSnapshotClassName: csi-rbdplugin-snapclass
+

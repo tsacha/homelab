@@ -7,4 +7,5 @@ resources:
   - deployment.yaml
   - storage.yaml
   - service.yaml
+  - secrets.sops.yaml
   - restic.sops.yaml

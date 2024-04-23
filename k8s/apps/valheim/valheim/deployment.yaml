@@ -37,7 +37,10 @@ spec:
         - name: WORLD_NAME
           value: "Neandre World"
         - name: SERVER_PASS
-          value: "reallySecret"
+          valueFrom:
+            secretKeyRef:
+              name: valheim-secrets
+              key: SERVER_PASS
         volumeMounts:
         - name: valheim-data
           mountPath: /opt/valheim
