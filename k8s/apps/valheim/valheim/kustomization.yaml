@@ -9,3 +9,4 @@ resources:
   - service.yaml
   - secrets.sops.yaml
   - restic.sops.yaml
+  - backups.yaml
