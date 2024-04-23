@@ -9,3 +9,5 @@ resources:
   - ingress.yaml
   - oidc.sops.yaml
   - deployment.yaml
+  - restic.sops.yaml
+  - backups.yaml
