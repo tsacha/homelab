@@ -70,7 +70,7 @@ identity_providers:
       public: false
       authorization_policy: 'two_factor'
       redirect_uris:
-      - 'https://vaultwarden.home.tremoureux.fr/identity/connect/oidc-signin'
+      - 'https://pass.s.tremoureux.fr/identity/connect/oidc-signin'
       scopes:
       - 'openid'
       - 'email'

@@ -25,7 +25,7 @@ spec:
           name: http
         env:
         - name: DOMAIN
-          value: "https://vaultwarden.home.tremoureux.fr"
+          value: "https://pass.s.tremoureux.fr"
         - name: ROCKET_ADDRESS
           value: "::"
         - name: SSO_ENABLED
