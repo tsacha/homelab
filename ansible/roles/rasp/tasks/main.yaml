@@ -4,8 +4,8 @@
     pkg:
       - apt-transport-https
       - curl
-      - docker.io
-      - docker-compose
+      - docker-ce
+      - docker-ce-cli
       - emacs-nox
       - git
     update_cache: yes
@@ -63,6 +63,7 @@
 
 - name: Download boot assets
   ansible.builtin.get_url:
+    force: yes
     url: "{{ item.url }}"
     dest: "/opt/boot/assets/{{ item.dest }}"
   loop:
@@ -73,16 +74,16 @@
       url: http://boot.ipxe.org/arm64-efi/snponly.efi
       dest: snponly-arm64.efi
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/vmlinuz-amd64
+      url: https://github.com/siderolabs/talos/releases/download/v1.7.0/vmlinuz-amd64
       dest: vmlinuz
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/initramfs-amd64.xz
+      url: https://github.com/siderolabs/talos/releases/download/v1.7.0/initramfs-amd64.xz
       dest: initramfs.xz
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/vmlinuz-arm64
+      url: https://github.com/siderolabs/talos/releases/download/v1.7.0/vmlinuz-arm64
       dest: vmlinuz-arm64
     -
-      url: https://github.com/siderolabs/talos/releases/download/v1.6.6/initramfs-arm64.xz
+      url: https://github.com/siderolabs/talos/releases/download/v1.7.0/initramfs-arm64.xz
       dest: initramfs-arm64.xz
 
 - name: Boot iPXE menu
@@ -100,70 +101,6 @@
   ansible.builtin.template:
     src: dhcp6.json.j2
     dest: /opt/boot/kea/dhcp6.json
-
-# Bitwarden
-- name: Gateway directory
-  ansible.builtin.file:
-    path: /opt/bitwarden
-    state: directory
-
-- name: Certbot OVH credentials
-  ansible.builtin.template:
-    src: certbot-ovh-credentials.ini.j2
-    dest: /opt/bitwarden/certbot-ovh-credentials.ini
-    mode: 0400
-
-- name: Bitwarden certificate renew service
-  ansible.builtin.template:
-    src: renew.service
-    dest: /etc/systemd/system/renew.service
-
-- name: Bitwarden certificate renew timer
-  ansible.builtin.template:
-    src: renew.timer
-    dest: /etc/systemd/system/renew.timer
-
-- name: Check if certificate exists
-  ansible.builtin.stat:
-    path: /etc/letsencrypt/live/{{ bitwarden_vhost }}/fullchain.pem
-  register: result
-
-- name: Generate bitwarden certificate
-  ansible.builtin.docker_container:
-    name: certbot
-    image: certbot/dns-ovh
-    state: started
-    recreate: yes
-    detach: no
-    cleanup: yes
-    volumes:
-      - /opt/bitwarden:/opt/bitwarden
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /var/lib/letsencrypt:/var/lib/letsencrypt
-    command: "certonly --dns-ovh --dns-ovh-credentials /opt/bitwarden/certbot-ovh-credentials.ini -d {{ bitwarden_vhost }} -m {{ mail }} --non-interactive --agree-to"
-  when: not result.stat.exists
-
-- name: Bitwarden backup service
-  ansible.builtin.template:
-    src: backup.service.j2
-    dest: /etc/systemd/system/backup.service
-
-- name: Bitwarden backup timer
-  ansible.builtin.template:
-    src: backup.timer
-    dest: /etc/systemd/system/backup.timer
-
-- name: Start Bitwarden renew certificate timer
-  ansible.builtin.systemd:
-    state: started
-    enabled: true
-    name: renew.timer
-
-- name: Start Bitwarden backup timer
-  ansible.builtin.systemd:
-    state: started
-    enabled: true
-    name: backup.timer
 
 - name: Start rasp services
   ansible.builtin.systemd:

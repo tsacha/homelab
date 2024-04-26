@@ -18,18 +18,8 @@ services:
     volumes:
       - /opt/rasp/Caddyfile:/etc/caddy/Caddyfile:ro
       - /opt/boot/assets:/web
-      - /etc/letsencrypt:/etc/letsencrypt
     ports:
-      - 443:443
       - 8082:8082
-  vaultwarden:
-    image: vaultwarden/server:latest
-    container_name: vaultwarden
-    volumes:
-      - /opt/bitwarden:/data
-      - /etc/letsencrypt:/etc/letsencrypt
-    environment:
-      - DOMAIN=https://{{ bitwarden_vhost }}
 
 volumes:
   dns-run:

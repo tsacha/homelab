@@ -31,14 +31,14 @@ tasks:
         for node in $( yq -r ".nodes|to_entries[]|select(.value.type==\"controlplane\").key" secrets.yaml ); do
           NODE=$node gomplate -d secrets.yaml -f templates/talos/node.patch.template -o talos/patch/nodes/$node.yaml
           talosctl machineconfig patch talos/data/controlplane.yaml --patch @talos/patch/nodes/$node.yaml --output talos/nodes/$node.yaml
-          rsync -vh --rsync-path="sudo rsync" talos/nodes/$node.yaml {{ .boot_endpoint }}:/opt/boot/assets/nodes/
+          rsync -vh --rsync-path="sudo rsync" talos/nodes/$node.yaml root@{{ .boot_endpoint }}:/opt/boot/assets/nodes/
 
         done;
       - |
         for node in $( yq -r ".nodes|to_entries[]|select(.value.type==\"worker\").key" secrets.yaml ); do
           NODE=$node gomplate -d secrets.yaml -f templates/talos/node.patch.template -o talos/patch/nodes/$node.yaml
           talosctl machineconfig patch talos/data/worker.yaml --patch @talos/patch/nodes/$node.yaml --output talos/nodes/$node.yaml
-          rsync -vh --rsync-path="sudo rsync" talos/nodes/$node.yaml {{ .boot_endpoint }}:/opt/boot/assets/nodes/
+          rsync -vh --rsync-path="sudo rsync" talos/nodes/$node.yaml root@{{ .boot_endpoint }}:/opt/boot/assets/nodes/
 
         done;
       - talosctl --talosconfig talos/data/talosconfig config endpoint $(yq -r '[.nodes[].hostname]|join(" ")' secrets.yaml)
