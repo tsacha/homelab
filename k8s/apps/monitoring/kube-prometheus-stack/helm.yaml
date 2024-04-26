@@ -39,6 +39,14 @@ spec:
         probeSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelector: {}
+
+        additionalScrapeConfigs:
+          - job_name: 'homeassistant'
+            scheme: http
+            metrics_path: "/api/prometheus"
+            static_configs:
+              - targets: ['[2a01:e0a:1c0:da82::11]:8123']
+
         storageSpec:
           volumeClaimTemplate:
             spec:
