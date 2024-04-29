@@ -45,7 +45,7 @@ spec:
             scheme: http
             metrics_path: "/api/prometheus"
             static_configs:
-              - targets: ['[2a01:e0a:1c0:da82::11]:8123']
+              - targets: ['[2a01:e0a:1c0:da82::9]:8123']
 
         storageSpec:
           volumeClaimTemplate:

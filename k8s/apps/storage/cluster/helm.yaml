@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.13.7
+      version: v1.14.2
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -26,6 +26,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    configOverride: |
+      [global]
+      bdev_enable_discard = true
+      bdev_async_discard = true
     operatorNamespace: storage
     ingress:
       dashboard:
