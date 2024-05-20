@@ -4,27 +4,37 @@
     name: "{{ inventory_hostname }}"
     use: systemd
 
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+    state: present
+
+
 - name: Install GW packages
   ansible.builtin.apt:
     pkg:
       - apt-transport-https
       - ca-certificates
       - curl
-      - docker.io
-      - docker-compose
+      - docker-ce
+      - docker-ce-cli
       - emacs-nox
       - git
       - gnupg2
     update_cache: yes
 
-# Free up port 53
-- name: Configure public DNS
-  ansible.builtin.lineinfile:
-    path: /etc/systemd/resolved.conf
-    regexp: 'DNS='
-    line: DNS=2620:fe::fe
-  notify: Restart systemd-resolved
+- name: Start Docker
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: docker
 
+# Free up port 53
 - name: Disable DNS stub listener
   ansible.builtin.lineinfile:
     path: /etc/systemd/resolved.conf
@@ -36,7 +46,7 @@
 
 - name: Install yq
   ansible.builtin.get_url:
-    url: https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64
+    url: https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_amd64
     dest: /usr/local/bin/yq
     mode: 0755
 
@@ -82,19 +92,19 @@
     src: renew.timer
     dest: /etc/systemd/system/renew.timer
 
-- name: HTTP2136 vhost
+- name: Caddyfile vhost
   ansible.builtin.template:
-    src: http2136-vhost.conf.j2
-    dest: /opt/gateway/vhost.conf
+    src: Caddyfile.j2
+    dest: /opt/gateway/Caddyfile
 
-- name: Check if certificate exists
+- name: Check if HTTP2136 certificate exists
   ansible.builtin.stat:
-    path: /opt/gateway/https.crt
+    path: "/etc/letsencrypt/live/{{ http2136_vhost }}/fullchain.pem"
   register: result
 
 - name: Generate HTTP2136 certificate
   ansible.builtin.docker_container:
-    name: certbot
+    name: certbot-http2136
     image: certbot/dns-ovh
     state: started
     recreate: yes
@@ -113,21 +123,6 @@
     state: started
     enabled: true
     daemon_reload: true
-
-- name: Copy HTTP2136 certificate
-  ansible.builtin.copy:
-    src: "/etc/letsencrypt/live/{{ http2136_vhost }}/fullchain.pem"
-    dest: /opt/gateway/https.crt
-    remote_src: yes
-    follow: yes
-
-- name: Copy HTTP2136 certificate private key
-  ansible.builtin.copy:
-    src: "/etc/letsencrypt/live/{{ http2136_vhost }}/privkey.pem"
-    dest: /opt/gateway/https.key
-    remote_src: yes
-    follow: yes
-
 
 - name: HTTP2136 environment file
   ansible.builtin.copy:
@@ -172,6 +167,43 @@
   ansible.builtin.template:
     src: wireguard.conf.j2
     dest: "/opt/gateway/wireguard.conf"
+
+# Bitwarden
+- name: Check if Bitwarden certificate exists
+  ansible.builtin.stat:
+    path: /etc/letsencrypt/live/{{ bitwarden_vhost }}/fullchain.pem
+  register: result
+
+- name: Generate Bitwarden certificate
+  ansible.builtin.docker_container:
+    name: certbot-bitwarden
+    image: certbot/dns-ovh
+    state: started
+    recreate: yes
+    detach: no
+    cleanup: yes
+    volumes:
+      - /opt/gateway:/opt/gateway
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+    command: "certonly --dns-ovh --dns-ovh-credentials /opt/gateway/certbot-ovh-credentials.ini -d {{ bitwarden_vhost }} -m {{ mail }} --non-interactive --agree-to"
+  when: not result.stat.exists
+
+- name: Bitwarden backup service
+  ansible.builtin.template:
+    src: backup.service.j2
+    dest: /etc/systemd/system/backup.service
+
+- name: Bitwarden backup timer
+  ansible.builtin.template:
+    src: backup.timer
+    dest: /etc/systemd/system/backup.timer
+
+- name: Start Bitwarden backup timer
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: backup.timer
 
 # Start Gateway
 - name: Start gateway

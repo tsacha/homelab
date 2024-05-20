@@ -1,26 +1,32 @@
 gw:
     hosts:
         gw.tremoureux.fr:
-            ansible_user: ENC[AES256_GCM,data:JappuA==,iv:zpW+SS1nDNQSAxcyGp/7fqPf+YU/1aFPiyq4o0mO28E=,tag:UFkr4UqyrjJ4XUSaf3BihQ==,type:str]
+            ansible_user: ENC[AES256_GCM,data:89yFNw==,iv:557JaTLV1jGDA6Jnq85kdiFGYnXOGVmHkPNHavdS280=,tag:TjekxkdX3j4rcupfDd/jUA==,type:str]
+            ansible_host: ENC[AES256_GCM,data:VoTSAAqyOd8iGgP1l/4=,iv:hbpVbEdE9UqwmPJUgJAzIqjORZsSXRTP2q2CqzP9cHM=,tag:Ypy99EGf/GyKnIsriCdveA==,type:str]
+            backup_ak: ENC[AES256_GCM,data:9x83EvNhA1OkTdLX96OtbJkpyD29nskpHUqnqM54VpE=,iv:0NpyRbOubP5fzPIX/8ccNNT0HPA4beiKfuFJ6tzjO/E=,tag:xOmsHlzYfEdrgRSc5Wyd6w==,type:str]
+            backup_sk: ENC[AES256_GCM,data:BLC0mpd6i0W2MFu4mliKjypJ/GBubQb/ADbPWztPcqE=,iv:1WU/bNljCIRXgb6wor8kCa05owJHFm4jNhrRQore84M=,tag:tMvLCADyowSBxfmCpCfS8w==,type:str]
+            backup_region: ENC[AES256_GCM,data:J5Fi,iv:72QoiV34bDKy6CSZes9xo9zD9QQETY2qoK8spfAeYv4=,tag:SUL0sRIM6sge4qPBGqRHcQ==,type:str]
+            backup_password: ENC[AES256_GCM,data:NKoacjcz3loCL27rxq5vfh9EMfMUG9oclTJ4XK4MNTQ=,iv:hbLXOTUvtuPoHmkvyMMc9Ig2VJVxr80dISgX3EZLif0=,tag:aehAUc9/1jP48bRm8nJgPQ==,type:str]
+            backup_endpoint: ENC[AES256_GCM,data:aYVPNaZNjUVqhO5L7DIksfIA+QNKYSz0CLihYBCM,iv:OqiaavB9mI+hQy4VZb3tTNXu6QroTuEkLA1SN1rEUVQ=,tag:7p6Use+9Cgd0KSKFa6QM3g==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-04-23T18:05:32Z"
-    mac: ENC[AES256_GCM,data:UZUlplJ4i0I34IPwr0w6CZ8AQchET1OK/zsXUzr+VasnpgrYdwpsELxQ4NQ40PCavkd7DIFPKt+Xftxy8QDHUZ26nainJsX9j7aMhavGgXHL0hTWCcT2Q/foTHmFPmBlbfjjnIDcUDiuRiaNJNJ4wjWyqxi9cCMxkBaBwCh3Ygs=,iv:jQR+8MYQDsri+g+CwFR8vFHmRv2w8gAPED3Ft9w49MU=,tag:dSb+dONgC6CIxRqAW8XBjg==,type:str]
+    lastmodified: "2024-06-19T21:42:09Z"
+    mac: ENC[AES256_GCM,data:28DTTGkCFOIkgJMW8hnRsBN54mJAcN4Kqmg1/op4vaiHzpn7SaaWTn6/sWQcIU+dPDUFV7CwVXO5mqGSUyIDMsJKb9uPlUHCCTjRRjWHebfW0y+vHri95faxuU5PR3UUmpJrNh1bFMc9ji4s7iH3xPs36TmW91oLbAfTcGjqFRU=,iv:5UmPxW+iO88/QNE8uarT9hgMvEbCAoFysWTBTK/qL/k=,tag:hBnpt/haZzxIHRg586xzEw==,type:str]
     pgp:
-        - created_at: "2024-04-23T18:05:32Z"
+        - created_at: "2024-06-19T21:42:09Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4DUbDO5aXdI8YSAQdAd0wWdEUQy1yD6j+VnNcsNuUcpGW0FKJ5EdMgTzyLCFYw
-            MGWJMwlmzVD7eECaJ4VTcu3paau2V0iRlyKIfnIlnrh1bAb3m4Q35YWkgZHsMw5d
-            1GgBCQIQKkYNW+qlv2b+C8QZuUyYRTS08H9IxPtp8GF42T6aerdGhf7UFpXJ2FT8
-            n+pkura7m6kOpUPTTJxiDxuY6Bp6yf+ANKZTGYOdauPqJ4Sl3fA2jK2fjN9BHNH4
-            x6MrhZKf1mjmiw==
-            =tKY0
+            hF4DUbDO5aXdI8YSAQdAbbxFUBSfLaVr520AFAGDhdK6QAJONQY6FSbnlD0x30ww
+            KKIjUuFgvlgEtzEzloHYpneS8pFj4A6MD22SO+ZU/k8r949XiajrALjoXsw4jBNM
+            1GgBCQIQK162asoIxTPCpUNDvsBwi+N0SXW4d9Hj7oKsv3QMFmMi3xItdqUZvw+H
+            LqpRIpVb6hb6YjJtmiTAfH/1QDC5fvS9uyT6KHWBtGZHU9dTOTgo8XpHIj4bzU6Y
+            vXHYajKkg3049Q==
+            =O0xf
             -----END PGP MESSAGE-----
           fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
     unencrypted_suffix: _unencrypted
