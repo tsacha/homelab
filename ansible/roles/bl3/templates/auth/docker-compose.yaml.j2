@@ -1,0 +1,15 @@
+volumes:
+  lldap_data:
+    driver: local
+
+services:
+  lldap:
+    image: lldap/lldap:stable
+    ports:
+      - "17170:17170"
+    volumes:
+      - "./lldap-data:/data"
+    environment:
+      - LLDAP_JWT_SECRET={{ lldap.jwt }}
+      - LLDAP_KEY_SEED={{ lldap.seed }}
+      - LLDAP_LDAP_BASE_DN={{ lldap.base }}

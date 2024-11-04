@@ -49,16 +49,6 @@
     dest: /usr/local/bin/yq
     mode: 0755
 
-- name: Configure Emacs backups directory
-  ansible.builtin.copy:
-    content: "(setq backup-directory-alist '((\".\" . \"~/.emacs.d/backups\")))"
-    dest: /usr/share/emacs/site-lisp/backup.el
-
-- name: Create root Emacs backups directory
-  ansible.builtin.file:
-    path: /root/.emacs.d/backups
-    state: directory
-
 - name: Gateway directory
   ansible.builtin.file:
     path: /opt/gateway

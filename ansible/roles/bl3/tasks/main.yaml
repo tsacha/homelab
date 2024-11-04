@@ -24,3 +24,13 @@
       - docker-ce
       - docker-ce-cli
     update_cache: yes
+
+- name: Auth directory
+  ansible.builtin.file:
+    path: /opt/auth
+    state: directory
+
+- name: Auth Docker compose file
+  ansible.builtin.template:
+    src: auth/docker-compose.yaml.j2
+    dest: /opt/auth/docker-compose.yaml
