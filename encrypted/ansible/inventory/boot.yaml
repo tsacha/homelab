@@ -1,0 +1,28 @@
+boot:
+    hosts:
+        boot.home.tremoureux.fr:
+            ansible_user: ENC[AES256_GCM,data:RYt18hg=,iv:1av3DWAZoC65RuW1fpIt2zK2ybGTAflK/uOLEZ71leA=,tag:ITPQBN2mddITnCBJVqKsyQ==,type:str]
+            ansible_become: ENC[AES256_GCM,data:lTvm,iv:/kcd2tp2ZYtd02Ne1pI8LACaQKwnTFBO/PwYNrsDaxY=,tag:eTPIeJVsqxSAydjuiNGwgQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-11-04T13:25:33Z"
+    mac: ENC[AES256_GCM,data:HTEn0+DH+0yQ7nAFqp5EA825X5o0P8/i9mLOUVU0w4pXQm7n+QbVi5+OWHb0c4+3M16+DJ79ayENKNjB7cKb01wJwQ7rgu64pQvgmd13ObX+dEn/OuiBz0XxCQ/VdFD2XeYAY+XwWAtsUE6cF0vCKcRMUOOh3i8DwjHciEYKR8Y=,iv:8T7Cy/JH2yGYL5D7xEmFcYGin1/xdyABs0qngQlXBUo=,tag:A8y17jU1kR5DA1RgxDgM9g==,type:str]
+    pgp:
+        - created_at: "2024-11-04T13:25:33Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4DUbDO5aXdI8YSAQdAB64vEhcGpjtzX5kQYtg78kjFVv+vNQLCXImOjbY38kEw
+            Ix/dKmsjEOWLLf8R+otYfmGwdjbSe82aMn6cvpz7dLHuX+eluphkIRr3HmejtY5N
+            1GgBCQIQOV6KICqiNCujSu69iOiASsZJstil8+b0ovxUWcOjEVwFx3e4lzq6EwWM
+            I1WQgqg9r7WptkJSQiHqPY5eTDDFqu//edPXpHk5VTJ1Lvoti9ISTo6Ynhjc6MVW
+            bLIXOH/aI4CIdA==
+            =i0V9
+            -----END PGP MESSAGE-----
+          fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
+    unencrypted_suffix: _unencrypted
+    version: 3.9.1

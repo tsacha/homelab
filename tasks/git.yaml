@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
 tasks:
@@ -7,7 +8,7 @@ tasks:
     cmds:
       - mkdir -p encrypted encrypted/ansible/inventory encrypted/talos/data
       - sops --encrypt secrets.yaml > encrypted/secrets.yaml
-      - sops --encrypt ansible/inventory/gw.yaml > encrypted/ansible/inventory/gw.yaml
+      - find ansible/inventory/ -type f -exec sh -c "sops --encrypt {} > encrypted/{}" \;
       - sops --encrypt talos/data/secrets.yaml > encrypted/talos/data/secrets.yaml
       - sops --input-type yaml --output-type yaml --encrypt talos/data/talosconfig > encrypted/talos/data/talosconfig
       - gpg --output encrypted/talos/data/age.txt -a -r sacha@tremoureux.fr --encrypt talos/data/age.txt
