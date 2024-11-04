@@ -16,7 +16,7 @@ tasks:
     cmds:
       - mkdir -p ansible/inventory talos/data
       - sops --input-type yaml --output-type yaml --decrypt encrypted/secrets.yaml > secrets.yaml
-      - sops --input-type yaml --output-type yaml --decrypt encrypted/ansible/inventory/gw.yaml > ansible/inventory/gw.yaml
+      - find encrypted/ansible/inventory -type f -exec sh -c "sops --input-type yaml --output-type yaml --decrypt {} > \$(echo {} | sed -e 's#encrypted/##')" \;
       - sops --input-type yaml --output-type yaml --decrypt encrypted/talos/data/secrets.yaml > talos/data/secrets.yaml
       - sops --input-type yaml --output-type yaml --decrypt encrypted/talos/data/talosconfig > talos/data/talosconfig
       - gpg -d encrypted/talos/data/age.txt > talos/data/age.txt
