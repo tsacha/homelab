@@ -23,7 +23,6 @@
       - curl
       - docker-ce
       - docker-ce-cli
-      - emacs-nox
       - git
       - gnupg2
     update_cache: yes
@@ -187,7 +186,6 @@
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
     command: "certonly --dns-ovh --dns-ovh-credentials /opt/gateway/certbot-ovh-credentials.ini -d {{ bitwarden_vhost }} -m {{ mail }} --non-interactive --agree-to"
-  when: not result.stat.exists
 
 - name: Bitwarden backup service
   ansible.builtin.template:

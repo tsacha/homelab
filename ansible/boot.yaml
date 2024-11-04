@@ -1,0 +1,4 @@
+---
+- hosts: boot
+  roles:
+    - boot

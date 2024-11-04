@@ -1,0 +1,26 @@
+---
+- name: Install boot packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - curl
+      - gpg
+      - git
+    update_cache: yes
+
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker Repository
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
+    state: present
+
+- name: Install docker packages
+  ansible.builtin.apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+    update_cache: yes

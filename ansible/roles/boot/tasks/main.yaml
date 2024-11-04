@@ -16,7 +16,6 @@
       - curl
       - docker-ce
       - docker-ce-cli
-      - emacs-nox
       - git
     update_cache: yes
 
@@ -25,16 +24,6 @@
     url: https://github.com/mikefarah/yq/releases/download/v4.30.6/yq_linux_amd64
     dest: /usr/local/bin/yq
     mode: 0755
-
-- name: Configure Emacs backups directory
-  ansible.builtin.copy:
-    content: "(setq backup-directory-alist '((\".\" . \"~/.emacs.d/backups\")))"
-    dest: /usr/share/emacs/site-lisp/backup.el
-
-- name: Create root Emacs backups directory
-  ansible.builtin.file:
-    path: /root/.emacs.d/backups
-    state: directory
 
 - meta: flush_handlers
 

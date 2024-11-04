@@ -1,0 +1,4 @@
+---
+- hosts: bl3
+  roles:
+    - bl3

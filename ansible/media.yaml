@@ -1,0 +1,4 @@
+---
+- hosts: media
+  roles:
+    - media
