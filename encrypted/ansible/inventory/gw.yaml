@@ -1,32 +1,32 @@
 gw:
     hosts:
         gw.tremoureux.fr:
-            ansible_user: ENC[AES256_GCM,data:heOoAA==,iv:XuD6YBoAZY4Vm5FbfdmvI96G4jAh3KM2gADQBq4Jh1w=,tag:CHYaLXYH23JqwnW5P/Ca2w==,type:str]
-            ansible_host: ENC[AES256_GCM,data:jkN0FUrNREInYD7iKnM=,iv:8E40ZOkzcB9Qs8nTpIPL8kzF9r8QjwGACPXDZ6j0cWs=,tag:3KdjbGyAj8oeZCLfbmIWng==,type:str]
-            backup_ak: ENC[AES256_GCM,data:LAW+y9CDRdGMTbJ3vGZp2CD2ebh7y1JM9CRbQ8junHc=,iv:61k3fAPpumlEnxJM3nYfMqcVvsc/s/tgOo7YZAih0vc=,tag:NdZAwoOa8btndUVd2la7Mw==,type:str]
-            backup_sk: ENC[AES256_GCM,data:jiTbyR8F3aV7Z2GVBvUHcpJ3KN5f5fTkofhSyd8bpPY=,iv:4x2cXDbvxeZ63RXBYKdqdi09GlGsAkPWQ+37JEIcgSo=,tag:bAxcP0vQNlTjSoB83z3f8g==,type:str]
-            backup_region: ENC[AES256_GCM,data:OxNa,iv:hATNoQ+wBRIVKEnBOZEGtrAuGNkNkgNfDNf7KibcQgY=,tag:LizD84EBEB70v/KsDiNGcw==,type:str]
-            backup_password: ENC[AES256_GCM,data:l/SgbDgxS0p/myJKoaRTCh7LboUrrMvWgqg0yFvBYkk=,iv:+jt0F5YjxAMEsHR2uFeeCNaTXuwAKh5QQidlouP3ZOA=,tag:0jeUWD6FNqC/p9tm3H7nRQ==,type:str]
-            backup_endpoint: ENC[AES256_GCM,data:7nv0rH0cWgZBGG59XaD5wrXppKYT8173KSQeXlgx,iv:ZNJQ1FGES/aQPv8ijNoAlzFgkum1yHLro1qbgDmsMno=,tag:ptFbKmQlLP/DMtfLQan5hw==,type:str]
+            ansible_user: ENC[AES256_GCM,data:Vm7jjQ==,iv:5vBi26FTnKwKP+C3iCuDomABnsbbPFoDoxfB8U4YsxU=,tag:9UxngTCT94STIOIYrTFU/w==,type:str]
+            ansible_host: ENC[AES256_GCM,data:dkSECQB1i6uX44ml+XI=,iv:HrRv33GVyPW2Obmdv4o7yo/fE5NU7wX/smoAhe86tig=,tag:IRS82IaSBYv9JygLuYvkDg==,type:str]
+            backup_ak: ENC[AES256_GCM,data:dXciXEgo9aT+UaetiXXRiUV/uMNYD39KzkHVfmsOY+w=,iv:Bt1ofNfCyp4MG0xkr9mJoZL/iqbfwMDLRj9YoEIAmKA=,tag:kqXkNiIBROD4oGf3snRrPg==,type:str]
+            backup_sk: ENC[AES256_GCM,data:3Y52zmyLWzW0EjQ0ppVe/W9e3xpDA5vJ+osIjsxlaiY=,iv:JYZr9evt3agiqeqYnvdDIihN96Z3+6XGKqBuGS+MRRc=,tag:KUBuxwHRVpPzIuiUa4MfhQ==,type:str]
+            backup_region: ENC[AES256_GCM,data:4IHN,iv:X6kLGu9AAO5h0boHKXvjSrHg5+AE+LBmS1vyqYQErHo=,tag:YNF+LLMlTXYRYyFb6rrjDQ==,type:str]
+            backup_password: ENC[AES256_GCM,data:KMymaAmYxCVTlxH39mwY2c4CVojNgM6Xke2gRSs/Byw=,iv:eYVls3EX5OnLIKbY9W9axRu6609ncM/Z3gNO5jtQlqM=,tag:em1jNogR/wkfoV2OOcNOqg==,type:str]
+            backup_endpoint: ENC[AES256_GCM,data:0kV2YWKZhKBANG6P2Lgncd6tFZydGD7TzrV5uqWd,iv:MrZfXL5rPOjFtzm9PHBDtXzlb6PxpSwEVnD+AVpHXuE=,tag:lnH/K73obUTJhFbG0GGBAA==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-04T13:25:33Z"
-    mac: ENC[AES256_GCM,data:JMZqMpN8iOKedF+dpttiYZiM9pDGqY1IZKoEXAqL2ucKGARzw3wMqBT88rAWdYvEUWi0QIgp2BedEpXShPiCGIPRxXTZfs2I7G69Ax4VxKIdmg8TVmHYdH9ZTRFmZ9x+gaAciubmlOzagmnwVsNPMsSKfmcCGHqI33/E4wt0zD0=,iv:x3SceKgH6RRSp7fkwWg5bf2HHOa9b/ApSYWS71GJZcY=,tag:y90x2ri/if2PCplCWMJ0pw==,type:str]
+    lastmodified: "2024-11-04T18:50:32Z"
+    mac: ENC[AES256_GCM,data:/rV+3IJvUCJr5LEe9MTkk1LwjHG02QYTK9rOsrU999CDKpG0xdagY7Q/+p02UFmupWdw2UtaQFgjsoGJegk354kV5DMzhgUaJsryyBQrAiXZJIff4n2VanonbVY5QRTk56CmtI6EGTYd4Vw+FtPjojS97S641TSk2K6M5S79/3E=,iv:OXfCbYhxcob09D8XkNXWoJeEZJVvcQFphntfOs2hKHQ=,tag:T6ZqfTd3QtZxN7JpqOgjzg==,type:str]
     pgp:
-        - created_at: "2024-11-04T13:25:33Z"
+        - created_at: "2024-11-04T18:50:32Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4DUbDO5aXdI8YSAQdAZlc4lTY0gRDjgMTjXp9DD+oPA/8FdqK2u0av58WQV3cw
-            /X8d7NPnTYpMpzURtiKM/9aTvy7t4TPFtXT4As6Jogc78kV2+Rtcdh0Ct9ix6MAD
-            1GgBCQIQQbmmjsYCDogFm6FZnZUtqsrdz87ZCBzSAVFgrIji5g5wrHhKlirfAzJA
-            CD3jjIjME55NIG2JzV8KQLfyALCKgaIs9454odhO/xzK8jfnOus78ueLAy1gillU
-            2+9GQvDvary1cw==
-            =JiLT
+            hF4DUbDO5aXdI8YSAQdAyPmv5ir8t6xiTUloSHVcyaIi0Q4qw5C/mL/kxTF+hXEw
+            rs5I7tDhUYd56f3GR0BUL3sSLV9c4+xeKEnV6bqcJncF3z7yTni5vWZ/N1/KJ8NE
+            1GgBCQIQopDSiR0Ognv+iz139I73xNlK8MaClpU0nDgxgrJgESg5rG1xJDe3Pors
+            SHrISNueUR/uNRmmIU1xMko/D7gLgn7e6ynv9COZKFEAe1mAXuTs6TQPhUGCTx6G
+            pzQce9YnJtfXsQ==
+            =yWIh
             -----END PGP MESSAGE-----
           fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
     unencrypted_suffix: _unencrypted

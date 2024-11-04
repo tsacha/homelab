@@ -1,27 +1,27 @@
 boot:
     hosts:
         boot.home.tremoureux.fr:
-            ansible_user: ENC[AES256_GCM,data:RYt18hg=,iv:1av3DWAZoC65RuW1fpIt2zK2ybGTAflK/uOLEZ71leA=,tag:ITPQBN2mddITnCBJVqKsyQ==,type:str]
-            ansible_become: ENC[AES256_GCM,data:lTvm,iv:/kcd2tp2ZYtd02Ne1pI8LACaQKwnTFBO/PwYNrsDaxY=,tag:eTPIeJVsqxSAydjuiNGwgQ==,type:str]
+            ansible_user: ENC[AES256_GCM,data:e7Fpob8=,iv:ro+cOIm+8uwi1cPKS9aWxEcPILIsghYx3DSOqBcD8g8=,tag:uvkhvPhf2vqhBv7BKDgsww==,type:str]
+            ansible_become: ENC[AES256_GCM,data:80YP,iv:DDd+FBLMispkvjvc9Fb/XxFx1opirYMj4NjUFENxSC0=,tag:+Qfy+hn2LGveO0uoHP5gNw==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-04T13:25:33Z"
-    mac: ENC[AES256_GCM,data:HTEn0+DH+0yQ7nAFqp5EA825X5o0P8/i9mLOUVU0w4pXQm7n+QbVi5+OWHb0c4+3M16+DJ79ayENKNjB7cKb01wJwQ7rgu64pQvgmd13ObX+dEn/OuiBz0XxCQ/VdFD2XeYAY+XwWAtsUE6cF0vCKcRMUOOh3i8DwjHciEYKR8Y=,iv:8T7Cy/JH2yGYL5D7xEmFcYGin1/xdyABs0qngQlXBUo=,tag:A8y17jU1kR5DA1RgxDgM9g==,type:str]
+    lastmodified: "2024-11-04T18:50:32Z"
+    mac: ENC[AES256_GCM,data:xZta0LIduqUWn6MMmKjObzcAXRjjMWEz8ANVPGTS3MPDdqZJWjrZhVHtoBuaaMdnOQr5W088nds5TvpbgYjp7Bl9AvmkOlucIbAnE69Wu5pI8J+x5TKFoheqqPfzhcl/kIUiAdlZYjFMsPNo6M7336pu/Af/nS5UxfGO3b9jW8I=,iv:tfB1Cr1c+LuyTOGKX/k0QfNuXEHdCPuIYiz9q0/QYZk=,tag:0SNeO5E6RFp+6HlbqzikRQ==,type:str]
     pgp:
-        - created_at: "2024-11-04T13:25:33Z"
+        - created_at: "2024-11-04T18:50:32Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4DUbDO5aXdI8YSAQdAB64vEhcGpjtzX5kQYtg78kjFVv+vNQLCXImOjbY38kEw
-            Ix/dKmsjEOWLLf8R+otYfmGwdjbSe82aMn6cvpz7dLHuX+eluphkIRr3HmejtY5N
-            1GgBCQIQOV6KICqiNCujSu69iOiASsZJstil8+b0ovxUWcOjEVwFx3e4lzq6EwWM
-            I1WQgqg9r7WptkJSQiHqPY5eTDDFqu//edPXpHk5VTJ1Lvoti9ISTo6Ynhjc6MVW
-            bLIXOH/aI4CIdA==
-            =i0V9
+            hF4DUbDO5aXdI8YSAQdAbKKGGnwkl03IvhHAekxzEK1SRGB1jB4u4Kgj3KC3hVYw
+            hIB4OKOEGmmt68VjQIgOtQKe7+Wt0YbFTHnBvFo56YIhooMMjsFK8NZIKREW/mQ0
+            1GgBCQIQ9XQzQY3FAnZw67mBTdmnLtC2EFmYhZS6BTvxjuuBarTRxA9IWod9Vl+L
+            5WXxv1NxOcOKjZH6zIbLtspp1KHQ/9oVLU/4cy+gikh2u6BV/6xNsJGlAqk06cOM
+            XOcLwUKilmkf0A==
+            =ARBr
             -----END PGP MESSAGE-----
           fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
     unencrypted_suffix: _unencrypted

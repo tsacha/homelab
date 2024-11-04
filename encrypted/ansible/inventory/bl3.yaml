@@ -1,27 +1,27 @@
 bl3:
     hosts:
         bl3.home.tremoureux.fr:
-            ansible_host: ENC[AES256_GCM,data:M5NMhYLb7PgC8MWRSr2qW/1P3EtK,iv:q+KJ6MMiDOJGO9pUVBTkimbedM6yyJk8q4RRiywoXOM=,tag:KBBLeo0UUuOLWom+0AXJEQ==,type:str]
-            ansible_user: ENC[AES256_GCM,data:sMxOHQ==,iv:abLimMewEnIOjbmVwxVclW/x/GOuTiWIHAil+1nuR78=,tag:Pw6xRy0ufH9xRCwd/b4zJw==,type:str]
+            ansible_host: ENC[AES256_GCM,data:1DZkxYJ90fufp2UPY9tWWnLM/1Ra,iv:DxaNBaMNSfqcfjlTQVeKXKm+JO8xYtG/Ed84Q9LftfA=,tag:xe6jqdFez8uOGfr7FkvQhA==,type:str]
+            ansible_user: ENC[AES256_GCM,data:38NylQ==,iv:oylYj1ylsmizgxLkl9vMqIW12tfCfVoCnAUAyCLqp9U=,tag:AUSOtyubsdma4XP/vbq4gw==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-04T13:25:33Z"
-    mac: ENC[AES256_GCM,data:9EhpHrY37Tu8+CTVY9PyJ51TX1oPuPgpw0LGqjrDQJEJIkp2YEpg9hn2OrZKPgAsoqLKS+T6g2pMPP4TAoRBsWAs1TD3jv0QKQWyBq5K7NB+PBNobMj7d6h3oSVNNbC49oSeC7iPQtzxL4fMfAbRh0a9cnUdBvSZSuJcHT+O/44=,iv:FTlizmVWGt57w+TpzoaB4BmWB7KzVV37JVrWUlxtnO0=,tag:FcM72A0PMxAiC9239ZrGLw==,type:str]
+    lastmodified: "2024-11-04T18:50:32Z"
+    mac: ENC[AES256_GCM,data:n2hYrFbVdrpPgLAW4GoVdJf0N5T9b82ezm1gRsAKdLvYEcnPc2QVq0prhZKD9eVVJtY/wEhb/+VKG4Dpnn3SboNxpdMqxvrrjTc0m0hlj6gHVY7gyoFzFT87t4slp0hRyNtyGQPnewjMdhPWfVZ/gmcLG5zLhgxtocs9sEX2DGE=,iv:2IKDhNchRbu7m2aVkgSoRL+Fr0NHWPygKmUdZsWYqOw=,tag:cKd8eR8sfviE/EnjxZhgpg==,type:str]
     pgp:
-        - created_at: "2024-11-04T13:25:33Z"
+        - created_at: "2024-11-04T18:50:32Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4DUbDO5aXdI8YSAQdAp/WbvFwY6uDwHFy6SIYWT3/puh5Clnd409rY2i1NV3Iw
-            Lb7Qd9L92/kNokO9vWSSC33ra0HV5Xf6jPW6PlbtrdeBMDHDDP6IcvJtnv9gJ9LE
-            1GYBCQIQryNp3zPx3t8eA5/nu/vkL2kD/upyo59U1hqq+Q8sp4LDNT4wbRMB0YoO
-            RIPMjQBNQfupG2i9+b09v67420USNnqeva4zh2nNw1AdTIVc4ZDtZAfhmqjTGcqU
-            PjYYxrxpGpk=
-            =9ogk
+            hF4DUbDO5aXdI8YSAQdAyadgBbMNvE+v8pzqkLJl9u91TdgRmD6E2+5Y60y+/Tgw
+            rbUWddr8msCtT/dc+hmY3FEc31j/AQaVKTH76WKNshQ5fcE4xLKwT+CZe8Xa0S3l
+            1GYBCQIQHrwW+JZiKEy0T24AMPRoc7/rDJOs24/NwyRKJvl0OHL+u0nxDtMy8qU/
+            APcSvrNhiot1V/cfUKlyZlY6xIOQhDP6stTcYv0k3bvp7Lz8y8aBddGgS/UhCXXr
+            AhlzYhdyMCI=
+            =Ceus
             -----END PGP MESSAGE-----
           fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
     unencrypted_suffix: _unencrypted
