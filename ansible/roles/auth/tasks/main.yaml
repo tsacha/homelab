@@ -1,0 +1,15 @@
+---
+- name: Auth directory
+  ansible.builtin.file:
+    path: /opt/auth
+    state: directory
+
+- name: Auth Docker compose file
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/auth/docker-compose.yaml
+
+- name: Authelia configuration file
+  ansible.builtin.template:
+    src: authelia.yaml.j2
+    dest: /opt/auth/authelia.yaml

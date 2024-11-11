@@ -1,0 +1,97 @@
+---
+- name: Certs directory
+  ansible.builtin.file:
+    path: /opt/certs
+    state: directory
+
+- name: Certbot OVH credentials
+  ansible.builtin.template:
+    src: certbot-ovh-credentials.ini.j2
+    dest: /opt/certs/certbot-ovh-credentials.ini
+    mode: 0400
+
+- name: Certbot RNDC credentials
+  ansible.builtin.template:
+    src: certbot-rndc-credentials.ini.j2
+    dest: /opt/certs/certbot-rndc-credentials.ini
+    mode: 0400
+
+- name: Certificates OVH renew service
+  ansible.builtin.template:
+    src: renew_ovh.service.j2
+    dest: /etc/systemd/system/renew_ovh.service
+
+- name: Certificates OVH renew timer
+  ansible.builtin.template:
+    src: renew_ovh.timer.j2
+    dest: /etc/systemd/system/renew_ovh.timer
+
+- name: Certificates RFC2136 renew service
+  ansible.builtin.template:
+    src: renew_rfc2136.service.j2
+    dest: /etc/systemd/system/renew_rfc2136.service
+
+- name: Certificates RFC2136 renew timer
+  ansible.builtin.template:
+    src: renew_rfc2136.timer.j2
+    dest: /etc/systemd/system/renew_rfc2136.timer
+
+- name: Check if OVH certificate exists
+  ansible.builtin.stat:
+    path: "/opt/certs/etc-ovh/live/{{ item }}/fullchain.pem"
+  loop: "{{ certs_ovh }}"
+  register: result_ovh
+
+- name: Check if RFC2136 certificate exists
+  ansible.builtin.stat:
+    path: "/opt/certs/etc-rfc2136/live/{{ item }}/fullchain.pem"
+  loop: "{{ certs_rfc2136 }}"
+  register: result_rfc2136
+
+- name: Generate certificate with OVH
+  ansible.builtin.docker_container:
+    name: certbot-{{ item }}
+    image: certbot/dns-ovh
+    state: started
+    recreate: yes
+    detach: no
+    cleanup: yes
+    network_mode: host
+    volumes:
+      - /opt/certs:/opt/certs
+      - /opt/certs/etc-ovh:/etc/letsencrypt
+      - /opt/certs/lib-ovh:/var/lib/letsencrypt
+    command: "certonly --dns-ovh --dns-ovh-credentials /opt/certs/certbot-ovh-credentials.ini -d {{ item }} -m {{ mail }} --non-interactive --agree-to"
+  loop: "{{ certs_ovh }}"
+  when: result_ovh | community.general.json_query('!(results[?item==`'+item+'`]|[0].stat.exists)')
+
+- name: Generate certificate with RFC2136
+  ansible.builtin.docker_container:
+    name: certbot-{{ item }}
+    image: certbot/dns-rfc2136
+    state: started
+    recreate: yes
+    detach: no
+    cleanup: yes
+    network_mode: host
+    volumes:
+      - /opt/certs:/opt/certs
+      - /opt/certs/etc-rfc2136:/etc/letsencrypt
+      - /opt/certs/lib-rfc2136:/var/lib/letsencrypt
+    command: "certonly --dns-rfc2136 --dns-rfc2136-credentials /opt/certs/certbot-rndc-credentials.ini -d {{ item }} -m {{ mail }} --non-interactive --agree-to"
+  loop: "{{ certs_rfc2136 }}"
+  when: result_rfc2136 | community.general.json_query('!(results[?item==`'+item+'`]|[0].stat.exists)')
+
+- name: Renew OVH certificates daily
+  ansible.builtin.systemd_service:
+    name: renew_ovh.timer
+    state: started
+    enabled: true
+    daemon_reload: true
+
+- name: Renew RFC2136 certificates daily
+  ansible.builtin.systemd_service:
+    name: renew_rfc2136.timer
+    state: started
+    enabled: true
+    daemon_reload: true

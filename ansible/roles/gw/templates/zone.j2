@@ -2,14 +2,15 @@
 @ 60 IN NS  {{ gw_fqdn }}.
 
 @ MX 10 blackhole.scw-tem.cloud.
-@ TXT "v=spf1 include:_spf.scw-tem.cloud -all"
+@ TXT "v=spf1 include:_spf.tem.scaleway.com -all"
+_dmarc TXT "v=DMARC1; p=none"
 94439c4a-e008-4e8c-abe3-b6ca611965c3._domainkey TXT ("v=DKIM1\; h=sha256\; k=rsa\;"
-    "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1L4bjTPECVZuX48pfwymbiZXTZf6fX9"
-    "P8V7TErYl7kWJCOEgsMnPx0hr/EThWhuD+IuFFORPkdYEeB2BszGs7/UaxcTj8cF462TLU3b3P4Hs"
-    "0N9coIULJF7jiGjNHuKQzODSuwSHKjnZwYQ/BD0LmpebJjYmfHOJZqIUdA38n10+8S/7NH19wFUY6"
-    "/3wmH9x5WAXF+Rc6l/AHmHjn04XGrUMUkSjCHJSbFAZPfOluBGYgNgOfLvTK/a8UOaat9y4KmBgEJ"
-    "5Ye0f/kacA00n+ITIx1XVvHP1xIbcWHNvYpVbImUFzxj6fc78YByt/Fbvio9p8JsY/FWBdg80oN8Z"
-    "qDwIDAQAB")
+    "p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs82i+zv40ke6pzGgYO7EXjY6ndtGXwT"
+    "2yFVrkte7eSo1bMMgRcgvYXWouzQY5nQDXx6/hBJwEjw7XnVHVljuP2ikN2meHY3pRov5alZ3B9Qh"
+    "1AplO+sHryld5qMlIKf9q1xZwqWTk8yXZCQ3M/p2pf40DCP3Qx3kmbbiIMkRfJTfup41GqDM8yU5E"
+    "lKrUijYHwtilHjwqk1fH8Y2551g+Dn3MNMgcWteQ5H/gyL4re2nHWlxQTmC8lVkc5A+v9qf7huJQ2"
+    "fhqsD4a14JfFXXSWXzYInQB9tSwkKIyRigSlQAiejXH90+JNZ2iHQcggp8UadE+zTst6gxmKirk0W"
+    "qkQIDAQAB")
 
 {% for node in nodes %}
 {{ node }} A {{ nodes[node]["ip4"].split("/")[0] }}
@@ -18,3 +19,6 @@
 {% endfor %}
 
 {{ boot.endpoint }}. AAAA {{ boot.host }}
+
+auth CNAME bl3
+docs CNAME bl3

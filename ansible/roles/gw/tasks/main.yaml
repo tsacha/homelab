@@ -4,35 +4,6 @@
     name: "{{ inventory_hostname }}"
     use: systemd
 
-- name: Add Docker GPG apt Key
-  ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-
-- name: Add Docker Repository
-  ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
-    state: present
-
-
-- name: Install GW packages
-  ansible.builtin.apt:
-    pkg:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - docker-ce
-      - docker-ce-cli
-      - git
-      - gnupg2
-    update_cache: yes
-
-- name: Start Docker
-  ansible.builtin.systemd:
-    state: started
-    enabled: true
-    name: docker
-
 # Free up port 53
 - name: Disable DNS stub listener
   ansible.builtin.lineinfile:
@@ -42,12 +13,6 @@
   notify: Restart systemd-resolved
 
 - meta: flush_handlers
-
-- name: Install yq
-  ansible.builtin.get_url:
-    url: https://github.com/mikefarah/yq/releases/download/v4.44.2/yq_linux_amd64
-    dest: /usr/local/bin/yq
-    mode: 0755
 
 - name: Gateway directory
   ansible.builtin.file:
@@ -176,6 +141,7 @@
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/lib/letsencrypt:/var/lib/letsencrypt
     command: "certonly --dns-ovh --dns-ovh-credentials /opt/gateway/certbot-ovh-credentials.ini -d {{ bitwarden_vhost }} -m {{ mail }} --non-interactive --agree-to"
+  when: not result.stat.exists
 
 - name: Bitwarden backup service
   ansible.builtin.template:

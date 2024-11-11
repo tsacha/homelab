@@ -1,4 +1,5 @@
 ---
 - hosts: gw
   roles:
+    - base
     - gw

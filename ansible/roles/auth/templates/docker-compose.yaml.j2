@@ -1,0 +1,29 @@
+volumes:
+  lldap_data:
+    driver: local
+
+services:
+  lldap:
+    image: lldap/lldap:stable
+    container_name: "lldap"
+    networks:
+      - homelab
+    volumes:
+      - "./lldap-data:/data"
+    environment:
+      - LLDAP_JWT_SECRET={{ lldap.jwt }}
+      - LLDAP_KEY_SEED={{ lldap.seed }}
+      - LLDAP_LDAP_BASE_DN={{ lldap.base }}
+      - LLDAP_LDAP_USER_PASS={{ lldap.bind_pwd }}
+  authelia:
+    image: "docker.io/authelia/authelia:latest"
+    container_name: "authelia"
+    networks:
+      - homelab
+    volumes:
+      - "./authelia.yaml:/config/configuration.yml"
+      - "./authelia-data:/data"
+
+networks:
+  homelab:
+    name: homelab

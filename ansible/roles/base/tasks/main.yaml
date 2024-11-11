@@ -6,16 +6,18 @@
       - curl
       - gpg
       - git
+      - gnupg2
+      - yq
     update_cache: yes
 
 - name: Add Docker GPG apt Key
   ansible.builtin.apt_key:
-    url: https://download.docker.com/linux/debian/gpg
+    url: https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg
     state: present
 
 - name: Add Docker Repository
   ansible.builtin.apt_repository:
-    repo: deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
+    repo: deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
     state: present
 
 - name: Install docker packages
@@ -25,12 +27,9 @@
       - docker-ce-cli
     update_cache: yes
 
-- name: Auth directory
-  ansible.builtin.file:
-    path: /opt/auth
-    state: directory
+- name: Start Docker
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: docker
 
-- name: Auth Docker compose file
-  ansible.builtin.template:
-    src: auth/docker-compose.yaml.j2
-    dest: /opt/auth/docker-compose.yaml

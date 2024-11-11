@@ -8,18 +8,18 @@ Type=oneshot
 WorkingDirectory=/opt/bitwarden
 ExecStart=/usr/bin/docker run --rm --name backup \
 	-v /opt/bitwarden/:/opt/bitwarden \
-	-e AWS_ACCESS_KEY_ID={{ backup_ak }} \
-	-e AWS_SECRET_ACCESS_KEY={{ backup_sk }} \
-	-e AWS_DEFAULT_REGION={{ backup_region }} \
-	-e RESTIC_PASSWORD={{ backup_password }} \
-	restic/restic -r s3:{{ backup_endpoint }}/vaultwarden backup /opt/bitwarden
+	-e AWS_ACCESS_KEY_ID={{ backups.ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backups.sk }} \
+	-e AWS_DEFAULT_REGION={{ backups.region }} \
+	-e RESTIC_PASSWORD={{ backups.restic_password }} \
+	restic/restic -r s3:{{ backups.endpoint_restic }}/vaultwarden backup /opt/bitwarden
 ExecStartPost=/usr/bin/docker run --rm --name backup \
 	-v /opt/bitwarden/:/opt/bitwarden \
-	-e AWS_ACCESS_KEY_ID={{ backup_ak }} \
-	-e AWS_SECRET_ACCESS_KEY={{ backup_sk }} \
-	-e AWS_DEFAULT_REGION={{ backup_region }} \
-	-e RESTIC_PASSWORD={{ backup_password }} \
-	restic/restic -r s3:{{ backup_endpoint }}/vaultwarden forget \
+	-e AWS_ACCESS_KEY_ID={{ backups.ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backups.sk }} \
+	-e AWS_DEFAULT_REGION={{ backups.region }} \
+	-e RESTIC_PASSWORD={{ backups.restic_password }} \
+	restic/restic -r s3:{{ backups.endpoint_restic }}/vaultwarden forget \
 		--keep-hourly 48 \
 		--keep-daily 7 \
 		--keep-monthly 12 \

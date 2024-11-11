@@ -1,4 +1,8 @@
 ---
 - hosts: bl3
   roles:
-    - bl3
+    - certs
+    - base
+    - auth
+    - docs
+    - reverse

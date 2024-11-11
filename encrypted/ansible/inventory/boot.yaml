@@ -1,27 +1,27 @@
 boot:
     hosts:
         boot.home.tremoureux.fr:
-            ansible_user: ENC[AES256_GCM,data:e7Fpob8=,iv:ro+cOIm+8uwi1cPKS9aWxEcPILIsghYx3DSOqBcD8g8=,tag:uvkhvPhf2vqhBv7BKDgsww==,type:str]
-            ansible_become: ENC[AES256_GCM,data:80YP,iv:DDd+FBLMispkvjvc9Fb/XxFx1opirYMj4NjUFENxSC0=,tag:+Qfy+hn2LGveO0uoHP5gNw==,type:str]
+            ansible_user: ENC[AES256_GCM,data:yTKmFSE=,iv:j/F3uyyqCt7WrSlOQ+c7uXpaXlvEyECloS+e6NS1eco=,tag:QNnIxD9XLKMzPTiMowjXSQ==,type:str]
+            ansible_become: ENC[AES256_GCM,data:C7Ob,iv:zALUNTbgx1sldGmxRs5YFeSqYnajKfZUy/svMqaGPhk=,tag:mPS5eqHdLEkDP6feUoObcA==,type:str]
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-04T18:50:32Z"
-    mac: ENC[AES256_GCM,data:xZta0LIduqUWn6MMmKjObzcAXRjjMWEz8ANVPGTS3MPDdqZJWjrZhVHtoBuaaMdnOQr5W088nds5TvpbgYjp7Bl9AvmkOlucIbAnE69Wu5pI8J+x5TKFoheqqPfzhcl/kIUiAdlZYjFMsPNo6M7336pu/Af/nS5UxfGO3b9jW8I=,iv:tfB1Cr1c+LuyTOGKX/k0QfNuXEHdCPuIYiz9q0/QYZk=,tag:0SNeO5E6RFp+6HlbqzikRQ==,type:str]
+    lastmodified: "2024-11-11T20:58:30Z"
+    mac: ENC[AES256_GCM,data:2S6nMVYglVHXY7SAbQqMr9BvbpRBo1zCdtkgtqk4mvfsZ48i3ixfPd0mFVRgXccbJZuoYWkPfBfgKTocLr0ByCljSOHoeGZ8axh+2E5pM5123U5OJi3QcBNeSNQ8wL8skpYwhCIws2NhyO/EH8BpOGCXvr2ULUajHbXQwGHnALc=,iv:hsl7sw80ASm/1QKmV/7rztvq4f7SRPVA0Jycs0oWnJs=,tag:sJZLz3J/qGoFNgp/EZTKEw==,type:str]
     pgp:
-        - created_at: "2024-11-04T18:50:32Z"
+        - created_at: "2024-11-11T20:58:30Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hF4DUbDO5aXdI8YSAQdAbKKGGnwkl03IvhHAekxzEK1SRGB1jB4u4Kgj3KC3hVYw
-            hIB4OKOEGmmt68VjQIgOtQKe7+Wt0YbFTHnBvFo56YIhooMMjsFK8NZIKREW/mQ0
-            1GgBCQIQ9XQzQY3FAnZw67mBTdmnLtC2EFmYhZS6BTvxjuuBarTRxA9IWod9Vl+L
-            5WXxv1NxOcOKjZH6zIbLtspp1KHQ/9oVLU/4cy+gikh2u6BV/6xNsJGlAqk06cOM
-            XOcLwUKilmkf0A==
-            =ARBr
+            hF4DUbDO5aXdI8YSAQdAUZ/bt51CBoJIwG4ylAW70VoA5xxLblg+eFaiI/YHIhAw
+            pEDEYp37J4g9dd5Wyd2rA0vig9VDzImhZLZ/P9FiGfR3PCRphfWkvwiw4xHUu3er
+            1GgBCQIQIsTIRRuDBFUu0PMS1RMZoOrhjyEQteRH/wIL82FB9cI3J32vMNMDQjGj
+            JyWCUnDR8x2Oh5n3w7rr65Dwvu6P8LbU+V4v5SrPADV8f77D/3hqXOAOWkFBchb3
+            C6TQHvz3m1ZU+w==
+            =7PVl
             -----END PGP MESSAGE-----
           fp: 7E97AEE02B26E52987441BBC653487B3CDE2DCE9
     unencrypted_suffix: _unencrypted

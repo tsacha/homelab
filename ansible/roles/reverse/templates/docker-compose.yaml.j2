@@ -1,0 +1,16 @@
+services:
+  reverse:
+    image: caddy
+    container_name: reverse
+    networks:
+      - homelab
+    volumes:
+      - /opt/reverse/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/certs/etc-rfc2136:/etc/letsencrypt
+    ports:
+      - 80:80
+      - 443:443
+
+networks:
+  homelab:
+    name: homelab

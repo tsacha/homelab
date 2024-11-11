@@ -1,0 +1,10 @@
+---
+- name: Docs directory
+  ansible.builtin.file:
+    path: /opt/docs
+    state: directory
+
+- name: Docker compose file
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: /opt/docs/docker-compose.yaml
