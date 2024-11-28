@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+vars:
+  cluster:
+    sh: sops -d secrets/inventory.sops.yaml | yq -r '.gw.fqdn|sub("\\.";"-")'
+  forgejo_user:
+    sh: sops -d secrets/gitops.sops.yaml | yq -r '.forgejo_user'
+  forgejo_pat:
+    sh: sops -d secrets/gitops.sops.yaml | yq -r '.forgejo_pat'
+
+tasks:
+  push:
+    cmds:
+    - |
+        pushd charts/gw-apps
+        helm package .
+        curl --user {{.forgejo_user}}:{{.forgejo_pat}} \
+                -X POST \
+                --upload-file ./gw-apps-1.0.0.tgz \
+                https://codeberg.org/api/packages/{{.forgejo_user}}/helm/api/charts
+        rm gw-apps-1.0.0.tgz
+        popd
+  flux:
+    cmds:
+      - |
+        export KUBECONFIG=~/.kube/{{.cluster}}.yaml
+        export GITEA_TOKEN={{.forgejo_pat}}
+        kubectl get ns flux-system || kubectl create ns flux-system
+        kubectl -n flux-system get secrets forgejo-auth || kubectl -n flux-system create secret generic forgejo-auth \
+          --from-literal=username={{.forgejo_user}} \
+          --from-literal=password={{.forgejo_pat}}
+
+        kubectl -n flux-system get secrets sops-age || cat ~/.config/sops/age/keys.txt | kubectl create secret generic sops-age \
+          --namespace=flux-system \
+          --from-file=age.agekey=/dev/stdin
+
+        flux install
+        pushd gw/flux-system
+        kubectl apply --server-side -k .
+        popd

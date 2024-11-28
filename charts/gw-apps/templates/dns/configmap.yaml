@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: dns
+data:
+    zone.conf: |
+        @ 60 IN SOA {{ .Values.dns.ns }}. {{ .Values.dns.ns }}. {{ now | date "2006010215" }} 3600 600 2600 30
+        @ 60 IN NS {{ .Values.dns.ns }}.
+
+        {{ .Values.dns.custom_records | nindent 8 }}
+
+{{- range $k, $v := .Values.dns.nodes }}
+        {{ $k }} A    {{ $.Values.dns.ipv4_prefix }}{{ $v }}
+        {{ $k }} AAAA {{ $.Values.dns.ipv6_prefix }}{{ $v }}
+{{- end }}
+
+{{- range $k, $v := .Values.dns.apps }}
+        {{ $k }} CNAME {{ $v }}
+{{- end }}
+
+{{- range $v := .Values.dns.kube }}
+        kube CNAME {{ $v }}
+{{- end }}
+
+    named.conf: |
+        include "/etc/bind/rndc.key";
+
+        options {
+          directory "/var/cache/bind";
+          dnssec-validation auto;
+          listen-on { any; };
+          listen-on-v6 { any; };
+        };
+
+        zone "{{ .Values.dns.zone }}" {
+          type master;
+          file "/etc/bind/zone.conf";
+          journal "/var/cache/bind/dyn.{{ .Values.dns.zone }}.jnl";
+          update-policy {
+            grant local-ddns zonesub any;
+            grant rndc-key zonesub any;
+          };
+        };

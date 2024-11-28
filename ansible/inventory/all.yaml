@@ -1,0 +1,11 @@
+home_server:
+  hosts:
+    bl3:
+      ansible_become: yes
+      ansible_host: bl3.{{ network.fqdn }}
+
+boot_server:
+  hosts:
+    boot:
+      ansible_become: yes
+      ansible_host: boot.{{ network.fqdn }}

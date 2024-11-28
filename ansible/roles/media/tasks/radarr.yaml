@@ -1,0 +1,26 @@
+---
+- name: Generate Radarr container
+  containers.podman.podman_container:
+    name: radarr
+    image: lscr.io/linuxserver/radarr:latest
+    state: quadlet
+    env:
+      PUID: 0
+      PGID: 0
+    ports:
+      - 7878:7878
+    volume:
+      - "/opt/radarr/data:/config"
+      - "/opt/jellyfin/media:/media"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Radarr
+  ansible.builtin.systemd_service:
+    name: radarr.service
+    state: started
+    daemon_reload: yes

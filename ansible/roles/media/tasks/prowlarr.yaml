@@ -1,0 +1,22 @@
+---
+- name: Generate Prowlarr container
+  containers.podman.podman_container:
+    name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
+    state: quadlet
+    ports:
+      - 9696:9696
+    volume:
+      - "/opt/prowlarr/data:/config"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Prowlarr
+  ansible.builtin.systemd_service:
+    name: prowlarr.service
+    state: started
+    daemon_reload: yes

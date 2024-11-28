@@ -1,0 +1,31 @@
+[Unit]
+Description=Backup Docs
+PartOf=podman.service
+After=podman.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/docs
+ExecStartPre=/usr/bin/podman run \
+    -v /opt/docs/:/opt/docs \
+    -e PGPASSWORD=paperless \
+    postgres:16 pg_dump -h docs-db -U paperless paperless -f /opt/docs/dump.sql
+ExecStart=/usr/bin/podman run --rm --name backup \
+	-v /opt/docs/:/opt/docs \
+	-e AWS_ACCESS_KEY_ID={{ backups.ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backups.sk }} \
+	-e AWS_DEFAULT_REGION={{ backups.region }} \
+	-e RESTIC_PASSWORD={{ backups.restic_password }} \
+	docker.io/restic/restic -r s3:{{ backups.endpoint_restic }}/paperless backup /opt/docs
+ExecStartPost=/usr/bin/podman run --rm --name backup \
+	-v /opt/docs/:/opt/docs \
+	-e AWS_ACCESS_KEY_ID={{ backups.ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backups.sk }} \
+	-e AWS_DEFAULT_REGION={{ backups.region }} \
+	-e RESTIC_PASSWORD={{ backups.restic_password }} \
+	docker.io/restic/restic -r s3:{{ backups.endpoint_restic }}/paperless forget \
+		--keep-hourly 48 \
+		--keep-daily 7 \
+		--keep-monthly 12 \
+		--keep-yearly 1 \
+		--group-by ""

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: vaultwarden
+    name: vaultwarden
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: vaultwarden
+    template:
+        metadata:
+            labels:
+                app: vaultwarden
+        spec:
+            containers:
+                - image: docker.io/vaultwarden/server:latest
+                  name: vaultwarden
+                  env:
+                    - name: DOMAIN
+                      value: https://{{ .Values.pass.vaultwarden_vhost }}
+                  volumeMounts:
+                    - name: vaultwarden-data
+                      mountPath: /data
+            volumes:
+                - name: vaultwarden-data
+                  persistentVolumeClaim:
+                    claimName: vaultwarden

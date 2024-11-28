@@ -1,0 +1,23 @@
+---
+{{- $i := (ds "inventory") }}
+machine:
+  network:
+    nameservers:
+      - {{ $i.network.ipv6.gw_wan }}
+      - {{ $i.network.ipv4.gw }}
+  time:
+    disabled: false
+    servers:
+      - {{ $i.network.ipv6.gw_wan }}
+      - {{ $i.network.ipv4.gw }}
+
+cluster:
+  network:
+    cni:
+      name: none
+    podSubnets:
+      - {{ $i.network.ipv6.pods }}
+      - {{ $i.network.ipv4.pods }}
+    serviceSubnets:
+      - {{ $i.network.ipv6.svc }}
+      - {{ $i.network.ipv4.svc }}

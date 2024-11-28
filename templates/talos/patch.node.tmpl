@@ -1,0 +1,23 @@
+---
+{{- $i := (ds "inventory") }}
+{{- $n := (index $i.nodes (env.Getenv "NODE")) }}
+{{- $ip4r := index (strings.Split "/" $i.network.ipv4.range) 1 }}
+{{- $ip4p := strings.TrimRight "0" (net.ParsePrefix $i.network.ipv4.range).Addr }}
+{{- $ip6r := index (strings.Split "/" $i.network.ipv6.range) 1 }}
+{{- $ip6p := (net.ParsePrefix $i.network.ipv6.range).Addr }}
+machine:
+  network:
+    hostname: {{ env.Getenv "NODE" }}
+    interfaces:
+      - interface: {{ $n.interface }}
+        addresses:
+          - {{ $ip6p }}{{ $n.id }}/{{ $ip6r }}
+          - {{ $ip4p }}{{ $n.id }}/{{ $ip4r }}
+        routes:
+          - network: ::/0
+            gateway: {{ $i.network.ipv6.gw }}
+          - network: 0.0.0.0/0
+            gateway: {{ $i.network.ipv4.gw }}
+  install:
+    disk: {{ $n.boot_disk }}
+    wipe: true

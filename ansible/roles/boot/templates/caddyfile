@@ -1,0 +1,5 @@
+boot.home.tremoureux.fr:80 {
+
+  root * /srv/tftp
+  file_server
+}

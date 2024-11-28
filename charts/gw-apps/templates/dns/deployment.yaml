@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: dns
+    name: dns
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: dns
+    template:
+        metadata:
+            labels:
+                app: dns
+        spec:
+            containers:
+                - image: docker.io/ubuntu/bind9:latest
+                  name: bind9
+                  ports:
+                    - containerPort: 53
+                      protocol: TCP
+                    - containerPort: 53
+                      protocol: UDP
+                    - containerPort: 953
+                      protocol: TCP
+                  volumeMounts:
+                    - name: dns-config
+                      mountPath: /etc/bind/named.conf
+                      subPath: named.conf
+                      readOnly: true
+                    - name: dns-config
+                      mountPath: /etc/bind/zone.conf
+                      subPath: zone.conf
+                      readOnly: true
+                    - name: dns-secrets
+                      mountPath: /etc/bind/rndc.key
+                      subPath: rndc.key
+                      readOnly: true
+                    - name: dns-run
+                      mountPath: /run/named
+                - image: ghcr.io/tsacha/http2136:latest
+                  name: http2136
+                  env:
+                    - name: TOKEN
+                      value: {{ .Values.dns.http2136_token }}
+                  volumeMounts:
+                    - name: dns-run
+                      mountPath: /run/named
+                  ports:
+                    - protocol: TCP
+                      name: http
+                      containerPort: 8000
+            volumes:
+                - name: dns-config
+                  configMap:
+                    name: dns
+                - name: dns-secrets
+                  secret:
+                    secretName: dns
+                - name: dns-run
+                  emptyDir: {}

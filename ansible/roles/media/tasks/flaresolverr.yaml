@@ -1,0 +1,20 @@
+---
+- name: Generate Flaresolverr container
+  containers.podman.podman_container:
+    name: flaresolverr
+    image: ghcr.io/thephaseless/byparr:latest
+    state: quadlet
+    ports:
+      - 8191:8191
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Flaresolverr
+  ansible.builtin.systemd_service:
+    name: flaresolverr.service
+    state: started
+    daemon_reload: yes

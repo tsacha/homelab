@@ -1,0 +1,26 @@
+---
+- name: Generate Sonarr container
+  containers.podman.podman_container:
+    name: sonarr
+    image: lscr.io/linuxserver/sonarr:latest
+    state: quadlet
+    env:
+      PUID: 0
+      PGID: 0
+    ports:
+      - 8989:8989
+    volume:
+      - "/opt/sonarr/data:/config"
+      - "/opt/jellyfin/media:/media"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Sonarr
+  ansible.builtin.systemd_service:
+    name: sonarr.service
+    state: started
+    daemon_reload: yes

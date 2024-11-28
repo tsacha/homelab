@@ -1,0 +1,17 @@
+---
+{{- $i := (ds "inventory") }}
+machine:
+  certSANs:
+    - kube.{{ $i.network.fqdn }}
+cluster:
+  allowSchedulingOnControlPlanes: true
+  controlPlane:
+    endpoint: https://kube.{{ $i.network.fqdn }}:6443
+  proxy:
+    disabled: true
+  clusterName: {{ strings.ReplaceAll "." "-" $i.network.fqdn }}
+  etcd:
+    listenSubnets:
+      - {{ $i.network.ipv6.range }}
+    advertisedSubnets:
+      - {{ $i.network.ipv6.range }}

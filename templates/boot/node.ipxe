@@ -1,0 +1,10 @@
+#!ipxe
+{{- $i := (ds "inventory") }}
+{{- $n := (index $i.nodes (env.Getenv "NODE")) }}
+{{- $ip4r := index (strings.Split "/" $i.network.ipv4.range) 1 }}
+{{- $ip4p := strings.TrimRight "0" (net.ParsePrefix $i.network.ipv4.range).Addr }}
+{{- $ip6r := index (strings.Split "/" $i.network.ipv6.range) 1 }}
+{{- $ip6p := (net.ParsePrefix $i.network.ipv6.range).Addr }}
+kernel /vmlinuz-${buildarch} initrd=initramfs-${buildarch}.xz slab_nomerge pti=on talos.platform=metal talos.config=http://boot.{{ $i.network.fqdn }}/nodes/{{ env.Getenv "NODE" }}.yaml ip=[{{ $ip6p }}{{ $n.id }}]::[{{ $i.network.ipv6.gw }}]::{{ env.Getenv "NODE" }}:::[{{ $i.network.ipv6.gw_wan }}]::[{{ $i.network.ipv6.gw_wan }}]
+initrd /initramfs-${buildarch}.xz
+boot

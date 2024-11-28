@@ -1,0 +1,10 @@
+[Unit]
+Description=Sync remote folder with rclone
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=rclone sync -P --size-only --ignore-checksum --config /opt/.rclone seedbox:/home/neandre/downloads/%i /opt/jellyfin/media/torrents/%i
+
+[Install]
+WantedBy=multi-user.target

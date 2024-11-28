@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+    name: vaultwarden
+spec:
+    secretName: vaultwarden-cert
+    dnsNames:
+        - {{ .Values.pass.vaultwarden_vhost }}
+    issuerRef:
+        name: letsencrypt
+        kind: Issuer
+        group: cert-manager.io

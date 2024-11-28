@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+  generate:
+    cmds:
+      - task: clone
+      - task: patch
+      - task: build
+      - task: gc
+
+  gc:
+    cmds:
+      - rm -Rf ipxe
+    internal: true
+  clone:
+    cmds:
+      - git clone https://github.com/ipxe/ipxe.git
+    internal: true
+  patch:
+    # https://github.com/ipxe/ipxe/issues/1023
+    dir: ipxe
+    cmds:
+      - git apply ../ansible/roles/boot/templates/buffer.patch
+    internal: true
+  build:
+    dir: ipxe/src
+    cmds:
+      - make -j8 bin-x86_64-efi/snponly.efi
+      - cp bin-x86_64-efi/snponly.efi ../../ansible/roles/boot/files/snponly.x86_64.efi
+    internal: true
+

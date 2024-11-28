@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+includes:
+  secrets: ./tasks/secrets.yaml
+  ansible: ./tasks/ansible.yaml
+  ipxe: ./tasks/ipxe.yaml
+  gw: ./tasks/gw.yaml
+
+  talos:
+    taskfile: ./tasks/talos.yaml
+    vars:
+      inventory:
+        sh: sops -d secrets/inventory.sops.yaml
+      cluster:
+        sh: sops -d secrets/inventory.sops.yaml | yq -r '.network.fqdn|sub("\\.";"-")'
+      endpoint:
+        sh: sops -d secrets/inventory.sops.yaml | yq -r '"kube."+.network.fqdn'
+      fqdn:
+        sh: sops -d secrets/inventory.sops.yaml | yq -r ".network.fqdn"
+      nodes:
+        sh: sops -d secrets/inventory.sops.yaml | yq -r '.nodes|to_entries[]|select(.value.talos!=false).key'

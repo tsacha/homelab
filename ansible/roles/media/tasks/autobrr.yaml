@@ -1,0 +1,25 @@
+---
+- name: Generate Autobrr container
+  containers.podman.podman_container:
+    name: autobrr
+    image: ghcr.io/autobrr/autobrr:latest
+    state: quadlet
+    env:
+      PUID: 0
+      PGID: 0
+    ports:
+      - 7474:7474
+    volume:
+      - "/opt/autobrr/data:/config"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Autobrr
+  ansible.builtin.systemd_service:
+    name: autobrr.service
+    state: started
+    daemon_reload: yes

@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://helm.cilium.io/
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: kube-system
+spec:
+  interval: 5m0s
+  chart:
+    spec:
+      chart: cilium
+      reconcileStrategy: ChartVersion
+      version: 1.18.0-pre.2
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+        namespace: flux-system
+  values:
+    ipv6:
+      enabled: true
+    ipv4:
+      enabled: true
+    kubeProxyReplacement: true
+    ipam:
+      mode: kubernetes
+    gatewayAPI:
+      enabled: true
+      enableAlpn: true
+      enableAppProtocol: true
+      hostNetwork:
+        enabled: true
+    operator:
+      replicas: 1
+    envoy:
+      enabled: true
+      securityContext:
+        capabilities:
+          keepCapNetBindService: true
+          envoy:
+            - NET_ADMIN
+            - SYS_ADMIN
+            - NET_BIND_SERVICE
+  valuesFrom:
+    - kind: Secret
+      name: cilium-values

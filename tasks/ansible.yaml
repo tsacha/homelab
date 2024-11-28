@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+  home:
+    dir: ansible
+    cmds:
+      - cmd: ansible-playbook -i inventory/all.yaml playbook_home.yaml
+  boot:
+    dir: ansible
+    cmds:
+      - cmd: ansible-playbook -i inventory/all.yaml playbook_boot.yaml

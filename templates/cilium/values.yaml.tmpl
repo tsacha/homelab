@@ -1,0 +1,64 @@
+---
+{{- $i := (ds "inventory") }}
+ipv6:
+  enabled: true
+ipv4:
+  enabled: true
+ipam:
+  mode: kubernetes
+
+routingMode: native
+
+direct-routing-skip-unreachable: true
+auto-direct-node-routes: true
+
+ipv6NativeRoutingCIDR: {{ $i.network.ipv6.pods }}
+ipv4NativeRoutingCIDR: {{ $i.network.ipv4.pods }}
+enableIPv4Masquerade: true
+enableIPv6Masquerade: false
+
+kubeProxyReplacement: true
+k8sServiceHost: kube.{{ $i.network.fqdn }}
+k8sServicePort: 6443
+
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - PERFMON
+      - BPF
+      - FOWNER
+      - SETGID
+      - SETUID
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  enableAppProtocol: true
+
+bgpControlPlane:
+  enabled: true
+
+cgroup:
+  hostRoot: /sys/fs/cgroup
+  autoMount:
+    enabled: false
+
+operator:
+  replicas: 1
+
+envoy:
+  enabled: true
+hubble:
+  enabled: false

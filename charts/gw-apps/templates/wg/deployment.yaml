@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: wg
+    labels:
+        app: wg
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: wg
+    template:
+        metadata:
+            labels:
+                app: wg
+        spec:
+            containers:
+                - name: wireguard
+                  image: linuxserver/wireguard
+                  env:
+                    - name: PUID
+                      value: "0"
+                    - name: PGID
+                      value: "0"
+                    - name: TZ
+                      value: Etc/UTC
+                  ports:
+                    - containerPort: 51820
+                      protocol: UDP
+                  volumeMounts:
+                    - name: wg-secrets
+                      mountPath: /config/wg0.conf
+                      subPath: wg0.conf
+                    - name: modules
+                      mountPath: /lib/modules
+                      readOnly: true
+                  securityContext:
+                    capabilities:
+                        add:
+                            - NET_ADMIN
+                            - SYS_MODULE
+                    privileged: true
+            volumes:
+                - name: wg-secrets
+                  secret:
+                    secretName: wg
+                - name: modules
+                  hostPath:
+                    path: /lib/modules
+                    type: Directory

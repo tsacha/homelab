@@ -1,0 +1,22 @@
+---
+- name: Generate Jellyseerr container
+  containers.podman.podman_container:
+    name: jellyseerr
+    image: docker.io/fallenbagel/jellyseerr:latest
+    state: quadlet
+    ports:
+      - 5055:5055
+    volume:
+      - "/opt/jellyseerr/data:/app/config"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Jellyseerr
+  ansible.builtin.systemd_service:
+    name: jellyseerr.service
+    state: started
+    daemon_reload: yes

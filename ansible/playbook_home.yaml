@@ -1,0 +1,12 @@
+---
+- hosts: home_server
+  roles:
+    - network
+    - base
+    - certs
+    - reverse
+    - auth
+    - media
+    - money
+    - docs
+    - minecraft

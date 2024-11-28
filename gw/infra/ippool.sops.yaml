@@ -1,0 +1,23 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumLoadBalancerIPPool
+metadata:
+    name: external-ips
+spec:
+    blocks:
+        - cidr: ENC[AES256_GCM,data:Ms0to5e90AE6fDNJqHulTz2r7D5ACC2BGQ==,iv:sUrbEFE7jBqks0kdc8OqpRykZVTO58of4h74AyM26vc=,tag:1nTgDgM3wv9Y+cm5Ve4E4Q==,type:str]
+        - cidr: ENC[AES256_GCM,data:w1gg4z2rcu8VqYW8/LpDXME=,iv:aHWAekWYzxdKMSWqAhso/w8dwJ6Ps/vZrzE2DRcMtSg=,tag:8QaKCHJdBt4XqrX/VFgGuQ==,type:str]
+sops:
+    age:
+        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3UElMamhiQUpUZHpKcitV
+            dmlSTXVWNFZuNThaUERuYThKdXFuR2p3SUNnCm4wV2cxZXRBRFNXVHQ4cUtFVGNv
+            ZkNHY1pQbFlpUndPcTBORk92ZVZ0ZEEKLS0tIC9IMnpLaDVLTVpVcm0vV3ZkdHVh
+            UkhDUkkwTlZlVzhMa0k0amlzSWJyL28KZolfD4+wAI9mF3pDTBj4DN4vuczdBuGi
+            CyKB+iLPruEzCdumFXlFtl/h9fTEYnjNVaz6/FsW/OmWqVXKAhtYNA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-05-21T20:30:28Z"
+    mac: ENC[AES256_GCM,data:Litnlx/QoACuMQFPt1plhsG2OT0lYQ/Mupwkw/rEThHTJVE7RHeSJBFcExOHs2nchQm3hlzJh95ii+fJ9gEcgsCHKKPDF1e5Z+N0ZXbbpd7tVAZzsZMBaAfyKvvQ/cJiNdzufYwiYGc7h6jsOd6WC8URZ2QEQoueqsvXTNI9Hwk=,iv:tDC94asbJ7/QbTw7lV31pkLCLeSBFH0w96bMDgSSLKE=,tag:cT/wvnak/B1u5ohy7chfCw==,type:str]
+    encrypted_regex: ^(cidr)$
+    version: 3.10.2

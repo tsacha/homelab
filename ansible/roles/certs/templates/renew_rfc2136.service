@@ -1,0 +1,13 @@
+[Unit]
+Description=RFC2136 Certificates
+PartOf=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/certs
+ExecStart=/usr/bin/docker run --rm --network=host --name certbot-rfc2136-renew \
+	-v "/opt/certs:/opt/certs" \
+	-v "/opt/certs/etc-rfc2136:/etc/letsencrypt" \
+	-v "/opt/certs/lib-rfc2136:/var/lib/letsencrypt" \
+	certbot/dns-rfc2136 renew

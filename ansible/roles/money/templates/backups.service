@@ -1,0 +1,27 @@
+[Unit]
+Description=Backup Actuaul
+PartOf=podman.service
+After=podman.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/money
+ExecStart=/usr/bin/podman run --rm --name backup \
+	-v /opt/money/:/opt/money \
+	-e AWS_ACCESS_KEY_ID={{ backups.ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backups.sk }} \
+	-e AWS_DEFAULT_REGION={{ backups.region }} \
+	-e RESTIC_PASSWORD={{ backups.restic_password }} \
+	docker.io/restic/restic -r s3:{{ backups.endpoint_restic }}/actual backup /opt/money
+ExecStartPost=/usr/bin/podman run --rm --name backup \
+	-v /opt/money/:/opt/money \
+	-e AWS_ACCESS_KEY_ID={{ backups.ak }} \
+	-e AWS_SECRET_ACCESS_KEY={{ backups.sk }} \
+	-e AWS_DEFAULT_REGION={{ backups.region }} \
+	-e RESTIC_PASSWORD={{ backups.restic_password }} \
+	docker.io/restic/restic -r s3:{{ backups.endpoint_restic }}/actual forget \
+		--keep-hourly 48 \
+		--keep-daily 7 \
+		--keep-monthly 12 \
+		--keep-yearly 1 \
+		--group-by ""

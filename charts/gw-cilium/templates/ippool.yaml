@@ -1,0 +1,9 @@
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumLoadBalancerIPPool
+metadata:
+    name: external-ips
+spec:
+    blocks:
+        - cidr: {{ .Values.lb_pool_ipv6 }}
+        - cidr: {{ .Values.lb_pool_ipv4 }}

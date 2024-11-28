@@ -1,0 +1,11 @@
+---
+- import_tasks: seedbox.yaml
+- import_tasks: folders.yaml
+- import_tasks: jellyfin.yaml
+- import_tasks: flaresolverr.yaml
+- import_tasks: jellyseerr.yaml
+- import_tasks: prowlarr.yaml
+- import_tasks: radarr.yaml
+- import_tasks: sonarr.yaml
+- import_tasks: autobrr.yaml
+- import_tasks: backups.yaml

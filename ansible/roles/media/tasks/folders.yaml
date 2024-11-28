@@ -1,0 +1,27 @@
+---
+- name: Create Media folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/autobrr
+    - /opt/autobrr/data
+    - /opt/jellyfin
+    - /opt/jellyfin/cache
+    - /opt/jellyfin/config
+    - /opt/jellyfin/media
+    - /opt/jellyseerr
+    - /opt/jellyseerr/data
+    - /opt/prowlarr
+    - /opt/prowlarr/data
+    - /opt/radarr
+    - /opt/radarr/data
+    - /opt/sonarr
+    - /opt/sonarr/data
+
+- name: Mount medias
+  ansible.posix.mount:
+    path: /opt/jellyfin/media
+    src: UUID={{ media.uuid }}
+    fstype: ext4
+    state: mounted
