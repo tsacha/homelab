@@ -1,0 +1,5 @@
+proxmox:
+  hosts:
+    bl3:
+      ansible_user: root
+      ansible_host: bl3.{{ network.fqdn }}

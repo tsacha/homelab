@@ -1,0 +1,5 @@
+---
+- name: DNS RNDC key
+  ansible.builtin.template:
+    src: rndc.key
+    dest: "/opt/.rndc_key"

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+  decrypt:
+    cmds:
+      - for: {var: file}
+        cmd: sops --decrypt {{ .ITEM }} > group_vars/all/decrypted.{{ .ITEM | base }}
+    vars:
+      file:
+        sh: find secrets -type f -path "*.sops.yaml"
+    internal: true
+  gc:
+    cmds:
+      - rm -f group_vars/all/decrypted.*
+    internal: true
+  proxmox:
+    cmds:
+      - task: decrypt
+      - cmd: ansible-playbook -i inventory/all.yaml playbook_proxmox_servers.yaml
+        ignore_error: true
+      - task: gc
