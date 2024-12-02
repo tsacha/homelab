@@ -1,0 +1,7 @@
+---
+- hosts: boot_servers
+  roles:
+    - base
+    - certs
+    - reverse
+    - auth

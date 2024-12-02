@@ -1,0 +1,13 @@
+[Unit]
+Description=OVH Certificates
+PartOf=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/certs
+ExecStart=/usr/bin/docker run --rm --network=host --name certbot-ovh-renew \
+	-v "/opt/certs:/opt/certs" \
+	-v "/opt/certs/etc-ovh:/etc/letsencrypt" \
+	-v "/opt/certs/lib-ovh:/var/lib/letsencrypt" \
+	certbot/dns-ovh renew

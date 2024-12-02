@@ -1,0 +1,51 @@
+---
+- name: Purge cloud-init Netplan configuration
+  ansible.builtin.file:
+    path: /etc/netplan/50-cloud-init.yaml
+    state: absent
+
+- name: Netplan configuration
+  ansible.builtin.template:
+    src: netplan.yaml
+    dest: /etc/netplan/10-base.yaml
+
+- name: Set hostname
+  ansible.builtin.hostname:
+    name: "{{ ansible_host }}"
+    use: systemd
+
+- name: Install base packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - curl
+      - gpg
+      - git
+      - gnupg2
+      - vim-nox
+    update_cache: yes
+
+- name: Install Podman packages
+  ansible.builtin.apt:
+    pkg:
+      - podman
+    update_cache: yes
+
+- name: Create custom podman network
+  containers.podman.podman_network:
+    name: containers
+    net_config:
+      -
+        subnet: 10.89.0.0/24
+        gateway: 10.89.0.1
+      -
+        subnet: fd84:3f4c:8fc8::/48
+        gateway: fd84:3f4c:8fc8::1
+
+- name: Set default network
+  ansible.builtin.blockinfile:
+    path: /etc/containers/containers.conf
+    create: yes
+    block: |
+      [network]
+      default_network = "containers"

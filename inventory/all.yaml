@@ -1,5 +1,11 @@
-proxmox:
+proxmox_servers:
   hosts:
     bl3:
       ansible_user: root
       ansible_host: bl3.{{ network.fqdn }}
+
+boot_servers:
+  hosts:
+    boot:
+      ansible_user: root
+      ansible_host: boot.{{ network.fqdn }}

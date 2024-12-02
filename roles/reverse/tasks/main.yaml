@@ -1,0 +1,33 @@
+---
+- name: Reverse directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/reverse
+
+- name: Reverse configuration files
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/opt/reverse/{{ item }}"
+    mode: 0644
+  loop:
+    - Caddyfile
+
+- name: Generate Reverse container
+  containers.podman.podman_container:
+    name: reverse
+    image: docker.io/caddy
+    state: quadlet
+    ports:
+      - 80:80
+      - 443:443
+    volume:
+      - /opt/reverse/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /opt/certs/etc-rfc2136:/etc/letsencrypt
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target

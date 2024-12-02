@@ -1,0 +1,63 @@
+---
+- name: Create Auth folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/auth
+    - /opt/auth/lldap
+    - /opt/auth/authelia
+
+- name: Generate LLDAP container
+  containers.podman.podman_container:
+    name: lldap
+    image: docker.io/lldap/lldap
+    state: quadlet
+    env:
+      LLDAP_LDAP_HOST: "::"
+      LLDAP_HTTP_HOST: "::"
+      LLDAP_JWT_SECRET: "{{ lldap.jwt }}"
+      LLDAP_KEY_SEED: "{{ lldap.seed }}"
+      LLDAP_LDAP_BASE_DN: "{{ lldap.base }}"
+      LLDAP_LDAP_USER_PASS: "{{ lldap.bind_pwd }}"
+    volume:
+      "/opt/auth/lldap:/data"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start LLDAP container
+  ansible.builtin.systemd_service:
+    name: lldap.service
+    state: started
+    daemon_reload: yes
+
+- name: Generate Authelia configuration
+  ansible.builtin.template:
+    src: configuration.yaml
+    dest: /opt/auth/authelia/configuration.yml
+
+- name: Generate Authelia container
+  containers.podman.podman_container:
+    name: authelia
+    image: docker.io/authelia/authelia:latest
+    state: quadlet
+    volume:
+      - "/opt/auth/authelia:/config"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+        After=lldap.service
+
+- name: Start Authela container
+  ansible.builtin.systemd_service:
+    name: authelia.service
+    state: started
+    daemon_reload: yes
+

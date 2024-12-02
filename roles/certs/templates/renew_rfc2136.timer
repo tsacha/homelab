@@ -1,0 +1,9 @@
+[Unit]
+Description=Run RFC2136 renew certificates daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

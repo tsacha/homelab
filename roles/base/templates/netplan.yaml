@@ -1,0 +1,31 @@
+---
+{% set n = nodes[inventory_hostname] %}
+network:
+  version: 2
+{% if "wlan" in n.interface %}
+  wifis:
+{% else %}
+  ethenets:
+{% endif %}
+    {{ n.interface }}:
+      dhcp4: false
+      accept-ra: false
+      addresses:
+      - {{ network.ipv6.range | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(('0x{}'.format(n.id)) | int(base=16)) }}
+      - {{ network.ipv4.range | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(n.id) }}
+      routes:
+      - to: default
+        via: {{ network.ipv6.gw }}
+      - to: default
+        via: {{ network.ipv4.gw }}
+      nameservers:
+       addresses:
+         - {{ network.ipv6.gw}}
+         - {{ network.ipv4.gw}}
+{% if "wlan" in n.interface %}
+      access-points:
+        "{{ network.ssid }}":
+          auth:
+            key-management: psk
+            password: "{{ network.psk }}"
+{% endif %}

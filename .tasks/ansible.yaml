@@ -17,6 +17,12 @@ tasks:
   proxmox:
     cmds:
       - task: decrypt
-      - cmd: ansible-playbook -i inventory/all.yaml playbook_proxmox_servers.yaml
+      - cmd: ansible-playbook -i inventory/all.yaml playbook_proxmox.yaml
+        ignore_error: true
+      - task: gc
+  boot:
+    cmds:
+      - task: decrypt
+      - cmd: ansible-playbook -i inventory/all.yaml playbook_boot.yaml
         ignore_error: true
       - task: gc

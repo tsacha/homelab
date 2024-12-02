@@ -1,0 +1,9 @@
+{{ authelia.url }} {
+  tls /etc/letsencrypt/live/{{ authelia.url }}/fullchain.pem /etc/letsencrypt/live/{{ authelia.url }}/privkey.pem
+  reverse_proxy http://authelia:9091
+}
+
+{{ lldap.url }} {
+  tls /etc/letsencrypt/live/{{ lldap.url }}/fullchain.pem /etc/letsencrypt/live/{{ lldap.url }}/privkey.pem
+  reverse_proxy http://lldap:17170
+}

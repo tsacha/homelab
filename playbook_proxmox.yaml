@@ -1,4 +1,4 @@
 ---
-- hosts: proxmox
+- hosts: proxmox_servers
   roles:
     - proxmox
