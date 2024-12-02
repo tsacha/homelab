@@ -3,11 +3,14 @@
   ansible.builtin.file:
     path: /etc/netplan/50-cloud-init.yaml
     state: absent
+  notify: Netplan apply
 
 - name: Netplan configuration
   ansible.builtin.template:
     src: netplan.yaml
     dest: /etc/netplan/10-base.yaml
+    mode: 0600
+  notify: Netplan apply
 
 - name: Set hostname
   ansible.builtin.hostname:

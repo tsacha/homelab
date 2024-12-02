@@ -1,5 +1,11 @@
 proxmox_servers:
   hosts:
+    bl1:
+      ansible_user: root
+      ansible_host: bl1.{{ network.fqdn }}
+    bl2:
+      ansible_user: root
+      ansible_host: bl2.{{ network.fqdn }}
     bl3:
       ansible_user: root
       ansible_host: bl3.{{ network.fqdn }}
@@ -9,3 +15,11 @@ boot_servers:
     boot:
       ansible_user: root
       ansible_host: boot.{{ network.fqdn }}
+
+
+docs_servers:
+  hosts:
+    docs:
+      ansible_user: ubuntu
+      ansible_host: docs.{{ network.fqdn }}
+      ansible_become: yes

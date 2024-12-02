@@ -5,7 +5,7 @@ network:
 {% if "wlan" in n.interface %}
   wifis:
 {% else %}
-  ethenets:
+  ethernets:
 {% endif %}
     {{ n.interface }}:
       dhcp4: false

@@ -1,0 +1,5 @@
+---
+vms:
+- name: docs
+  id: 100
+  host: bl3

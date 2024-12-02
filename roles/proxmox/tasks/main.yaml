@@ -1,5 +1,99 @@
 ---
+- name: Install Proxmoxer
+  ansible.builtin.apt:
+    pkg:
+      - python3-proxmoxer
+    update_cache: yes
+
 - name: DNS RNDC key
   ansible.builtin.template:
     src: rndc.key
     dest: "/opt/.rndc_key"
+
+- name: Local folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+  - /var/lib/vz/snippets
+  - /var/lib/vz/images/999
+
+- name: Basic cloud-init image
+  ansible.builtin.blockinfile:
+    path: /var/lib/vz/snippets/user.yaml
+    mode: 0644
+    create: yes
+    block: |
+      #cloud-config
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBGiCJoGGxaQnoqJVadjAMU9ORQcvndOmjFWr8BFeO0w
+      package_update: true
+      package_upgrade: true
+      packages:
+        - apt-transport-https
+        - curl
+        - gpg
+        - git
+        - qemu-guest-agent
+        - vim-nox
+      runcmd:
+        - [ systemctl, daemon-reload ]
+        - [ systemctl, enable, qemu-guest-agent.service ]
+        - [ systemctl, start, qemu-guest-agent.service ]
+
+- name: Download Ubuntu latest image
+  ansible.builtin.get_url:
+    url: https://cloud-images.ubuntu.com/oracular/current/oracular-server-cloudimg-amd64.img
+    dest: /var/lib/vz/images/999/ubuntu.qcow2 # Only root can pass arbitrary filesystem paths: create fake VM id.
+    mode: '0664'
+    checksum: sha256:https://cloud-images.ubuntu.com/oracular/current/SHA256SUMS
+
+- name: Create containers
+  community.general.proxmox_kvm:
+    api_user: root@pam
+    api_token_id: ansible
+    api_token_secret: "{{ proxmox.api_token }}"
+    api_host: "{{ item.host }}.{{ network.fqdn }}"
+    vmid: "{{ item.id }}"
+    node: "{{ item.host }}"
+    name: "{{ item.name }}"
+    cores: 4
+    vcpus: 1
+    bios: ovmf
+    boot: "order=scsi0"
+    scsihw: virtio-scsi-single
+    scsi:
+      scsi1: 'ssd:cloudinit'
+    efidisk0:
+      storage: ssd
+      format: raw
+      efitype: 4m
+      pre_enrolled_keys: true
+    net:
+      net0: 'virtio,bridge=vmbr0'
+    nameservers:
+      - "{{ network.ipv6.gw }}"
+    ipconfig:
+      ipconfig0: "ip={{ network.ipv4.range | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(item.id) }},gw={{ network.ipv4.gw }},ip6={{ network.ipv6.range | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(('0x{}'.format(item.id)) | int(base=16)) }},gw6={{ network.ipv6.gw }}"
+    sshkeys: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBGiCJoGGxaQnoqJVadjAMU9ORQcvndOmjFWr8BFeO0w"
+    agent: yes
+    cicustom: "user=local:snippets/user.yaml"
+  run_once: true
+  delegate_to: "{{ item.host }}"
+  loop: "{{ vms }}"
+
+
+- name: Import Ubuntu disk
+  community.general.proxmox_disk:
+    api_user: root@pam
+    api_token_id: ansible
+    api_token_secret: "{{ proxmox.api_token }}"
+    api_host: "{{ item.host }}.{{ network.fqdn }}"
+    disk: scsi0
+    storage: ssd
+    vmid: "{{ item.id }}"
+    import_from: local:999/ubuntu.qcow2
+    state: present
+  delegate_to: "{{ item.host }}"
+  run_once: true
+  loop: "{{ vms }}"

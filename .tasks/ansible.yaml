@@ -26,3 +26,9 @@ tasks:
       - cmd: ansible-playbook -i inventory/all.yaml playbook_boot.yaml
         ignore_error: true
       - task: gc
+  docs:
+    cmds:
+      - task: decrypt
+      - cmd: ansible-playbook -i inventory/all.yaml playbook_docs.yaml
+        ignore_error: true
+      - task: gc
