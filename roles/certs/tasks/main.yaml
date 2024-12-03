@@ -32,13 +32,15 @@
 - name: Check if OVH certificate exists
   ansible.builtin.stat:
     path: "/opt/certs/etc-ovh/live/{{ item }}/fullchain.pem"
-  loop: "{{ certs.ovh }}"
+  loop: "{{ certs.ovh[inventory_hostname] }}"
+  when: inventory_hostname in certs.ovh
   register: result_ovh
 
 - name: Check if RFC2136 certificate exists
   ansible.builtin.stat:
     path: "/opt/certs/etc-rfc2136/live/{{ item }}/fullchain.pem"
-  loop: "{{ certs.rfc2136 }}"
+  loop: "{{ certs.rfc2136[inventory_hostname] }}"
+  when: inventory_hostname in certs.rfc2136
   register: result_rfc2136
 
 - name: Generate certificate with OVH
@@ -53,8 +55,10 @@
       - /opt/certs/etc-ovh:/etc/letsencrypt
       - /opt/certs/lib-ovh:/var/lib/letsencrypt
     command: "certonly --dns-ovh --dns-ovh-credentials /opt/certs/certbot-ovh-credentials.ini -d {{ item }} -m {{ acme.mail }} --non-interactive --agree-to"
-  loop: "{{ certs.ovh }}"
-  when: result_ovh | community.general.json_query('!(results[?item==`'+item+'`]|[0].stat.exists)')
+  loop: "{{ certs.ovh[inventory_hostname] }}"
+  when:
+    - inventory_hostname in certs.ovh
+    - result_ovh | community.general.json_query('!(results[?item==`'+item+'`]|[0].stat.exists)')
 
 - name: Generate certificate with RFC2136
   containers.podman.podman_container:
@@ -68,8 +72,10 @@
       - /opt/certs/etc-rfc2136:/etc/letsencrypt
       - /opt/certs/lib-rfc2136:/var/lib/letsencrypt
     command: "certonly --dns-rfc2136 --dns-rfc2136-credentials /opt/certs/certbot-rndc-credentials.ini -d {{ item }} -m {{ acme.mail }} --non-interactive --agree-to"
-  loop: "{{ certs.rfc2136 }}"
-  when: result_rfc2136 | community.general.json_query('!(results[?item==`'+item+'`]|[0].stat.exists)')
+  loop: "{{ certs.rfc2136[inventory_hostname] }}"
+  when:
+    - inventory_hostname in certs.rfc2136
+    - result_rfc2136 | community.general.json_query('!(results[?item==`'+item+'`]|[0].stat.exists)')
 
 - name: Renew certificates timers
   ansible.builtin.systemd_service:

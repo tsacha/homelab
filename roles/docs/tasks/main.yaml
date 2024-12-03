@@ -1,0 +1,22 @@
+---
+- name: Create Docs folders
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/docs
+    - /opt/docs/kv
+
+- name: Generate Paperless-ngx container
+  containers.podman.podman_container:
+    name: docs-broker
+    image: docker.io/valkey/valkey:7
+    state: quadlet
+    volume:
+      "/opt/docs/kv:/data"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target

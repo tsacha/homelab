@@ -7,3 +7,8 @@
   tls /etc/letsencrypt/live/{{ lldap.url }}/fullchain.pem /etc/letsencrypt/live/{{ lldap.url }}/privkey.pem
   reverse_proxy http://lldap:17170
 }
+
+{{ docs.url }} {
+  tls /etc/letsencrypt/live/{{ docs.url }}/fullchain.pem /etc/letsencrypt/live/{{ docs.url }}/privkey.pem
+  reverse_proxy http://docs:8000
+}
