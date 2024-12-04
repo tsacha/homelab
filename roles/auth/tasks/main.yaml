@@ -53,9 +53,11 @@
       - |
         [Install]
         WantedBy=default.target
+
+        [Unit]
         After=lldap.service
 
-- name: Start Authela container
+- name: Start Authelia container
   ansible.builtin.systemd_service:
     name: authelia.service
     state: started

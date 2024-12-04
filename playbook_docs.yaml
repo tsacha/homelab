@@ -1,4 +1,4 @@
 ---
 - hosts: docs_servers
   roles:
-    - docs
+   - docs

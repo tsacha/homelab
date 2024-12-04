@@ -1,4 +1,14 @@
 ---
+- name: Backups unit
+  ansible.builtin.template:
+    src: backups.service
+    dest: /etc/systemd/system/docs.backups.service
+
+- name: Backups timer
+  ansible.builtin.template:
+    src: backups.timer
+    dest: /etc/systemd/system/docs.backups.timer
+
 - name: Create Docs folders
   ansible.builtin.file:
     path: "{{ item }}"
@@ -6,8 +16,57 @@
   loop:
     - /opt/docs
     - /opt/docs/kv
+    - /opt/docs/db
+    - /opt/docs/data
+    - /opt/docs/media
+    - /opt/docs/export
+    - /opt/docs/consume
 
-- name: Generate Paperless-ngx container
+- name: Generate Paperless-ngx Webserver
+  containers.podman.podman_container:
+    name: docs-webserver
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    state: quadlet
+    env:
+      PAPERLESS_REDIS: redis://docs-broker:6379
+      PAPERLESS_DBHOST: docs-db
+      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://docs-gotenberg:3000
+      PAPERLESS_TIKA_ENDPOINT: http://docs-tika:9998
+      PAPERLESS_TIME_ZONE: Europe/Paris
+      PAPERLESS_OCR_LANGUAGE: fra+eng
+      PAPERLESS_SECRET_KEY: "{{ docs.sk }}"
+      PAPERLESS_OCR_LANGUAGES: fra eng
+      PAPERLESS_URL: https://{{ docs.url }}
+      PAPERLESS_OCR_USER_ARGS: '{"invalidate_digital_signatures": true}'
+      PAPERLESS_DISABLE_REGULAR_LOGIN: false
+      PAPERLESS_REDIRECT_LOGIN_TO_SSO: false
+      PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
+      PAPERLESS_SOCIALACCOUNT_PROVIDERS: |
+        '{ "openid_connect": { "APPS": [ { "provider_id": "authelia", "name": "Authelia SSO", "client_id": "docs", "secret": "{{ oidc.docs }}", "settings": { "server_url": "https://{{ authelia.url }}/.well-known/openid-configuration" } } ] } }'
+    volume:
+      - "/opt/docs/data:/usr/src/paperless/data"
+      - "/opt/docs/media:/usr/src/paperless/media"
+      - "/opt/docs/export:/usr/src/paperless/export"
+      - "/opt/docs/consume:/usr/src/paperless/consume"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+        [Unit]
+        Requires=docs-db.service
+        Requires=docs-broker.service
+        Requires=docs-gotenberg.service
+        Requires=docs-tika.service
+        After=docs-db.service
+        After=docs-broker.service
+        After=docs-gotenberg.service
+        After=docs-tika.service
+
+- name: Generate Paperless-ngx KV
   containers.podman.podman_container:
     name: docs-broker
     image: docker.io/valkey/valkey:7
@@ -20,3 +79,61 @@
       - |
         [Install]
         WantedBy=default.target
+
+- name: Generate Paperless-ngx DB
+  containers.podman.podman_container:
+    name: docs-db
+    image: docker.io/library/postgres:16
+    state: quadlet
+    env:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+    volume:
+      "/opt/docs/db:/var/lib/postgresql/data"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Generate Paperless-ngx Gotenberg
+  containers.podman.podman_container:
+    name: docs-gotenberg
+    image: docker.io/gotenberg/gotenberg:8.7
+    state: quadlet
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Generate Paperless-ngx Tika
+  containers.podman.podman_container:
+    name: docs-tika
+    image: docker.io/apache/tika:latest
+    state: quadlet
+    quadlet_options:
+      - AutoUpdate=registry
+      - "Pull=newer"
+      - |
+        [Install]
+        WantedBy=default.target
+
+- name: Start Paperless
+  ansible.builtin.systemd_service:
+    name: docs-webserver.service
+    state: started
+    daemon_reload: yes
+
+- name: Start docs backup timer
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: docs.backups.timer
