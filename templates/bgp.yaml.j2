@@ -1,5 +1,4 @@
 ---
-{{- $i := (ds "inventory") }}
 apiVersion: cilium.io/v2
 kind: CiliumBGPClusterConfig
 metadata:
@@ -12,14 +11,9 @@ spec:
   - name: "to-router"
     localASN: 64512
     peers:
-    - name: "router4"
-      peerASN: 64512
-      peerAddress: {{ $i.network.ipv4.gw }}
-      peerConfigRef:
-        name: "cilium-peer"
     - name: "router6"
       peerASN: 64512
-      peerAddress: {{ $i.network.ipv6.gw_wan }}
+      peerAddress: {{ network.ipv6.gw_wan }}
       peerConfigRef:
         name: "cilium-peer"
 
@@ -31,11 +25,6 @@ metadata:
 spec:
   families:
     - afi: ipv6
-      safi: unicast
-      advertisements:
-        matchLabels:
-          advertise: "bgp"
-    - afi: ipv4
       safi: unicast
       advertisements:
         matchLabels:

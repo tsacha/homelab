@@ -1,85 +1,96 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: '3'
-
-vars:
-  KUBECONFIG: '{{ default "~/.kube/{{.cluster}}" .KUBECONFIG }}'
-env:
-  KUBECONFIG: '~/.kube/{{.cluster}}.yaml'
-
+version: "3"
 tasks:
-  init:
-    dir: .decrypted
-    desc: "Initialize Talos cluster secrets and tokens"
-    prompt: This is a dangerous command... Do you want to continue?
-    cmds:
-      - mkdir -p talos
-      - gomplate -d inventory=inventory.yaml -f ../templates/talos/patch.all.tmpl > talos/patch.all.yaml
-      - gomplate -d inventory=inventory.yaml -f ../templates/talos/patch.cp.tmpl > talos/patch.cp.yaml
-      - talosctl gen --force secrets -o talos/secrets.yaml
-      - |
-        talosctl gen config -t talosconfig  --force \
-          --with-secrets talos/secrets.yaml \
-          {{ .cluster }} \
-          https://{{ .endpoint }}:6443 \
-          --config-patch @talos/patch.all.yaml \
-          --config-patch-control-plane=@talos/patch.cp.yaml \
-          --output-dir talos
-      - mv talos/talosconfig talos/talosconfig.yaml
-      - chmod 600 talos/secrets.yaml talos/talosconfig.yaml
-
   gen:
-    dir: .decrypted
-    desc: "Generate full Talos cluster configuration"
+    desc: Generate full configuration for Talos
     cmds:
-      - mkdir -p talos/nodes
-      - gomplate -d inventory=inventory.yaml -f ../templates/talos/patch.all.tmpl > talos/patch.all.yaml
-      - gomplate -d inventory=inventory.yaml -f ../templates/talos/patch.cp.tmpl > talos/patch.cp.yaml
-      - |
-        talosctl gen config -t controlplane,worker --force \
-          --with-secrets talos/secrets.yaml \
-          {{ .cluster }} \
-          https://{{ .endpoint }}:6443 \
-          --config-patch @talos/patch.all.yaml \
-          --config-patch-control-plane=@talos/patch.cp.yaml \
-          --output-dir talos
-      - for: { var: nodes }
+      - task: restore
+      - task: init
+      - task: config
+      - for:
+          var: NODES
         task: genmachine
         vars:
-          node: '{{ .ITEM }}'
-
-  genmachine:
-    dir: .decrypted
-    desc: "Generate per-node machine configs and PXE boot files"
-    vars:
-      mac:
-        sh: yq -r ".nodes.{{ .node }}.mac" inventory.yaml | sed "s/:/-/g"
-    cmds:
-      - NODE={{.node}} gomplate -d inventory=inventory.yaml -f ../templates/talos/patch.node.tmpl > talos/nodes/patch.node.{{.node}}.yaml
-      - talosctl machineconfig patch talos/controlplane.yaml --patch @talos/nodes/patch.node.{{.node}}.yaml --output talos/nodes/{{.node}}.yaml
-      - NODE={{.node}} gomplate -d inventory=inventory.yaml -f ../templates/boot/node.ipxe > talos/nodes/{{.mac}}.ipxe
-      - rsync --rsync-path "sudo rsync" talos/nodes/{{.node}}.yaml boot.{{.fqdn}}:/srv/tftp/nodes/
-      - rsync --rsync-path "sudo rsync" talos/nodes/{{.mac}}.ipxe boot.{{.fqdn}}:/srv/tftp/nodes/
+          NODE: '{{ .ITEM }}'
+      - for:
+          var: NODES
+        task: ipxe
+        vars:
+          NODE: '{{ .ITEM }}'
+  restore:
     internal: true
-
+    desc: Import Talos secrets from repository
+    status:
+      - test -f private/talos/talosconfig
+      - test -f private/talos/secrets.yaml
+    cmds:
+      - |
+        if [ -f talos/talosconfig.sops.yaml ] && [ -f talos/secrets.sops.yaml ]; then
+          sops -d talos/talosconfig.sops.yaml > private/talos/talosconfig
+          sops -d talos/secrets.sops.yaml > private/talos/secrets.yaml
+        fi
+  init:
+    internal: true
+    desc: Initialize Talos cluster secrets and tokens
+    status:
+      - test -f talos/talosconfig.sops.yaml
+      - test -f talos/secrets.sops.yaml
+    cmds:
+      - mkdir talos
+      - talosctl gen --force secrets -o private/talos/secrets.yaml
+      - |
+        talosctl gen config \
+          {{ .CLUSTER }} https://{{ .ENDPOINT }}:6443 \
+          -t talosconfig \
+          --force \
+          --with-secrets private/talos/secrets.yaml \
+          --config-patch @private/talos/patch.all.yaml \
+          --config-patch-control-plane=@private/talos/patch.cp.yaml \
+          --output-dir private/talos
+      - cp -f private/talos/talosconfig talos/talosconfig.sops.yaml
+      - sops -e -i talos/talosconfig.sops.yaml
+      - sops -e private/talos/secrets.yaml > talos/secrets.sops.yaml
+  config:
+    internal: true
+    desc: Generate full Talos cluster configuration
+    cmds:
+      - mkdir -p private/talos/nodes
+      - |
+        talosctl gen config -t controlplane,worker --force \
+          --with-secrets private/talos/secrets.yaml \
+          {{ .CLUSTER }} \
+          https://{{ .ENDPOINT }}:6443 \
+          --config-patch @private/talos/patch.all.yaml \
+          --config-patch-control-plane=@private/talos/patch.cp.yaml \
+          --output-dir private/talos
+  genmachine:
+    internal: true
+    desc: Generate per-node machine configs and PXE boot files
+    cmds:
+      - makejinja -D node={{.NODE}} -d private/inventory.yaml -i templates/talos/patch.node.partial.yaml.j2 -o private/talos/nodes/patch.node.{{.NODE}}.yaml
+      - makejinja -D node={{.NODE}} -d private/inventory.yaml -i templates/talos/node.ipxe.partial.j2 -o private/talos/nodes/{{.MAC}}.ipxe
+      - talosctl machineconfig patch private/talos/controlplane.yaml --patch @private/talos/nodes/patch.node.{{.NODE}}.yaml --output private/talos/nodes/{{.NODE}}.yaml
+  ipxe:
+    internal: true
+    desc: Send per-node configuration to iPXE server
+    vars:
+      MAC:
+        sh: yq -r ".nodes.{{ .NODE }}.mac" private/inventory.yaml | sed "s/:/-/g"
+    cmds:
+      - rsync private/talos/nodes/{{.NODE}}.yaml private/talos/nodes/{{.MAC}}.ipxe root@{{.BOOT}}:/srv/tftp/nodes/
   local:
-      dir: .decrypted
-      desc: Setup talosctl and kubectl on local machine
-      cmds:
-      - cp talos/talosconfig.yaml ../.talosconfig
-      - talosctl --talosconfig ../.talosconfig config endpoint kube.{{.fqdn}}
-      - talosctl --talosconfig ../.talosconfig config nodes kube.{{.fqdn}}
-      - TALOSCONFIG=../.talosconfig talosctl kubeconfig - -m=false > ~/.kube/{{.cluster}}.yaml
-      - KUBECONFIG=~/.kube/{{.cluster}}.yaml kubectl config rename-context admin@{{.cluster}} {{.cluster}}
-
-  cilium:
-    dir: .decrypted
-    desc: "Install Cilium with Gateway API CRDs"
+    desc: Setup talosctl and kubectl on local machine
+    cmds:
+      - talosctl --talosconfig private/talos/talosconfig config endpoint kube.{{.FQDN}}
+      - talosctl --talosconfig private/talos/talosconfig config nodes kube.{{.FQDN}}
+      - TALOSCONFIG=private/talos/talosconfig talosctl kubeconfig - -m=false > ~/.kube/{{.CLUSTER}}.yaml
+      - KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml kubectl config rename-context admin@{{.CLUSTER}} {{.CLUSTER}}
+  cni:
+    desc: Install Cilium with Gateway API CRDs
     cmds:
       - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
-      - gomplate -d inventory=inventory.yaml -f ../templates/cilium/values.yaml.tmpl | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.2 -f -
-
+      - cat private/talos/cilium.values.yaml | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.2 -f -
   bgp:
-    dir: .decrypted
-    desc: "Apply BGP configuration for Cilium"
+    desc: Apply BGP configuration for Cilium
     cmds:
-      - gomplate -d inventory=inventory.yaml -f ../templates/cilium/bgp.yaml.tmpl | kubectl apply -f -
+      - cat ./private/bgp.yaml | kubectl apply -f -

@@ -1,26 +1,28 @@
 acme:
-    issuer: issuer@example.tld
+  issuer: issuer@example.tld
 pass:
-    vaultwarden_vhost: vaultwarden.example.tld
+  vaultwarden_vhost: vaultwarden.example.tld
 wg:
-    address: ::1/128, 127.0.0.1/32
-    allowed_ips: fd00::/64, 192.168.0.0/24
-    privatekey: privatekey
-    publickey: publickey
-    endpoint: remote.example.tld:51820
+  address: ::1/128, 127.0.0.1/32
+  allowed_ips6: fd00::/64
+  allowed_ips4: 192.168.0.0/24
+  privatekey: privatekey
+  publickey: publickey
+  endpoint: remote.example.tld:51820
+  healthcheck: fd00::1
 dns:
-    ns: example.tld
-    zone: gw.example.tld
-    http2136_vhost: example.tld
-    http2136_token: http_token
-    rndc_key: rndc_key
-    ipv4_prefix: 192.168.0.
-    ipv6_prefix: 'fd00::'
-    nodes:
-        vm1: 10
-    kube:
-        - vm1
-    apps:
-        myapp: vm1
-    custom_records: |
-        @ MX 10 smtp.example.tld.
+  ns: example.tld
+  zone: gw.example.tld
+  http2136_vhost: example.tld
+  http2136_token: http_token
+  rndc_key: rndc_key
+  ipv4_prefix: 192.168.0.
+  ipv6_prefix: 'fd00::'
+  nodes:
+    vm1: 10
+  kube:
+    - vm1
+  apps:
+    myapp: vm1
+  custom_records: |
+    @ MX 10 smtp.example.tld.

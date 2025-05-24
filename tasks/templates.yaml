@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+tasks:
+  inventory:
+    desc: Decrypt inventory
+    cmds:
+      - mkdir -p private
+      - sops -d inventory.sops.yaml > private/inventory.yaml
+    internal: true
+  init:
+    desc: Initialize repository templates
+    cmds:
+      - task: inventory
+      - makejinja

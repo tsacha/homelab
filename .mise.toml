@@ -1,0 +1,12 @@
+[tools]
+"python" = "latest"
+"pipx:makejinja" = "latest"
+talosctl = "latest"
+yq = "latest"
+task = "latest"
+velero = "latest"
+kubecolor = "latest"
+age = "latest"
+flux2 = "latest"
+helm = "latest"
+# Kopia

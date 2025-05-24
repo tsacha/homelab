@@ -1,2 +1,5 @@
-.decrypted/
-.talosconfig
+inventory.yaml
+private/
+boot/
+debug/
+.task/

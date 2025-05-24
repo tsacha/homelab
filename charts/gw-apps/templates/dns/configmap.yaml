@@ -10,7 +10,6 @@ data:
         {{ .Values.dns.custom_records | nindent 8 }}
 
 {{- range $k, $v := .Values.dns.nodes }}
-        {{ $k }} A    {{ $.Values.dns.ipv4_prefix }}{{ $v }}
         {{ $k }} AAAA {{ $.Values.dns.ipv6_prefix }}{{ $v }}
 {{- end }}
 

@@ -1,0 +1,18 @@
+---
+machine:
+  network:
+    nameservers:
+      - {{ boot.dns64.ip }}
+  time:
+    disabled: false
+    servers:
+      - {{ network.ipv6.gw_wan }}
+
+cluster:
+  network:
+    cni:
+      name: none
+    podSubnets:
+      - {{ network.ipv6.pods }}
+    serviceSubnets:
+      - {{ network.ipv6.svc }}

@@ -1,9 +1,8 @@
 ---
-{{- $i := (ds "inventory") }}
 ipv6:
   enabled: true
 ipv4:
-  enabled: true
+  enabled: false
 ipam:
   mode: kubernetes
 
@@ -12,13 +11,11 @@ routingMode: native
 direct-routing-skip-unreachable: true
 auto-direct-node-routes: true
 
-ipv6NativeRoutingCIDR: {{ $i.network.ipv6.pods }}
-ipv4NativeRoutingCIDR: {{ $i.network.ipv4.pods }}
-enableIPv4Masquerade: true
+ipv6NativeRoutingCIDR: {{ network.ipv6.pods }}
 enableIPv6Masquerade: false
 
 kubeProxyReplacement: true
-k8sServiceHost: kube.{{ $i.network.fqdn }}
+k8sServiceHost: kube.{{ network.fqdn }}
 k8sServicePort: 6443
 
 securityContext:

@@ -1,0 +1,15 @@
+---
+{% set n = nodes[node] %}
+machine:
+  network:
+    hostname: {{ node }}
+    interfaces:
+      - interface: {{ n.interface }}
+        addresses:
+          - {{ n.ipv6 }}
+        routes:
+          - network: ::/0
+            gateway: {{ network.ipv6.gw }}
+  install:
+    disk: {{ n.boot_disk }}
+    wipe: true

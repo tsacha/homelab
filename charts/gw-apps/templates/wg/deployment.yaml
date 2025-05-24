@@ -6,6 +6,8 @@ metadata:
         app: wg
 spec:
     replicas: 1
+    strategy:
+      type: Recreate
     selector:
         matchLabels:
             app: wg
@@ -14,9 +16,20 @@ spec:
             labels:
                 app: wg
         spec:
+            initContainers:
+              - name: wait-for-dns
+                image: alpine:latest
+                command: ["sh", "-c", "until nslookup {{ (split ":" .Values.wg.endpoint)._0 }}; do echo waiting for DNS; sleep 2; done;"]
             containers:
                 - name: wireguard
                   image: linuxserver/wireguard
+                  livenessProbe:
+                    exec:
+                      command: ["ping6", "-c", "1", "{{ .Values.wg.healthcheck }}"]
+                    initialDelaySeconds: 3
+                    periodSeconds: 30
+                    timeoutSeconds: 1
+                    failureThreshold: 3
                   env:
                     - name: PUID
                       value: "0"

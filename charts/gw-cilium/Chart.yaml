@@ -1,5 +1,0 @@
-apiVersion: v2
-name: gw-cilium
-description: Cilium configuration for Gateway
-
-version: 1.0.0
