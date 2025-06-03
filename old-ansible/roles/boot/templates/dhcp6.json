@@ -1,0 +1,93 @@
+{% set n = nodes[inventory_hostname] %}
+{
+  "Dhcp6": {
+    "interfaces-config": {
+      "interfaces": [
+        "{{ n.interface }}"
+      ]
+    },
+    "lease-database": {
+      "type": "memfile",
+      "persist": true
+    },
+    "expired-leases-processing": {
+      "reclaim-timer-wait-time": 10,
+      "flush-reclaimed-timer-wait-time": 25,
+      "hold-reclaimed-time": 360,
+      "max-reclaim-leases": 100,
+      "max-reclaim-time": 250,
+      "unwarned-reclaim-cycles": 5
+    },
+    "preferred-lifetime": 240,
+    "valid-lifetime": 300,
+    "renew-timer": 180,
+    "rebind-timer": 240,
+    "client-classes": [
+      {
+        "name": "ipxe_script",
+        "test": "substring(option[15].hex, 2, 4) == 'iPXE'",
+        "option-data": [
+          {
+            "name": "bootfile-url",
+            "code": 59,
+            "data": "http://boot.{{ network.fqdn }}/menu.ipxe"
+          }
+        ]
+      },
+      {
+        "name": "http_client",
+        "test": "(option[61].exists) and (substring(option[16].hex, 6, 10) == 'HTTPClient')",
+        "option-data": [
+          {
+            "name": "vendor-class",
+            "csv-format": false,
+            "data": "00000000000A48545450436C69656E74" # HTTPClient
+          },
+          {
+            "name": "dns-servers",
+            "data": "{{ network.ipv6.gw_wan }}"
+          },
+          {
+            "name": "bootfile-url",
+            "data": "http://boot.{{ network.fqdn }}/snponly.x86_64.efi"
+          }
+        ]
+      },
+      {
+        "name": "pxe_client",
+        "test": "(option[61].exists) and (substring(option[16].hex, 6, 9) == 'PXEClient')",
+        "option-data": [
+          {
+            "name": "bootfile-url",
+            "data": "tftp://boot.{{ network.fqdn }}/snponly.x86_64.efi"
+          },
+          {
+            "name": "dns-servers",
+            "data": "{{ network.ipv6.gw_wan }}"
+          },
+        ]
+      }
+    ],
+    "subnet6": [
+      {
+        "id": 1,
+        "pools": [
+          {
+            "pool": "{{ network.ipv6.range | ansible.utils.ipsubnet(80, 0x100) }}",
+            "client-class": "ipxe_script",
+          },
+          {
+            "pool": "{{ network.ipv6.range | ansible.utils.ipsubnet(80, 0x101) }}",
+            "client-class": "http_client",
+          },
+          {
+            "pool": "{{ network.ipv6.range | ansible.utils.ipsubnet(80, 0x102) }}",
+            "client-class": "pxe_client",
+          }
+        ],
+        "subnet": "{{ network.ipv6.range }}",
+        "interface": "{{ n.interface }}"
+      }
+    ]
+  }
+}

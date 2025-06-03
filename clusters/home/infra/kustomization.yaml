@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - cilium.yaml
+  - ippool.sops.yaml
+  - bgp.sops.yaml
+  - cert-manager.yaml
+  - cert-manager-home.sops.yaml
+  - velero.yaml
+  - github.com/rancher/local-path-provisioner/deploy?ref=v0.0.31
+patches:
+  - patch: |-
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: local-path-config
+        namespace: local-path-storage
+      data:
+        config.json: |-
+          {
+                  "nodePathMap":[
+                  {
+                          "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
+                          "paths":["/var/mnt/data-volume"]
+                  }
+                  ]
+          }
+  - patch: |-
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: local-path
+        annotations:
+          defaultVolumeType: local
+          storageclass.kubernetes.io/is-default-class: "true"
+      parameters:
+        pathPattern: "{{ .PVC.Namespace }}/{{ .PVC.Name }}"
+  - patch: |-
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: local-path-storage
+        labels:
+          pod-security.kubernetes.io/enforce: privileged
+secretGenerator:
+  - name: cilium-values
+    namespace: kube-system
+    files:
+      - values.yaml=cilium-values.sops.yaml
+  - name: cert-manager-webhook-ovh-values
+    namespace: cert-manager
+    files:
+      - values.yaml=cert-manager-webhook-ovh-values.sops.yaml
+  - name: velero-values
+    namespace: velero
+    files:
+      - values.yaml=velero-values.sops.yaml
+generatorOptions:
+  disableNameSuffixHash: true

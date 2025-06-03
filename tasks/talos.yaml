@@ -1,9 +1,14 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
+includes:
+  templates:
+    dir: ../
+    taskfile: templates.yaml
+    internal: true
 tasks:
   gen:
-    desc: Generate full configuration for Talos
     cmds:
+      - task: templates:init
       - task: restore
       - task: init
       - task: config
@@ -21,76 +26,101 @@ tasks:
     internal: true
     desc: Import Talos secrets from repository
     status:
-      - test -f private/talos/talosconfig
-      - test -f private/talos/secrets.yaml
+      - test -f .private/talos/talosconfig
+      - test -f .private/talos/secrets.yaml
     cmds:
       - |
-        if [ -f talos/talosconfig.sops.yaml ] && [ -f talos/secrets.sops.yaml ]; then
-          sops -d talos/talosconfig.sops.yaml > private/talos/talosconfig
-          sops -d talos/secrets.sops.yaml > private/talos/secrets.yaml
+        if [ -f secrets/talosconfig.sops.yaml ] && [ -f secrets/secrets.sops.yaml ]; then
+          sops -d secrets/talosconfig.sops.yaml > .private/talos/talosconfig
+          sops -d secrets/secrets.sops.yaml > .private/talos/secrets.yaml
         fi
   init:
     internal: true
     desc: Initialize Talos cluster secrets and tokens
     status:
-      - test -f talos/talosconfig.sops.yaml
-      - test -f talos/secrets.sops.yaml
+      - test -f secrets/talosconfig.sops.yaml
+      - test -f secrets/secrets.sops.yaml
     cmds:
       - mkdir talos
-      - talosctl gen --force secrets -o private/talos/secrets.yaml
+      - talosctl gen --force secrets -o .private/talos/secrets.yaml
       - |
         talosctl gen config \
           {{ .CLUSTER }} https://{{ .ENDPOINT }}:6443 \
           -t talosconfig \
           --force \
-          --with-secrets private/talos/secrets.yaml \
-          --config-patch @private/talos/patch.all.yaml \
-          --config-patch-control-plane=@private/talos/patch.cp.yaml \
-          --output-dir private/talos
-      - cp -f private/talos/talosconfig talos/talosconfig.sops.yaml
-      - sops -e -i talos/talosconfig.sops.yaml
-      - sops -e private/talos/secrets.yaml > talos/secrets.sops.yaml
+          --with-secrets .private/talos/secrets.yaml \
+          --config-patch @.private/talos/patch.all.yaml \
+          --config-patch-control-plane=@.private/talos/patch.cp.yaml \
+          --output-dir .private/talos
+      - cp -f .private/talos/talosconfig secrets/talosconfig.sops.yaml
+      - sops -e -i secrets/talosconfig.sops.yaml
+      - sops -e .private/talos/secrets.yaml > secrets/secrets.sops.yaml
   config:
     internal: true
     desc: Generate full Talos cluster configuration
     cmds:
-      - mkdir -p private/talos/nodes
+      - mkdir -p .private/talos/nodes
       - |
         talosctl gen config -t controlplane,worker --force \
-          --with-secrets private/talos/secrets.yaml \
+          --with-secrets .private/talos/secrets.yaml \
           {{ .CLUSTER }} \
           https://{{ .ENDPOINT }}:6443 \
-          --config-patch @private/talos/patch.all.yaml \
-          --config-patch-control-plane=@private/talos/patch.cp.yaml \
-          --output-dir private/talos
+          --config-patch @.private/talos/patch.all.yaml \
+          --config-patch-control-plane=@.private/talos/patch.cp.yaml \
+          --output-dir .private/talos
   genmachine:
     internal: true
     desc: Generate per-node machine configs and PXE boot files
+    vars:
+      MAC:
+        sh: yq -r ".nodes.{{ .NODE }}.mac" .private/inventory.yaml | sed "s/:/-/g"
     cmds:
-      - makejinja -D node={{.NODE}} -d private/inventory.yaml -i templates/talos/patch.node.partial.yaml.j2 -o private/talos/nodes/patch.node.{{.NODE}}.yaml
-      - makejinja -D node={{.NODE}} -d private/inventory.yaml -i templates/talos/node.ipxe.partial.j2 -o private/talos/nodes/{{.MAC}}.ipxe
-      - talosctl machineconfig patch private/talos/controlplane.yaml --patch @private/talos/nodes/patch.node.{{.NODE}}.yaml --output private/talos/nodes/{{.NODE}}.yaml
+      - makejinja -D node={{.NODE}} -d .private/inventory.yaml -i templates/talos/patch.node.partial.yaml.j2 -o .private/talos/nodes/patch.node.{{.NODE}}.yaml
+      - makejinja -D node={{.NODE}} -d .private/inventory.yaml -i templates/talos/node.ipxe.partial.j2 -o .private/talos/nodes/{{.MAC}}.ipxe
+      - talosctl machineconfig patch .private/talos/controlplane.yaml --patch @.private/talos/nodes/patch.node.{{.NODE}}.yaml --output .private/talos/nodes/{{.NODE}}.yaml
   ipxe:
     internal: true
     desc: Send per-node configuration to iPXE server
     vars:
       MAC:
-        sh: yq -r ".nodes.{{ .NODE }}.mac" private/inventory.yaml | sed "s/:/-/g"
+        sh: yq -r ".nodes.{{ .NODE }}.mac" .private/inventory.yaml | sed "s/:/-/g"
     cmds:
-      - rsync private/talos/nodes/{{.NODE}}.yaml private/talos/nodes/{{.MAC}}.ipxe root@{{.BOOT}}:/srv/tftp/nodes/
+      - rsync .private/talos/nodes/{{.NODE}}.yaml .private/talos/nodes/{{.MAC}}.ipxe root@{{.BOOT}}:/srv/tftp/nodes/
   local:
     desc: Setup talosctl and kubectl on local machine
     cmds:
-      - talosctl --talosconfig private/talos/talosconfig config endpoint kube.{{.FQDN}}
-      - talosctl --talosconfig private/talos/talosconfig config nodes kube.{{.FQDN}}
-      - TALOSCONFIG=private/talos/talosconfig talosctl kubeconfig - -m=false > ~/.kube/{{.CLUSTER}}.yaml
+      - talosctl --talosconfig .private/talos/talosconfig config endpoint kube.{{.FQDN}}
+      - talosctl --talosconfig .private/talos/talosconfig config nodes kube.{{.FQDN}}
+      - TALOSCONFIG=.private/talos/talosconfig talosctl kubeconfig - -m=false > ~/.kube/{{.CLUSTER}}.yaml
       - KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml kubectl config rename-context admin@{{.CLUSTER}} {{.CLUSTER}}
   cni:
     desc: Install Cilium with Gateway API CRDs
     cmds:
-      - kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
-      - cat private/talos/cilium.values.yaml | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.2 -f -
+      - |
+        export KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml
+        kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+        sops -d clusters/home/infra/cilium-values.sops.yaml \
+          | yq eval-all 'select(fi == 0).spec.values + select(fi == 1)' clusters/home/infra/cilium.yaml - \
+          | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.2 -f -
   bgp:
     desc: Apply BGP configuration for Cilium
     cmds:
-      - cat ./private/bgp.yaml | kubectl apply -f -
+      - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml kubectl apply -f -
+  flux:
+    cmds:
+      - |
+        export KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml
+        export GITEA_TOKEN={{.FORGEJO_PAT}}
+        kubectl get ns flux-system || kubectl create ns flux-system
+        kubectl -n flux-system get secrets forgejo-auth || kubectl -n flux-system create secret generic forgejo-auth \
+          --from-literal=username={{.FORGEJO_USER}} \
+          --from-literal=password={{.FORGEJO_PAT}}
+
+        kubectl -n flux-system get secrets sops-age || cat ~/.config/sops/age/keys.txt | kubectl create secret generic sops-age \
+          --namespace=flux-system \
+          --from-file=age.agekey=/dev/stdin
+
+        flux install
+        pushd clusters/home/flux-system
+        kubectl apply --server-side -k .
+        popd

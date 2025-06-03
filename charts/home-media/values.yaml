@@ -1,0 +1,10 @@
+wildcard_domain: example.tld
+sync:
+  seedbox_host: seedbox.example.tld
+  seedbox_user: user
+  ssh_key: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    omgleak
+    -----END OPENSSH PRIVATE KEY-----
+gw:
+  ip: ::1

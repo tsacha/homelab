@@ -1,0 +1,27 @@
+{% set userData %}
+{% include "boot/cloud-init/user-data.yaml.j2" %}
+{% endset %}
+{% set networkConfig %}
+{% include "boot/cloud-init/network-config.yaml.j2" %}
+{% endset %}
+#cloud-config
+autoinstall:
+  updates: security
+  version: 1
+  keyboard:
+    layout: fr
+  ssh:
+    install-server: true
+  network:
+{% filter indent(width=4, first=True) %}
+{{ networkConfig }}
+{%- endfilter %}
+  user-data:
+{% filter indent(width=4, first=True) %}
+{{ userData.split('\n', 1)[1] }}
+{%- endfilter %}
+  storage:
+    layout:
+      name: direct
+      match:
+        serial: "{{ boot.disk }}"

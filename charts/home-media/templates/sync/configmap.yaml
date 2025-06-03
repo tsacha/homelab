@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rclone-config
+data:
+  rclone.conf: |
+    [seedbox]
+    type = sftp
+    host = {{ .Values.sync.seedbox_host }}
+    user = {{ .Values.sync.seedbox_user }}
+    key_file = /root/.ssh/id_ed25519
+    shell_type = unix
+    md5sum_command = md5sum
+    sha1sum_command = sha1sum

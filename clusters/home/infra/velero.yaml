@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: velero
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://vmware-tanzu.github.io/helm-charts
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: velero
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: velero
+spec:
+  interval: 5m0s
+  chart:
+    spec:
+      chart: velero
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: velero
+        namespace: flux-system
+  valuesFrom:
+    - kind: Secret
+      name: velero-values

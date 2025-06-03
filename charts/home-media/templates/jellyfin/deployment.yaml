@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    labels:
+        app: jellyfin
+    name: jellyfin
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: jellyfin
+    template:
+        metadata:
+            labels:
+                app: jellyfin
+            annotations:
+              backup.velero.io/backup-volumes: jellyfin-config
+        spec:
+            containers:
+                - image: ghcr.io/jellyfin/jellyfin:latest
+                  imagePullPolicy: Always
+                  name: jellyfin
+                  securityContext:
+                      privileged: true # for DRI
+                  volumeMounts:
+                    - name: jellyfin-config
+                      mountPath: /config
+                    - name: jellyfin-cache
+                      mountPath: /config/cache
+                    - name: jellyfin-media
+                      mountPath: /media
+                    - name: jellyfin-dri
+                      mountPath: /dev/dri
+            volumes:
+                - name: jellyfin-config
+                  persistentVolumeClaim:
+                    claimName: jellyfin-config
+                - name: jellyfin-cache
+                  persistentVolumeClaim:
+                    claimName: jellyfin-cache
+                - name: jellyfin-media
+                  hostPath:
+                    path: /var/mnt/media-volume
+                    type: Directory
+                - name: jellyfin-dri
+                  hostPath:
+                    path: /dev/dri
+                    type: Directory

@@ -1,0 +1,37 @@
+#!ipxe
+
+set menu-timeout 9000000
+set submenu-timeout ${menu-timeout}
+isset ${menu-default} || set menu-default install
+
+menu
+item install Install Talos
+item format Format Talos
+item maintenance Maintenance Talos
+item netboot Boot from netboot.xyz
+item shell Shell iPXE
+item exit  Exit
+
+choose --timeout ${menu-timeout} --default ${menu-default} target && goto ${target}
+
+:install
+chain nodes/${mac:hexhyp}.ipxe
+
+:format
+kernel /vmlinuz-${buildarch} initrd=initramfs-${buildarch}.xz slab_nomerge pti=on talos.platform=metal talos.experimental.wipe=system
+initrd /initramfs-${buildarch}.xz
+boot
+
+:maintenance
+kernel /vmlinuz-${buildarch} initrd=initramfs-${buildarch}.xz slab_nomerge pti=on talos.platform=metal
+initrd /initramfs-${buildarch}.xz
+boot
+
+:netboot
+chain --autofree http://boot.netboot.xyz/ipxe/netboot.xyz-snponly.efi
+
+:shell
+shell
+
+:exit
+exit

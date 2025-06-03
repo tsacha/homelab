@@ -1,0 +1,22 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumLoadBalancerIPPool
+metadata:
+    name: srv-ippool
+spec:
+    blocks:
+        - cidr: ENC[AES256_GCM,data:CXIYSVuJZy3SlPKFP7VFHZsadh3SSmU=,iv:xGaPuOFtO2EJbsIn5MBtgeUKy+8XWZdlL+cBk1Ce+BM=,tag:r4o80dXj+QufQjcNoOtL8g==,type:str]
+sops:
+    age:
+        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLNFZwWWt1ZWxGQjRZaVBa
+            K0tLa2d0dmtyV0x6aGdkZUFraDF2YW9CVHpFClRhN2lxaXJWc0R0WGlIU0Q4cGZw
+            ZE5XbzRaQXNncUFobGJkU2RiOThXcnMKLS0tIHdkOGlNUDlWNEV1RDNHb2Z6QTJz
+            OEMyaFBrVElYR0YxZ05UMUNRTk5PazQK5imkWnIq+zSyRoBiW5wEBSc4bgY0kzR2
+            VnkgguiWJ6DUogAE/vWeNlKWyR5VE1kEiKMrbIs7xtD0dNoVsfopkg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-06-11T17:37:54Z"
+    mac: ENC[AES256_GCM,data:v/BwQajQeeWxdB5mhhXTOuekSG5ryA/EqlQsPO2llyg5iAsxWWxhSOOGEh7ZVXdQfU6cozqMA6MxTYjlx6ZavjpdxJ7nW+cV18LgTbHHejGIXZvknIDZilUO3q9CzkzzhMZchJZdYwVKN4yXl39+FfZ9IY/ae/HL8lKw17WXdwI=,iv:WAAAn9FiwQ3448QbQHTcWd2q1irboPAeMii0Eu2IKak=,tag:C5KiyVavlxXqnGn1KKoIgA==,type:str]
+    encrypted_regex: ^(cidr)$
+    version: 3.10.2

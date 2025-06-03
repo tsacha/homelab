@@ -3,29 +3,29 @@
 version: "3"
 tasks:
   default: go-task --list
+vars:
+  FORGEJO_USER:
+    sh: yq -r '.gw.forgejo_user' .private/inventory.yaml
+  FORGEJO_PAT:
+    sh: yq -r '.gw.forgejo_pat' .private/inventory.yaml
+  NODES:
+    sh: yq -r '.nodes|to_entries[]|select(.value.talos!=false).key' .private/inventory.yaml
+  BOOT:
+    sh: yq -r ".boot.fqdn" .private/inventory.yaml
+  FQDN:
+    sh: yq -r ".network.fqdn" .private/inventory.yaml
 includes:
   templates: ./tasks/templates.yaml
   boot: ./tasks/boot.yaml
-  debug: ./tasks/debug.yaml
   gw:
     taskfile: ./tasks/gw.yaml
     vars:
       CLUSTER:
-        sh: yq -r '.gw.fqdn|sub("\\.";"-")' private/inventory.yaml
-      FORGEJO_USER:
-        sh: yq -r '.gw.forgejo_user' private/inventory.yaml
-      FORGEJO_PAT:
-        sh: yq -r '.gw.forgejo_pat' private/inventory.yaml
+        sh: yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml
   talos:
     taskfile: ./tasks/talos.yaml
     vars:
       CLUSTER:
-        sh: yq -r '.network.fqdn|sub("\\.";"-")' private/inventory.yaml
+        sh: yq -r '.network.fqdn|sub("\\.";"-")' .private/inventory.yaml
       ENDPOINT:
-        sh: yq -r '"kube."+.network.fqdn' private/inventory.yaml
-      NODES:
-        sh: yq -r '.nodes|to_entries[]|select(.value.talos!=false).key' private/inventory.yaml
-      BOOT:
-        sh: yq -r ".boot.fqdn" private/inventory.yaml
-      FQDN:
-        sh: yq -r ".network.fqdn" private/inventory.yaml
+        sh: yq -r '"kube."+.network.fqdn' .private/inventory.yaml

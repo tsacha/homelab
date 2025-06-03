@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sonarr
+  name: sonarr
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: sonarr
+ template:
+   metadata:
+       labels:
+           app: sonarr
+       annotations:
+           backup.velero.io/backup-volumes: sonarr-config
+   spec:
+       containers:
+           - image: lscr.io/linuxserver/sonarr:latest
+             env:
+              - name: PUID
+                value: "0"
+              - name: PGID
+                value: "0"
+             imagePullPolicy: Always
+             name: sonarr
+             volumeMounts:
+               - name: sonarr-config
+                 mountPath: /config
+               - name: sonarr-media
+                 mountPath: /media
+       volumes:
+           - name: sonarr-config
+             persistentVolumeClaim:
+               claimName: sonarr-config
+           - name: sonarr-media
+             hostPath:
+               path: /var/mnt/media-volume
+               type: Directory

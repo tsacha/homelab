@@ -1,0 +1,18 @@
+ipv6NativeRoutingCIDR: ENC[AES256_GCM,data:27tZYP9xQ2ligX0dNqoRBtTsmNmDE4k=,iv:ToXxNbQ0FC3wlja0Srw2VmwSUq6ZPg9qOt8q4cbABxU=,tag:352dEFytsF5ctezpz+7/Pw==,type:str]
+k8sServiceHost: ENC[AES256_GCM,data:HTeNyedwbBzMzSaxFBvHI/Ap7wRrtY0=,iv:JzAvHUMnATwte1sf0IaKy/2Opfq9jBmZ0jtyCKmi9HE=,tag:SPVAu4KmY/xBGlLArRGWjw==,type:str]
+k8sServicePort: 6443
+sops:
+    age:
+        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBjeVRzb1hjelBLQ2RkcGN1
+            QXlHbGl1QjJiaTdZY0NpeW5pM1loWHNMUXc4Ck42R3hkQktvMWozMnVKZzNHV2NF
+            SjZ5NFppbms3eHFsSG1lbnBCYUdyOWMKLS0tIEk4K0dkMU03YnlPS0RMTlRJSmp1
+            dGNROHlqaVUzOEN3NC9QYThyaHhuUkEKXSEwv5hjyGyUuLXslKT0rDbEM9vxWPb+
+            O1TNya4vTwRXxGD0uZn8fx2BHfqMynTAJDBlz0OApzrDYn9iSvZK9w==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-06-10T21:50:23Z"
+    mac: ENC[AES256_GCM,data:KU/KoSiGwAsKGmx0uS4+6Hkw47pFn0MLD8Ca23QLF/03mkU5SRzLMQL4Q+yQmVN3nq+S4WtQ9m9Zv2djTXDIoWGkQ1/zz27KiLJw5PSxz70vfpDicom9TYfH0tTXY4X6PBi4V/R2sZuYhXDK+KrQAqnT1rGrCSQKSW3Yhev0hko=,iv:BTZxVFY2AACRU48P4ez/cBBJgJdzSzkBTuHclOPvOCY=,tag:VHsZ3gbDBnOnwrQiuGNXZQ==,type:str]
+    encrypted_regex: ^(ipv6NativeRoutingCIDR|k8sServiceHost)$
+    version: 3.10.2

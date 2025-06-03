@@ -27,6 +27,6 @@ tasks:
           --from-file=age.agekey=/dev/stdin
 
         flux install
-        pushd gw/flux-system
+        pushd clusters/gw/flux-system
         kubectl apply --server-side -k .
         popd

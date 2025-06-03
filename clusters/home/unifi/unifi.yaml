@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unifi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: unifi-app-pvc
+  namespace: unifi
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-network-application
+  namespace: unifi
+  labels:
+    app: unifi-network-application
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-network-application
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: unifi-network-application
+    spec:
+      containers:
+        - name: unifi-network-application
+          image: lscr.io/linuxserver/unifi-network-application:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: unifi-secrets
+                  key: mongodb-user
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: unifi-secrets
+                  key: mongodb-password
+            - name: MONGO_HOST
+              value: unifi-db
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_DBNAME
+              value: unifi
+            - name: MONGO_AUTHSOURCE
+              value: admin
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: unifi-app-pvc

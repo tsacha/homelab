@@ -1,5 +1,5 @@
 inventory.yaml
-private/
-boot/
-debug/
-.task/
+/.private
+/boot
+/debug
+/.task

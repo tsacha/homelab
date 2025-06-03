@@ -1,8 +1,8 @@
 [makejinja]
 inputs = ["./templates"]
-output = "./private"
+output = "./.private"
 exclude_patterns = ["*.partial*.j2"]
-data = ["./private/inventory.yaml"]
+data = ["./.private/inventory.yaml"]
 jinja_suffix = ".j2"
 copy_metadata = true
 force = true

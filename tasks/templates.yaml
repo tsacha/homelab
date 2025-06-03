@@ -4,8 +4,9 @@ tasks:
   inventory:
     desc: Decrypt inventory
     cmds:
-      - mkdir -p private
-      - sops -d inventory.sops.yaml > private/inventory.yaml
+      - rm -Rf .private/
+      - mkdir -p .private
+      - sops -d secrets/inventory.sops.yaml > .private/inventory.yaml
     internal: true
   init:
     desc: Initialize repository templates
