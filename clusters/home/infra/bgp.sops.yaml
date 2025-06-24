@@ -10,6 +10,11 @@ spec:
         - name: to-router
           localASN: ENC[AES256_GCM,data:8JU8EKA=,iv:H5Au+mqHadhCN2CO2wiUSY+2nCB9VwOc3Wi5fMm20jo=,tag:9qj8wT/yX6gA2ZOx4j53Vg==,type:int]
           peers:
+            - name: router4
+              peerASN: ENC[AES256_GCM,data:eZnoDug=,iv:VYPZK7cBxlcYGOYfz2gKVVRnyS8UF+3iGbmYb83Qqbw=,tag:IdpnBFYMbz+V0Lua1+KXqw==,type:int]
+              peerAddress: ENC[AES256_GCM,data:YY71y+dECzhCIw==,iv:u2qKlWI97YPEmxbbhBE88xjOSjh4h6PddpXr9LqUw6M=,tag:x+syr7GoFDkUb0XD3h25YA==,type:str]
+              peerConfigRef:
+                name: cilium-peer
             - name: router6
               peerASN: ENC[AES256_GCM,data:eZnoDug=,iv:VYPZK7cBxlcYGOYfz2gKVVRnyS8UF+3iGbmYb83Qqbw=,tag:IdpnBFYMbz+V0Lua1+KXqw==,type:int]
               peerAddress: ENC[AES256_GCM,data:jtNUarfAzuH/TiQN1PDWNP5eFRVn,iv:qKPTsN87qD/hFpO/CZGi3XvVq++w72xeJmw/DP2FKEg=,tag:ZH85TNVah/dl8KMkXeTqVA==,type:str]
@@ -26,8 +31,8 @@ sops:
             aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
             X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-10T19:55:51Z"
-    mac: ENC[AES256_GCM,data:b7wZ9lqXDlw+O3OxzBzIpS2bihdLUlc50lz3upzLcCylDYYl3DEdyEgr42bii5WbkCwQZsLritcW1CBWDoNC87OCxr1d//NcwFlxLJ3q+HWNoiIHg1ZIqXIEEAr+SaQTHvHP3vPSJFhXyw382LeqtYR/VjwzQC5j1GS+mJ/kRG8=,iv:bHWn5RC8ljDJAGusIGV0H80qtoJX4m772aqq0LZ1b4U=,tag:iBcUgObTeqYzGRd2vW3FZw==,type:str]
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
     encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
     version: 3.10.2
 ---
@@ -50,8 +55,8 @@ sops:
             aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
             X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-10T19:55:51Z"
-    mac: ENC[AES256_GCM,data:b7wZ9lqXDlw+O3OxzBzIpS2bihdLUlc50lz3upzLcCylDYYl3DEdyEgr42bii5WbkCwQZsLritcW1CBWDoNC87OCxr1d//NcwFlxLJ3q+HWNoiIHg1ZIqXIEEAr+SaQTHvHP3vPSJFhXyw382LeqtYR/VjwzQC5j1GS+mJ/kRG8=,iv:bHWn5RC8ljDJAGusIGV0H80qtoJX4m772aqq0LZ1b4U=,tag:iBcUgObTeqYzGRd2vW3FZw==,type:str]
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
     encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
     version: 3.10.2
 ---
@@ -67,6 +72,11 @@ spec:
           advertisements:
             matchLabels:
                 advertise: bgp
+        - afi: ipv4
+          safi: unicast
+          advertisements:
+            matchLabels:
+                advertise: bgp
 sops:
     age:
         - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
@@ -78,8 +88,8 @@ sops:
             aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
             X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-10T19:55:51Z"
-    mac: ENC[AES256_GCM,data:b7wZ9lqXDlw+O3OxzBzIpS2bihdLUlc50lz3upzLcCylDYYl3DEdyEgr42bii5WbkCwQZsLritcW1CBWDoNC87OCxr1d//NcwFlxLJ3q+HWNoiIHg1ZIqXIEEAr+SaQTHvHP3vPSJFhXyw382LeqtYR/VjwzQC5j1GS+mJ/kRG8=,iv:bHWn5RC8ljDJAGusIGV0H80qtoJX4m772aqq0LZ1b4U=,tag:iBcUgObTeqYzGRd2vW3FZw==,type:str]
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
     encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
     version: 3.10.2
 ---
@@ -113,7 +123,7 @@ sops:
             aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
             X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-10T19:55:51Z"
-    mac: ENC[AES256_GCM,data:b7wZ9lqXDlw+O3OxzBzIpS2bihdLUlc50lz3upzLcCylDYYl3DEdyEgr42bii5WbkCwQZsLritcW1CBWDoNC87OCxr1d//NcwFlxLJ3q+HWNoiIHg1ZIqXIEEAr+SaQTHvHP3vPSJFhXyw382LeqtYR/VjwzQC5j1GS+mJ/kRG8=,iv:bHWn5RC8ljDJAGusIGV0H80qtoJX4m772aqq0LZ1b4U=,tag:iBcUgObTeqYzGRd2vW3FZw==,type:str]
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
     encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
     version: 3.10.2

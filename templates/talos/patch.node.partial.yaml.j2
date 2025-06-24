@@ -7,9 +7,12 @@ machine:
       - interface: {{ n.interface }}
         addresses:
           - {{ n.ipv6 }}
+          - {{ n.ipv4 }}
         routes:
           - network: ::/0
             gateway: {{ network.ipv6.gw }}
+          - network: 0.0.0.0/0
+            gateway: {{ network.ipv4.gw }}
   install:
     disk: {{ n.boot_disk }}
     wipe: true

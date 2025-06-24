@@ -1,5 +1,20 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
+vars:
+  CLUSTER:
+    sh: yq -r '.network.fqdn|sub("\\.";"-")' .private/inventory.yaml || /bin/true
+  ENDPOINT:
+    sh: yq -r '"kube."+.network.fqdn' .private/inventory.yaml || /bin/true
+  FORGEJO_USER:
+    sh: yq -r '.gw.forgejo_user' .private/inventory.yaml || /bin/true
+  FORGEJO_PAT:
+    sh: yq -r '.gw.forgejo_pat' .private/inventory.yaml || /bin/true
+  NODES:
+    sh: yq -r '.nodes|to_entries[]|select(.value.talos!=false).key' .private/inventory.yaml || /bin/true
+  BOOT:
+    sh: yq -r ".boot.fqdn" .private/inventory.yaml || /bin/true
+  FQDN:
+    sh: yq -r ".network.fqdn" .private/inventory.yaml || /bin/true
 includes:
   templates:
     dir: ../
@@ -101,7 +116,7 @@ tasks:
         kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
         sops -d clusters/home/infra/cilium-values.sops.yaml \
           | yq eval-all 'select(fi == 0).spec.values + select(fi == 1)' clusters/home/infra/cilium.yaml - \
-          | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.2 -f -
+          | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.3 -f -
   bgp:
     desc: Apply BGP configuration for Cilium
     cmds:

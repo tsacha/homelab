@@ -1,5 +1,12 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
+vars:
+  CLUSTER:
+    sh: yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml || /bin/true
+  FORGEJO_USER:
+    sh: yq -r '.gw.forgejo_user' .private/inventory.yaml || /bin/true
+  FORGEJO_PAT:
+    sh: yq -r '.gw.forgejo_pat' .private/inventory.yaml || /bin/true
 tasks:
   push:
     cmds:

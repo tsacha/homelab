@@ -21,7 +21,7 @@ spec:
     spec:
       chart: cilium
       reconcileStrategy: ChartVersion
-      version: 1.18.0-pre.2
+      version: 1.18.0-pre.3
       sourceRef:
         kind: HelmRepository
         name: cilium
@@ -30,14 +30,17 @@ spec:
     ipv6:
       enabled: true
     ipv4:
-      enabled: false
+      enabled: true
+    kubeProxyReplacement: true
     ipam:
-      mode: kubernetes
+      mode: cluster-pool
     routingMode: native
     direct-routing-skip-unreachable: true
     auto-direct-node-routes: true
+    enableIPv4Masquerade: true
     enableIPv6Masquerade: false
-    kubeProxyReplacement: true
+    bpf:
+      masquerade: true
     bgpControlPlane:
       enabled: true
     securityContext:

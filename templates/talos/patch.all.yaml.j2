@@ -2,7 +2,8 @@
 machine:
   network:
     nameservers:
-      - {{ boot.dns64.ip }}
+      - {{ network.ipv6.gw_wan }}
+      - {{ network.ipv4.gw }}
   time:
     disabled: false
     servers:
@@ -14,7 +15,9 @@ cluster:
       name: none
     podSubnets:
       - {{ network.ipv6.pods }}
+      - {{ network.ipv4.pods }}
     serviceSubnets:
       - {{ network.ipv6.svc }}
+      - {{ network.ipv4.svc }}
   discovery:
     enabled: false
