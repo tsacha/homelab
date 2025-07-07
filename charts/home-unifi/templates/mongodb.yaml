@@ -6,9 +6,9 @@ metadata:
   namespace: unifi
 data:
   init-mongodb.js: |
-    use admin;
-    db.auth(process.env.MONGODB_INITDB_ROOT_USERNAME, process.env.MONGODB_INITDB_ROOT_PASSWORD);
-    db.createUser({
+    var admin = db.getSiblingDB('admin');
+    admin.auth(process.env.MONGODB_INITDB_ROOT_USERNAME, process.env.MONGODB_INITDB_ROOT_PASSWORD);
+    admin.createUser({
       user: process.env.MONGODB_USER,
       pwd: process.env.MONGODB_PASSWORD,
       roles: [

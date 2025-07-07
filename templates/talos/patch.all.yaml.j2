@@ -9,6 +9,7 @@ machine:
     servers:
       - {{ network.ipv6.gw_wan }}
 
+
 cluster:
   network:
     cni:
@@ -21,3 +22,6 @@ cluster:
       - {{ network.ipv4.svc }}
   discovery:
     enabled: false
+  controllerManager:
+      extraArgs:
+          allocate-node-cidrs: false

@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-app
+  namespace: unifi
+  annotations:
+    lbipam.cilium.io/ips: {{ .Values.lb.ip }}
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack # No IPv6 on Unifi APs…
+  selector:
+    app: unifi-network-application
+  ports:
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
+      name: api
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: intercom

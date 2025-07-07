@@ -1,0 +1,9 @@
+wildcard_domain: example.tld
+gw:
+  ip: ::1
+lb:
+  ip: ::2
+mongodb:
+  root_password: passwd
+  user: unifi
+  password: passwd
