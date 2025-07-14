@@ -1,8 +1,0 @@
-[Unit]
-Description=Mount for /mnt/seedbox
-
-[Mount]
-Type=rclone
-What=seedbox:{{ seedbox.home }}
-Where=/mnt/seedbox
-Options=rw,_netdev,allow_other,uid=1000,gid=1000,args2env,config=/opt/.rclone

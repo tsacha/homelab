@@ -1,8 +1,0 @@
-[seedbox]
-type = sftp
-host = {{ seedbox.host }}
-user = {{ seedbox.user }}
-key_file = /root/.ssh/id_ed25519
-shell_type = unix
-md5sum_command = md5sum
-sha1sum_command = sha1sum

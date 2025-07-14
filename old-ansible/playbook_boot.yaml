@@ -1,5 +1,0 @@
----
-- hosts: boot_server
-  roles:
-    - network
-    - boot
