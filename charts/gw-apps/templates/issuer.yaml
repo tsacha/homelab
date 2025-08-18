@@ -14,6 +14,7 @@ spec:
                     parentRefs:
                         - name: gw-apps
                           kind: Gateway
+                          sectionName: http
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
@@ -31,3 +32,4 @@ spec:
                     parentRefs:
                         - name: gw-apps
                           kind: Gateway
+                          sectionName: http

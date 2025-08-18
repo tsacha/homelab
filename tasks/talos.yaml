@@ -116,7 +116,7 @@ tasks:
         kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
         sops -d clusters/home/infra/cilium-values.sops.yaml \
           | yq eval-all 'select(fi == 0).spec.values + select(fi == 1)' clusters/home/infra/cilium.yaml - \
-          | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.0-pre.3 -f -
+          | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.1 -f -
   bgp:
     desc: Apply BGP configuration for Cilium
     cmds:
