@@ -19,8 +19,15 @@ spec:
     spec:
       containers:
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:latest
+          image: ghcr.io/almottier/prowlarr-ygg:latest
           imagePullPolicy: Always
+          env:
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
+            - name: TZ
+              value: Etc/UTC
           ports:
             - containerPort: 9696
           volumeMounts:
