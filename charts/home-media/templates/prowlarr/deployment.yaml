@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: prowlarr
-          image: ghcr.io/almottier/prowlarr-ygg:latest
+          image: lscr.io/linuxserver/prowlarr:latest
           imagePullPolicy: Always
           env:
             - name: PUID
