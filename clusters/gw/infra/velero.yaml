@@ -30,6 +30,11 @@ spec:
         kind: HelmRepository
         name: velero
         namespace: flux-system
+  values:
+    kubectl:
+      image:
+        repository: docker.io/bitnami/kubectl
+        tag: latest
   valuesFrom:
     - kind: Secret
       name: velero-values
