@@ -1,40 +1,42 @@
-configVersion: 0.0.1
+configVersion: 0.0.2
 groupName: acme-ovh
 issuers:
-  - name: le-prod
-    create: true
-    kind: ClusterIssuer
-    namespace: cert-manager
-    acmeServerUrl: https://acme-v02.api.letsencrypt.org/directory
-    email: ENC[AES256_GCM,data:OMK/N8NnyZjvdG0uLzItThPMPA==,iv:fDDsIeaeAGPyO22AKqfgRu91mr5xsFeL/J49Jkq4L2M=,tag:XRG0U1arNK/74N1ccBGNXA==,type:str]
-    ovhEndpointName: ENC[AES256_GCM,data:STCstDAs,iv:5pKQInMGDu0NtJMZInefNQ6lLN7x5OkGTon0UjxHZV8=,tag:DaXR96XnoyTAw6RDXWHLeA==,type:str]
-    ovhAuthentication:
-      applicationKey: ENC[AES256_GCM,data:w0eNd5c9yLVYc2KXJOGPWg==,iv:fpAppjncmQ+Ri4NT8bHvEJQT/1LqW/qYdND5JbtSrqg=,tag:Lq0VAFTUCZeg8Qc4SWV7ew==,type:str]
-      applicationSecret: ENC[AES256_GCM,data:LcoWXLRWmQ4j76F4l8lwCV4KibZN64dPuInnMiQnS10=,iv:EGcLZ/KZiPT4PDro3EYkThMeGWQLCIdW1AdHViKjlMY=,tag:C1wggv0aXTsix4c6woCt1Q==,type:str]
-      consumerKey: ENC[AES256_GCM,data:EnPNOqxRK2ssVwaqxM1bqDz1iyQ+DwG9wVQ2rXmS6As=,iv:Bvgff2du+1jvJje6o9TCAcYV6dIDalqOGdHKjJumf+M=,tag:uhJSqV4kdj/07UbEI6foHA==,type:str]
-  - name: le-staging
-    create: true
-    kind: ClusterIssuer
-    namespace: cert-manager
-    acmeServerUrl: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: ENC[AES256_GCM,data:OMK/N8NnyZjvdG0uLzItThPMPA==,iv:fDDsIeaeAGPyO22AKqfgRu91mr5xsFeL/J49Jkq4L2M=,tag:XRG0U1arNK/74N1ccBGNXA==,type:str]
-    ovhEndpointName: ENC[AES256_GCM,data:STCstDAs,iv:5pKQInMGDu0NtJMZInefNQ6lLN7x5OkGTon0UjxHZV8=,tag:DaXR96XnoyTAw6RDXWHLeA==,type:str]
-    ovhAuthentication:
-      applicationKey: ENC[AES256_GCM,data:w0eNd5c9yLVYc2KXJOGPWg==,iv:fpAppjncmQ+Ri4NT8bHvEJQT/1LqW/qYdND5JbtSrqg=,tag:Lq0VAFTUCZeg8Qc4SWV7ew==,type:str]
-      applicationSecret: ENC[AES256_GCM,data:LcoWXLRWmQ4j76F4l8lwCV4KibZN64dPuInnMiQnS10=,iv:EGcLZ/KZiPT4PDro3EYkThMeGWQLCIdW1AdHViKjlMY=,tag:C1wggv0aXTsix4c6woCt1Q==,type:str]
-      consumerKey: ENC[AES256_GCM,data:EnPNOqxRK2ssVwaqxM1bqDz1iyQ+DwG9wVQ2rXmS6As=,iv:Bvgff2du+1jvJje6o9TCAcYV6dIDalqOGdHKjJumf+M=,tag:uhJSqV4kdj/07UbEI6foHA==,type:str]
+    - name: le-prod
+      create: true
+      kind: ClusterIssuer
+      namespace: cert-manager
+      acmeServerUrl: https://acme-v02.api.letsencrypt.org/directory
+      email: ENC[AES256_GCM,data:OMK/N8NnyZjvdG0uLzItThPMPA==,iv:fDDsIeaeAGPyO22AKqfgRu91mr5xsFeL/J49Jkq4L2M=,tag:XRG0U1arNK/74N1ccBGNXA==,type:str]
+      ovhEndpointName: ENC[AES256_GCM,data:STCstDAs,iv:5pKQInMGDu0NtJMZInefNQ6lLN7x5OkGTon0UjxHZV8=,tag:DaXR96XnoyTAw6RDXWHLeA==,type:str]
+      ovhAuthenticationMethod: ENC[AES256_GCM,data:TOhu75ssdn7ojYw=,iv:S85kszfopM8jH6EDTkJFQGLW+XG2Zv1i1NA8zJg0E6Q=,tag:Gp++kyHlqT0BBPlToY2z+A==,type:str]
+      ovhAuthentication:
+        applicationKey: ENC[AES256_GCM,data:w0eNd5c9yLVYc2KXJOGPWg==,iv:fpAppjncmQ+Ri4NT8bHvEJQT/1LqW/qYdND5JbtSrqg=,tag:Lq0VAFTUCZeg8Qc4SWV7ew==,type:str]
+        applicationSecret: ENC[AES256_GCM,data:LcoWXLRWmQ4j76F4l8lwCV4KibZN64dPuInnMiQnS10=,iv:EGcLZ/KZiPT4PDro3EYkThMeGWQLCIdW1AdHViKjlMY=,tag:C1wggv0aXTsix4c6woCt1Q==,type:str]
+        applicationConsumerKey: ENC[AES256_GCM,data:sWwPXGL6cHYJUkFZ31uox5CwL8R5mCwsBefOroExCNc=,iv:jSMl2JQHBvcIWE/ybosfc5iF0CSW1GD0NzD+m7Ey524=,tag:Pdg15dg2et6idVpopsTwpQ==,type:str]
+    - name: le-staging
+      create: true
+      kind: ClusterIssuer
+      namespace: cert-manager
+      acmeServerUrl: https://acme-staging-v02.api.letsencrypt.org/directory
+      email: ENC[AES256_GCM,data:OMK/N8NnyZjvdG0uLzItThPMPA==,iv:fDDsIeaeAGPyO22AKqfgRu91mr5xsFeL/J49Jkq4L2M=,tag:XRG0U1arNK/74N1ccBGNXA==,type:str]
+      ovhEndpointName: ENC[AES256_GCM,data:STCstDAs,iv:5pKQInMGDu0NtJMZInefNQ6lLN7x5OkGTon0UjxHZV8=,tag:DaXR96XnoyTAw6RDXWHLeA==,type:str]
+      ovhAuthenticationMethod: ENC[AES256_GCM,data:D2irpuE3DZyt1eU=,iv:ZxoMo3GJfp2+5a+wzrYTjsa0acAXqrms6RkGaWC91rs=,tag:ZwO0axLdj1XSG59vW8ucmA==,type:str]
+      ovhAuthentication:
+        applicationKey: ENC[AES256_GCM,data:w0eNd5c9yLVYc2KXJOGPWg==,iv:fpAppjncmQ+Ri4NT8bHvEJQT/1LqW/qYdND5JbtSrqg=,tag:Lq0VAFTUCZeg8Qc4SWV7ew==,type:str]
+        applicationSecret: ENC[AES256_GCM,data:LcoWXLRWmQ4j76F4l8lwCV4KibZN64dPuInnMiQnS10=,iv:EGcLZ/KZiPT4PDro3EYkThMeGWQLCIdW1AdHViKjlMY=,tag:C1wggv0aXTsix4c6woCt1Q==,type:str]
+        consumerKey: ENC[AES256_GCM,data:EnPNOqxRK2ssVwaqxM1bqDz1iyQ+DwG9wVQ2rXmS6As=,iv:Bvgff2du+1jvJje6o9TCAcYV6dIDalqOGdHKjJumf+M=,tag:uhJSqV4kdj/07UbEI6foHA==,type:str]
 sops:
-  age:
-    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVQUkzR285ekF4OWlNZm9v
-        dU04dGZoRTJsZGhDQy9sMnoza05jOHVYa1ZZCmp1T1ZTZzV5Smw4TE5KcHBtMjdC
-        OUZQaGNzaUZPZHVyWEdha2tCOEJVdjAKLS0tIDB1RCtqRlNmUms0TUVkditnSFV2
-        WWVPMUx5T1dRR3dvY2FKVnppenJJSmsKXWZd8Edhl1/yzxa3qkIxaPTIu5wctO6R
-        yGtAdy5cW7cDR1IT8rXTtZ5iYkIITyhaxhPeqd3va0R5g0nzi+fL4Q==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-06-17T22:15:06Z"
-  mac: ENC[AES256_GCM,data:fnGUWmp0j0YW/MOFlyFmNYK5hUMxpz+ir2kfaxhhXK2qmaEG4ba112TV6MH+Ds0+3PrysHz4IzIIGvqdrGrddxx4iuMhTxELs1vOWU/dTtiA8iliTJgEy5OEYIFhN3mB9RrTkHYcHNPKdSweTjfe3ew69g2ZVYcO5JpIIZ9FRKM=,iv:SQGfnN8tUtC3uplk62V1uyuu+KNsnXZN4W4WOo7SgSk=,tag:FTIvlkmL2++GTTTKgF0Rgw==,type:str]
-  encrypted_regex: ^(ovh.+|email)$
-  version: 3.10.2
+    age:
+        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVQUkzR285ekF4OWlNZm9v
+            dU04dGZoRTJsZGhDQy9sMnoza05jOHVYa1ZZCmp1T1ZTZzV5Smw4TE5KcHBtMjdC
+            OUZQaGNzaUZPZHVyWEdha2tCOEJVdjAKLS0tIDB1RCtqRlNmUms0TUVkditnSFV2
+            WWVPMUx5T1dRR3dvY2FKVnppenJJSmsKXWZd8Edhl1/yzxa3qkIxaPTIu5wctO6R
+            yGtAdy5cW7cDR1IT8rXTtZ5iYkIITyhaxhPeqd3va0R5g0nzi+fL4Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-10-11T17:44:59Z"
+    mac: ENC[AES256_GCM,data:Nf34mpf5wQCKDnFk63YDtq/k9d1eGs5sVuTeQcW4i8nHWhE7v83fjRN0hdm+N95KISWlMAR+Z9d5eK7yRWinZO2bQIHk5rATU9RbImxGbwBNd3kaM9cnwDKrtx7X8VaKThmgyIet8QAF3+C2HiPgYGtWFJLYUSvNMYc+bG3AhTY=,iv:iY8O7GF8/aQfttJe5n1VIgx3ePicRDXQ3aoRPu/gPBQ=,tag:iyNgJevHecdN1wlTOQyRbQ==,type:str]
+    encrypted_regex: ^(ovh.+|email)$
+    version: 3.11.0
