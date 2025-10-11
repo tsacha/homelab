@@ -1,23 +1,23 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-    name: srv-ippool
+  name: srv-ippool
 spec:
-    blocks:
-        - cidr: ENC[AES256_GCM,data:CXIYSVuJZy3SlPKFP7VFHZsadh3SSmU=,iv:xGaPuOFtO2EJbsIn5MBtgeUKy+8XWZdlL+cBk1Ce+BM=,tag:r4o80dXj+QufQjcNoOtL8g==,type:str]
-        - cidr: ENC[AES256_GCM,data:CJ1OCTyXjyWJguoF9g==,iv:QLSOvevO5sEFEMSgOLfKHqvxeSYsM1e51HJCnsMwUUs=,tag:/eQ/JJNArps/eCpbcG4dqg==,type:str]
+  blocks:
+    - cidr: ENC[AES256_GCM,data:CXIYSVuJZy3SlPKFP7VFHZsadh3SSmU=,iv:xGaPuOFtO2EJbsIn5MBtgeUKy+8XWZdlL+cBk1Ce+BM=,tag:r4o80dXj+QufQjcNoOtL8g==,type:str]
+    - cidr: ENC[AES256_GCM,data:CJ1OCTyXjyWJguoF9g==,iv:QLSOvevO5sEFEMSgOLfKHqvxeSYsM1e51HJCnsMwUUs=,tag:/eQ/JJNArps/eCpbcG4dqg==,type:str]
 sops:
-    age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLNFZwWWt1ZWxGQjRZaVBa
-            K0tLa2d0dmtyV0x6aGdkZUFraDF2YW9CVHpFClRhN2lxaXJWc0R0WGlIU0Q4cGZw
-            ZE5XbzRaQXNncUFobGJkU2RiOThXcnMKLS0tIHdkOGlNUDlWNEV1RDNHb2Z6QTJz
-            OEMyaFBrVElYR0YxZ05UMUNRTk5PazQK5imkWnIq+zSyRoBiW5wEBSc4bgY0kzR2
-            VnkgguiWJ6DUogAE/vWeNlKWyR5VE1kEiKMrbIs7xtD0dNoVsfopkg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-26T22:06:58Z"
-    mac: ENC[AES256_GCM,data:KPXutuVLxF66QyoZIz5Mwlj0djD6ygrA3ilqqx8wf89WZxz7mhpVFLbUh0DZXpG8Lt2WcxgJwdNHD1C2bHxAytxWNfdCN/95I2ONYTj0upeKN7bZcyx4CmdUPuzm3kECY0W3sJkJ8CDgIlEkOgl0VI9Dz2jcut1lX33MinfIpYw=,iv:xJL5366EC54eBzrixVT8CgXG1Fx/3oyONgE16SCKny4=,tag:+0pkmYTEy3PpKJVag853wg==,type:str]
-    encrypted_regex: ^(cidr)$
-    version: 3.10.2
+  age:
+    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLNFZwWWt1ZWxGQjRZaVBa
+        K0tLa2d0dmtyV0x6aGdkZUFraDF2YW9CVHpFClRhN2lxaXJWc0R0WGlIU0Q4cGZw
+        ZE5XbzRaQXNncUFobGJkU2RiOThXcnMKLS0tIHdkOGlNUDlWNEV1RDNHb2Z6QTJz
+        OEMyaFBrVElYR0YxZ05UMUNRTk5PazQK5imkWnIq+zSyRoBiW5wEBSc4bgY0kzR2
+        VnkgguiWJ6DUogAE/vWeNlKWyR5VE1kEiKMrbIs7xtD0dNoVsfopkg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-06-26T22:06:58Z"
+  mac: ENC[AES256_GCM,data:KPXutuVLxF66QyoZIz5Mwlj0djD6ygrA3ilqqx8wf89WZxz7mhpVFLbUh0DZXpG8Lt2WcxgJwdNHD1C2bHxAytxWNfdCN/95I2ONYTj0upeKN7bZcyx4CmdUPuzm3kECY0W3sJkJ8CDgIlEkOgl0VI9Dz2jcut1lX33MinfIpYw=,iv:xJL5366EC54eBzrixVT8CgXG1Fx/3oyONgE16SCKny4=,tag:+0pkmYTEy3PpKJVag853wg==,type:str]
+  encrypted_regex: ^(cidr)$
+  version: 3.10.2

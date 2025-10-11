@@ -1,21 +1,21 @@
 k8sServiceHost: ENC[AES256_GCM,data:ErwXcNScBwsCgfoy0Qaqeg==,iv:ZTSzJl8d2Bz6d6N8NKRPqVW2R22NJ9FHnSV7hWGH52Y=,tag:CnbgCR5rrofcvFd+TLB/jA==,type:str]
 k8sServicePort: ENC[AES256_GCM,data:lj6feA==,iv:xvTj+8z6rpzDJb8JVobgRMwIE47egt6DOmQEsLBxle4=,tag:WoiP6m6bl7n8TPYADTU1mA==,type:int]
 ipam:
-    operator:
-        clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:WYQBP3OQkHwf8lr3,iv:/J3tSJ7E5S9odCkqjYEPAGjXOPSySZUDobHUvuMRydo=,tag:J0sfKzIClURmfXFpTVU1AA==,type:str]
-        clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:94qZS0xj2uDpA6zsgYBVoPRQXg==,iv:kzr2JNs6pKAnArWxJkYOgITb1yvLumrEH13CLyISL/s=,tag:W3jABKnyxBJyNxiKbtN0EQ==,type:str]
+  operator:
+    clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:WYQBP3OQkHwf8lr3,iv:/J3tSJ7E5S9odCkqjYEPAGjXOPSySZUDobHUvuMRydo=,tag:J0sfKzIClURmfXFpTVU1AA==,type:str]
+    clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:94qZS0xj2uDpA6zsgYBVoPRQXg==,iv:kzr2JNs6pKAnArWxJkYOgITb1yvLumrEH13CLyISL/s=,tag:W3jABKnyxBJyNxiKbtN0EQ==,type:str]
 sops:
-    age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRRkwxMVc5c2dsU2w0bGdJ
-            RE1HRmlTRkxmU0IrZnpCVTNyVzhFVmhNRkNRCmpHOUQ3Rm9LanMweENJQnMyMUJi
-            SnBUb2RLT3RxMlI4akFGRWpPdDBhZGsKLS0tIHFrZUZQb2lHbjhJRjBuY1JtUG5W
-            QVVQM29uRWx3L1VhbmtaOUZpdm8zRzAKRE6+nGRMK9F2pgPBiq8Fiyvb8sQCvN0j
-            kCF4sQJT4gEiRfT6GMJiLe8ZhatfJKF+K4zW9zfZRTNRvrfRg7mVgg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-05-21T19:14:06Z"
-    mac: ENC[AES256_GCM,data:otBMf0Wh7ZuoFLsAzPz/IxlgkTYSMe/Wez/UzEmMfkr8ePF+VxRoIPxEiPcRQLuGNSAtxZrKvo4/Z+Zn1y2zbOjsoS4PYKkdZiTJUuXOyzzoWvK3m3LV1vqHoKvN0aqHQozaabvHuz1TqOn4bv3ldISCYdzKwwoPwbFjXpmUIKw=,iv:YoelHS6h8sYmL3S1ewHSs88D0RSCD0tPVtAhO3/0reI=,tag:VoZ8vDEJHV2rF6HhzlKfjA==,type:str]
-    unencrypted_suffix: _unencrypted
-    version: 3.10.2
+  age:
+    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRRkwxMVc5c2dsU2w0bGdJ
+        RE1HRmlTRkxmU0IrZnpCVTNyVzhFVmhNRkNRCmpHOUQ3Rm9LanMweENJQnMyMUJi
+        SnBUb2RLT3RxMlI4akFGRWpPdDBhZGsKLS0tIHFrZUZQb2lHbjhJRjBuY1JtUG5W
+        QVVQM29uRWx3L1VhbmtaOUZpdm8zRzAKRE6+nGRMK9F2pgPBiq8Fiyvb8sQCvN0j
+        kCF4sQJT4gEiRfT6GMJiLe8ZhatfJKF+K4zW9zfZRTNRvrfRg7mVgg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-05-21T19:14:06Z"
+  mac: ENC[AES256_GCM,data:otBMf0Wh7ZuoFLsAzPz/IxlgkTYSMe/Wez/UzEmMfkr8ePF+VxRoIPxEiPcRQLuGNSAtxZrKvo4/Z+Zn1y2zbOjsoS4PYKkdZiTJUuXOyzzoWvK3m3LV1vqHoKvN0aqHQozaabvHuz1TqOn4bv3ldISCYdzKwwoPwbFjXpmUIKw=,iv:YoelHS6h8sYmL3S1ewHSs88D0RSCD0tPVtAhO3/0reI=,tag:VoZ8vDEJHV2rF6HhzlKfjA==,type:str]
+  unencrypted_suffix: _unencrypted
+  version: 3.10.2

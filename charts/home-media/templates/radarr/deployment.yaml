@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,36 +5,36 @@ metadata:
     app: radarr
   name: radarr
 spec:
- replicas: 1
- selector:
-   matchLabels:
-     app: radarr
- template:
-   metadata:
-       labels:
-           app: radarr
-       annotations:
-           backup.velero.io/backup-volumes: radarr-config
-   spec:
-       containers:
-           - image: lscr.io/linuxserver/radarr:latest
-             env:
-              - name: PUID
-                value: "0"
-              - name: PGID
-                value: "0"
-             imagePullPolicy: Always
-             name: radarr
-             volumeMounts:
-               - name: radarr-config
-                 mountPath: /config
-               - name: radarr-media
-                 mountPath: /media
-       volumes:
-           - name: radarr-config
-             persistentVolumeClaim:
-               claimName: radarr-config
-           - name: radarr-media
-             hostPath:
-               path: /var/mnt/media-volume
-               type: Directory
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+      annotations:
+        backup.velero.io/backup-volumes: radarr-config
+    spec:
+      containers:
+        - image: lscr.io/linuxserver/radarr:latest
+          env:
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
+          imagePullPolicy: Always
+          name: radarr
+          volumeMounts:
+            - name: radarr-config
+              mountPath: /config
+            - name: radarr-media
+              mountPath: /media
+      volumes:
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config
+        - name: radarr-media
+          hostPath:
+            path: /var/mnt/media-volume
+            type: Directory

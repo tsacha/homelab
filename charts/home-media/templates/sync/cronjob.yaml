@@ -1,4 +1,3 @@
----
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -12,63 +11,62 @@ spec:
         spec:
           restartPolicy: OnFailure
           containers:
-          - name: rclone-sync-movies
-            image: rclone/rclone:latest
-            env:
-              - name: SYNC_SUBFOLDER
-                value: "movies"
-            args:
-              - "sync"
-              - "-P"
-              - "--size-only"
-              - "--ignore-checksum"
-              - "--config"
-              - "/config/rclone.conf"
-              - "seedbox:/home/neandre/downloads/$(SYNC_SUBFOLDER)"
-              - "/media/torrents/$(SYNC_SUBFOLDER)"
-            volumeMounts:
-            - name: rclone-config-volume
-              mountPath: /config
-            - name: ssh-key-volume
-              mountPath: /root/.ssh
-              readOnly: true
-            - name: media-storage
-              mountPath: /media
-          - name: rclone-sync-shows
-            image: rclone/rclone:latest
-            env:
-              - name: SYNC_SUBFOLDER
-                value: "shows"
-            args:
-              - "sync"
-              - "-P"
-              - "--size-only"
-              - "--ignore-checksum"
-              - "--config"
-              - "/config/rclone.conf"
-              - "seedbox:/home/neandre/downloads/$(SYNC_SUBFOLDER)"
-              - "/media/torrents/$(SYNC_SUBFOLDER)"
-            volumeMounts:
-            - name: rclone-config-volume
-              mountPath: /config
-            - name: ssh-key-volume
-              mountPath: /root/.ssh
-              readOnly: true
-            - name: media-storage
-              mountPath: /media
+            - name: rclone-sync-movies
+              image: rclone/rclone:latest
+              env:
+                - name: SYNC_SUBFOLDER
+                  value: "movies"
+              args:
+                - "sync"
+                - "-P"
+                - "--size-only"
+                - "--ignore-checksum"
+                - "--config"
+                - "/config/rclone.conf"
+                - "seedbox:/home/neandre/downloads/$(SYNC_SUBFOLDER)"
+                - "/media/torrents/$(SYNC_SUBFOLDER)"
+              volumeMounts:
+                - name: rclone-config-volume
+                  mountPath: /config
+                - name: ssh-key-volume
+                  mountPath: /root/.ssh
+                  readOnly: true
+                - name: media-storage
+                  mountPath: /media
+            - name: rclone-sync-shows
+              image: rclone/rclone:latest
+              env:
+                - name: SYNC_SUBFOLDER
+                  value: "shows"
+              args:
+                - "sync"
+                - "-P"
+                - "--size-only"
+                - "--ignore-checksum"
+                - "--config"
+                - "/config/rclone.conf"
+                - "seedbox:/home/neandre/downloads/$(SYNC_SUBFOLDER)"
+                - "/media/torrents/$(SYNC_SUBFOLDER)"
+              volumeMounts:
+                - name: rclone-config-volume
+                  mountPath: /config
+                - name: ssh-key-volume
+                  mountPath: /root/.ssh
+                  readOnly: true
+                - name: media-storage
+                  mountPath: /media
           volumes:
-          - name: rclone-config-volume
-            configMap:
-              name: rclone-config
-          - name: ssh-key-volume
-            secret:
-              secretName: rclone-ssh-key
-              items:
-              - key: id_ed25519
-                path: id_ed25519
-              defaultMode: 0600
-          - name: media-storage
-            hostPath:
-              path: /var/mnt/media-volume
-              type: Directory
-
+            - name: rclone-config-volume
+              configMap:
+                name: rclone-config
+            - name: ssh-key-volume
+              secret:
+                secretName: rclone-ssh-key
+                items:
+                  - key: id_ed25519
+                    path: id_ed25519
+                defaultMode: 0600
+            - name: media-storage
+              hostPath:
+                path: /var/mnt/media-volume
+                type: Directory

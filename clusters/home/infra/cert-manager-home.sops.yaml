@@ -1,93 +1,93 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-    name: le-home-staging
+  name: le-home-staging
 spec:
-    acme:
-        email: ENC[AES256_GCM,data:Jm2WfOsdhev38eY/liQMNCZfKw==,iv:QARDYskf95fJ4T1oV7A97C7tnvCR2FALsiHAgWemFM4=,tag:YsYbbhSV4S8c5RzB4Xyfnw==,type:str]
-        privateKeySecretRef:
-            name: le-home-staging-account-key
-        server: https://acme-staging-v02.api.letsencrypt.org/directory
-        solvers:
-            - dns01:
-                rfc2136:
-                    nameserver: ENC[AES256_GCM,data:hzjo6kpj1ijDSJw/JdtK6Q==,iv:w4qZrLM0lJfaO+YSkpnzxxKSHdFk5S6f+ibWXmRFvNs=,tag:mqowqd13OJQsilVmVf7qdg==,type:str]
-                    tsigKeyName: rndc-key
-                    tsigAlgorithm: HMACSHA256
-                    tsigSecretSecretRef:
-                        name: rndc-key
-                        key: rndc.key
+  acme:
+    email: ENC[AES256_GCM,data:Jm2WfOsdhev38eY/liQMNCZfKw==,iv:QARDYskf95fJ4T1oV7A97C7tnvCR2FALsiHAgWemFM4=,tag:YsYbbhSV4S8c5RzB4Xyfnw==,type:str]
+    privateKeySecretRef:
+      name: le-home-staging-account-key
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          rfc2136:
+            nameserver: ENC[AES256_GCM,data:hzjo6kpj1ijDSJw/JdtK6Q==,iv:w4qZrLM0lJfaO+YSkpnzxxKSHdFk5S6f+ibWXmRFvNs=,tag:mqowqd13OJQsilVmVf7qdg==,type:str]
+            tsigKeyName: rndc-key
+            tsigAlgorithm: HMACSHA256
+            tsigSecretSecretRef:
+              name: rndc-key
+              key: rndc.key
 sops:
-    age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3SHRmNGtSSENxZTl4Wmwz
-            ZGpJSU01cDYvNEhyc1dIWVMwMkVIZWFFMEJRCkYrNjJ6b3dnamZRUFlCT09JcDJN
-            UUx0N1hydWZVNzVuUGJsb0Mva21LclUKLS0tICtVU2c5V3l0TXNRVE8zMGJjTHhJ
-            WHNrZTZsanUyK01XQUVuajg4czAzenMKHZ/9xXeAQZgxJdba4GKaFTqYgiUWNzYI
-            NfiB5lTn9WbVT+i/16uGlxZXO81IjHaWOHoxFtoVolU6q+y4Em8Utg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-11T21:01:22Z"
-    mac: ENC[AES256_GCM,data:J6ca22Q9qrimTuuAhP5t4wxQydRUyQ+dohz0jeG9rLWq4dCPgAqRHdHzlAZQFrx9xvOcZdcBipugzCmjJAyIRWk9KXXktKCS3EbjVffEy+SgIYqj4JWGBjPb6eE2zxNQTEqEQJfyNJlUDE3z/pCb9SGbKhqq7f8yj04DLP1t4xk=,iv:sRmoLcNskAtUC6Zu1x/onAGMzW7mwxI0VYgl2c5vhAI=,tag:kEyhFBHTnzIn9LcRjaMp4A==,type:str]
-    encrypted_regex: ^(rndc\.key|nameserver|email)$
-    version: 3.10.2
+  age:
+    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3SHRmNGtSSENxZTl4Wmwz
+        ZGpJSU01cDYvNEhyc1dIWVMwMkVIZWFFMEJRCkYrNjJ6b3dnamZRUFlCT09JcDJN
+        UUx0N1hydWZVNzVuUGJsb0Mva21LclUKLS0tICtVU2c5V3l0TXNRVE8zMGJjTHhJ
+        WHNrZTZsanUyK01XQUVuajg4czAzenMKHZ/9xXeAQZgxJdba4GKaFTqYgiUWNzYI
+        NfiB5lTn9WbVT+i/16uGlxZXO81IjHaWOHoxFtoVolU6q+y4Em8Utg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-06-11T21:01:22Z"
+  mac: ENC[AES256_GCM,data:J6ca22Q9qrimTuuAhP5t4wxQydRUyQ+dohz0jeG9rLWq4dCPgAqRHdHzlAZQFrx9xvOcZdcBipugzCmjJAyIRWk9KXXktKCS3EbjVffEy+SgIYqj4JWGBjPb6eE2zxNQTEqEQJfyNJlUDE3z/pCb9SGbKhqq7f8yj04DLP1t4xk=,iv:sRmoLcNskAtUC6Zu1x/onAGMzW7mwxI0VYgl2c5vhAI=,tag:kEyhFBHTnzIn9LcRjaMp4A==,type:str]
+  encrypted_regex: ^(rndc\.key|nameserver|email)$
+  version: 3.10.2
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-    name: le-home-prod
+  name: le-home-prod
 spec:
-    acme:
-        email: ENC[AES256_GCM,data:Jm2WfOsdhev38eY/liQMNCZfKw==,iv:QARDYskf95fJ4T1oV7A97C7tnvCR2FALsiHAgWemFM4=,tag:YsYbbhSV4S8c5RzB4Xyfnw==,type:str]
-        privateKeySecretRef:
-            name: le-home-prod-account-key
-        server: https://acme-v02.api.letsencrypt.org/directory
-        solvers:
-            - dns01:
-                rfc2136:
-                    nameserver: ENC[AES256_GCM,data:hzjo6kpj1ijDSJw/JdtK6Q==,iv:w4qZrLM0lJfaO+YSkpnzxxKSHdFk5S6f+ibWXmRFvNs=,tag:mqowqd13OJQsilVmVf7qdg==,type:str]
-                    tsigKeyName: rndc-key
-                    tsigAlgorithm: HMACSHA256
-                    tsigSecretSecretRef:
-                        name: rndc-key
-                        key: rndc.key
+  acme:
+    email: ENC[AES256_GCM,data:Jm2WfOsdhev38eY/liQMNCZfKw==,iv:QARDYskf95fJ4T1oV7A97C7tnvCR2FALsiHAgWemFM4=,tag:YsYbbhSV4S8c5RzB4Xyfnw==,type:str]
+    privateKeySecretRef:
+      name: le-home-prod-account-key
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          rfc2136:
+            nameserver: ENC[AES256_GCM,data:hzjo6kpj1ijDSJw/JdtK6Q==,iv:w4qZrLM0lJfaO+YSkpnzxxKSHdFk5S6f+ibWXmRFvNs=,tag:mqowqd13OJQsilVmVf7qdg==,type:str]
+            tsigKeyName: rndc-key
+            tsigAlgorithm: HMACSHA256
+            tsigSecretSecretRef:
+              name: rndc-key
+              key: rndc.key
 sops:
-    age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3SHRmNGtSSENxZTl4Wmwz
-            ZGpJSU01cDYvNEhyc1dIWVMwMkVIZWFFMEJRCkYrNjJ6b3dnamZRUFlCT09JcDJN
-            UUx0N1hydWZVNzVuUGJsb0Mva21LclUKLS0tICtVU2c5V3l0TXNRVE8zMGJjTHhJ
-            WHNrZTZsanUyK01XQUVuajg4czAzenMKHZ/9xXeAQZgxJdba4GKaFTqYgiUWNzYI
-            NfiB5lTn9WbVT+i/16uGlxZXO81IjHaWOHoxFtoVolU6q+y4Em8Utg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-11T21:01:22Z"
-    mac: ENC[AES256_GCM,data:J6ca22Q9qrimTuuAhP5t4wxQydRUyQ+dohz0jeG9rLWq4dCPgAqRHdHzlAZQFrx9xvOcZdcBipugzCmjJAyIRWk9KXXktKCS3EbjVffEy+SgIYqj4JWGBjPb6eE2zxNQTEqEQJfyNJlUDE3z/pCb9SGbKhqq7f8yj04DLP1t4xk=,iv:sRmoLcNskAtUC6Zu1x/onAGMzW7mwxI0VYgl2c5vhAI=,tag:kEyhFBHTnzIn9LcRjaMp4A==,type:str]
-    encrypted_regex: ^(rndc\.key|nameserver|email)$
-    version: 3.10.2
+  age:
+    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3SHRmNGtSSENxZTl4Wmwz
+        ZGpJSU01cDYvNEhyc1dIWVMwMkVIZWFFMEJRCkYrNjJ6b3dnamZRUFlCT09JcDJN
+        UUx0N1hydWZVNzVuUGJsb0Mva21LclUKLS0tICtVU2c5V3l0TXNRVE8zMGJjTHhJ
+        WHNrZTZsanUyK01XQUVuajg4czAzenMKHZ/9xXeAQZgxJdba4GKaFTqYgiUWNzYI
+        NfiB5lTn9WbVT+i/16uGlxZXO81IjHaWOHoxFtoVolU6q+y4Em8Utg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-06-11T21:01:22Z"
+  mac: ENC[AES256_GCM,data:J6ca22Q9qrimTuuAhP5t4wxQydRUyQ+dohz0jeG9rLWq4dCPgAqRHdHzlAZQFrx9xvOcZdcBipugzCmjJAyIRWk9KXXktKCS3EbjVffEy+SgIYqj4JWGBjPb6eE2zxNQTEqEQJfyNJlUDE3z/pCb9SGbKhqq7f8yj04DLP1t4xk=,iv:sRmoLcNskAtUC6Zu1x/onAGMzW7mwxI0VYgl2c5vhAI=,tag:kEyhFBHTnzIn9LcRjaMp4A==,type:str]
+  encrypted_regex: ^(rndc\.key|nameserver|email)$
+  version: 3.10.2
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-    name: rndc-key
-    namespace: cert-manager
+  name: rndc-key
+  namespace: cert-manager
 type: Opaque
 stringData:
-    rndc.key: ENC[AES256_GCM,data:nn3qhI86wCLEIqIYNKaw9A+miU0tBq+yZi32sTqrR3v4wpW6yrDLCN5T5Yk=,iv:ZUhmcUeTcH1JLk9MyJC9xoll6jEoaUNUv7nFP9meE1M=,tag:NUd0noN+mNLyrVn4ZQxGkA==,type:str]
+  rndc.key: ENC[AES256_GCM,data:nn3qhI86wCLEIqIYNKaw9A+miU0tBq+yZi32sTqrR3v4wpW6yrDLCN5T5Yk=,iv:ZUhmcUeTcH1JLk9MyJC9xoll6jEoaUNUv7nFP9meE1M=,tag:NUd0noN+mNLyrVn4ZQxGkA==,type:str]
 sops:
-    age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3SHRmNGtSSENxZTl4Wmwz
-            ZGpJSU01cDYvNEhyc1dIWVMwMkVIZWFFMEJRCkYrNjJ6b3dnamZRUFlCT09JcDJN
-            UUx0N1hydWZVNzVuUGJsb0Mva21LclUKLS0tICtVU2c5V3l0TXNRVE8zMGJjTHhJ
-            WHNrZTZsanUyK01XQUVuajg4czAzenMKHZ/9xXeAQZgxJdba4GKaFTqYgiUWNzYI
-            NfiB5lTn9WbVT+i/16uGlxZXO81IjHaWOHoxFtoVolU6q+y4Em8Utg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-06-11T21:01:22Z"
-    mac: ENC[AES256_GCM,data:J6ca22Q9qrimTuuAhP5t4wxQydRUyQ+dohz0jeG9rLWq4dCPgAqRHdHzlAZQFrx9xvOcZdcBipugzCmjJAyIRWk9KXXktKCS3EbjVffEy+SgIYqj4JWGBjPb6eE2zxNQTEqEQJfyNJlUDE3z/pCb9SGbKhqq7f8yj04DLP1t4xk=,iv:sRmoLcNskAtUC6Zu1x/onAGMzW7mwxI0VYgl2c5vhAI=,tag:kEyhFBHTnzIn9LcRjaMp4A==,type:str]
-    encrypted_regex: ^(rndc\.key|nameserver|email)$
-    version: 3.10.2
+  age:
+    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3SHRmNGtSSENxZTl4Wmwz
+        ZGpJSU01cDYvNEhyc1dIWVMwMkVIZWFFMEJRCkYrNjJ6b3dnamZRUFlCT09JcDJN
+        UUx0N1hydWZVNzVuUGJsb0Mva21LclUKLS0tICtVU2c5V3l0TXNRVE8zMGJjTHhJ
+        WHNrZTZsanUyK01XQUVuajg4czAzenMKHZ/9xXeAQZgxJdba4GKaFTqYgiUWNzYI
+        NfiB5lTn9WbVT+i/16uGlxZXO81IjHaWOHoxFtoVolU6q+y4Em8Utg==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-06-11T21:01:22Z"
+  mac: ENC[AES256_GCM,data:J6ca22Q9qrimTuuAhP5t4wxQydRUyQ+dohz0jeG9rLWq4dCPgAqRHdHzlAZQFrx9xvOcZdcBipugzCmjJAyIRWk9KXXktKCS3EbjVffEy+SgIYqj4JWGBjPb6eE2zxNQTEqEQJfyNJlUDE3z/pCb9SGbKhqq7f8yj04DLP1t4xk=,iv:sRmoLcNskAtUC6Zu1x/onAGMzW7mwxI0VYgl2c5vhAI=,tag:kEyhFBHTnzIn9LcRjaMp4A==,type:str]
+  encrypted_regex: ^(rndc\.key|nameserver|email)$
+  version: 3.10.2

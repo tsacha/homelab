@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-    labels:
-        app: sonarr
-    name: sonarr
+  labels:
+    app: sonarr
+  name: sonarr
 spec:
-    selector:
-        app: sonarr
-    ports:
-        - name: web
-          protocol: TCP
-          port: 80
-          targetPort: 8989
+  selector:
+    app: sonarr
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+      targetPort: 8989

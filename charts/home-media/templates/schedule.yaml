@@ -8,4 +8,4 @@ spec:
   skipImmediately: false
   template:
     includedNamespaces:
-    - media
+      - media
