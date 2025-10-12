@@ -18,11 +18,11 @@ spec:
     spec:
       initContainers:
         - name: wait-for-dns
-          image: alpine:latest
+          image: docker.io/alpine:latest
           command: ["sh", "-c", {"until nslookup {{ (split ": " .Values.wg.endpoint)._0 }}; do echo waiting for DNS; sleep 2; done;"}]
       containers:
         - name: wireguard
-          image: linuxserver/wireguard
+          image: docker.io/linuxserver/wireguard
           livenessProbe:
             exec:
               command: ["ping6", "-c", "1", "{{ .Values.wg.healthcheck }}"]

@@ -113,10 +113,12 @@ tasks:
     cmds:
       - |
         export KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml
-        kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
+        export CILIUM_VERSION=1.18.1 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
+        export GATEWAY_API_VERSION=v1.3.0 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
+        kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_API_VERSION/standard-install.yaml
         sops -d clusters/home/infra/cilium-values.sops.yaml \
           | yq eval-all 'select(fi == 0).spec.values + select(fi == 1)' clusters/home/infra/cilium.yaml - \
-          | helm upgrade --install cilium cilium/cilium -n kube-system --version=1.18.1 -f -
+          | helm upgrade --install cilium cilium/cilium -n kube-system --version=$CILIUM_VERSION -f -
   bgp:
     desc: Apply BGP configuration for Cilium
     cmds:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: caddy
-          image: caddy:latest
+          image: docker.io/caddy:latest
           ports:
             - containerPort: 80
           volumeMounts:

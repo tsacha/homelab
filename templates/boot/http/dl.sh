@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# Set version
-VERSION="v1.10.3"
-BASE_URL="https://github.com/siderolabs/talos/releases/download/$VERSION"
+TALOS_VERSION="v1.10.3" # renovate: datasource=github-releases depName=talos packageName=siderolabs/talos
+BASE_URL="https://github.com/siderolabs/talos/releases/download/$TALOS_VERSION"
 CHECKSUM_URL="$BASE_URL/sha256sum.txt"
 
 # Download checksum file
