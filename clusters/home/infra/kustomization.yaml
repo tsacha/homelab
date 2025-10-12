@@ -8,7 +8,7 @@ resources:
   - cert-manager.yaml
   - cert-manager-home.sops.yaml
   - velero.yaml
-  - github.com/rancher/local-path-provisioner/deploy?ref=v0.0.31
+  - github.com/rancher/local-path-provisioner/deploy?ref=v0.0.32
 patches:
   - patch: |-
       kind: ConfigMap
