@@ -2,9 +2,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - media.yaml
+  - apps.yaml
 secretGenerator:
-  - name: media-values
+  - name: apps-values
     namespace: media
     files:
       - values.yaml=values.sops.yaml

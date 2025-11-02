@@ -1,0 +1,18 @@
+wildcard_domain: ENC[AES256_GCM,data:Mjjz5XvqJcWIX4fo+keEeaJi,iv:DZFg7sUu2faQNRzuM5f6WzQersjgHAWHymBzeq0yK9M=,tag:s8/1/cKdHO+oFa9MuEbw7g==,type:str]
+gw:
+    ip: ENC[AES256_GCM,data:KR/542ornTqTnSuIbiu4bvv3s/8N,iv:C631pWi48p1Zob7CfuJT7bA04TN3nOoUoZ1Y7Aen++Y=,tag:QopfyvV/6H75jXswXu+Z1A==,type:str]
+sops:
+    age:
+        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB2NGNmNVFEL1ZweFY5aUg4
+            TXRwQklTaCs5TFdkS2pkVENQV1FuY3A0MzNnCjZGZE44QjZzUFJTNU1ZK3dONE9s
+            RUY2c0VJTEJGOGpwazRMSHJqTE9oQlEKLS0tIEt6aWRpSGQyL3A4Y3FCcis3alN0
+            VzhQUDhGbTlDMHAvWXA0VFZkVCs2eWcKgpn/cePFeO+jJ8JpX+DmoZZhmQXC55GF
+            l4r9WQ+lnjx/0KTsOwQ6IW+7OudE7r52tKeFISjTaCV2DQMAtro9OQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-11-02T21:20:38Z"
+    mac: ENC[AES256_GCM,data:h0czJAclvAnQsqq9mAV1h4XLoEC50LIwmnkYDOboW3WGe7678MMG3NXq81CPQsf7cEcnNDHV62dALeu8ZQR1Fg75bSqVDSuXKdZ202O89aA31RIpvE+bn6CyAJ5s79fj5wj5mJM6BeNiSo98FJGofQKY5/kvgcJNO2fodGBnZmg=,iv:RagFa+aMVZaGhXowt2FYwvVlo2FpbEBZCWaRXOQy79Q=,tag:LShukSrPwCBv3CwLUtGIjw==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.11.0
