@@ -4,6 +4,8 @@ auth:
   pocketid_vhost: pocketid.example.tld
 pass:
   vaultwarden_vhost: vaultwarden.example.tld
+  client_id: toto
+  client_secret: toto
 wg:
   address: ::1/128, 127.0.0.1/32
   allowed_ips6: fd00::/64

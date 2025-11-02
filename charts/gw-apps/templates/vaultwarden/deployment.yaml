@@ -15,11 +15,39 @@ spec:
         app: vaultwarden
     spec:
       containers:
-        - image: docker.io/vaultwarden/server:latest
+        - image: docker.io/vaultwarden/server:testing
           name: vaultwarden
           env:
             - name: DOMAIN
               value: https://{{ .Values.pass.vaultwarden_vhost }}
+            - name: SSO_ENABLED
+              value: "true"
+            - name: SSO_ONLY
+              value: "false"
+            - name: SSO_SIGNUPS_MATCH_EMAIL
+              value: "true"
+            - name: SSO_ALLOW_UNKNOWN_EMAIL_VERIFICATION
+              value: "false"
+            - name: SSO_AUTHORITY
+              value: "https://{{ .Values.auth.pocketid_vhost }}"
+            - name: SSO_SCOPES
+              value: "email profile"
+            - name: SSO_AUTHORIZE_EXTRA_PARAMS
+              value: ""
+            - name: SSO_PKCE
+              value: "true"
+            - name: SSO_AUDIENCE_TRUSTED
+              value: "^$"
+            - name: SSO_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: client-id
+            - name: SSO_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: client-secret
           volumeMounts:
             - name: vaultwarden-data
               mountPath: /data

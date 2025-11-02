@@ -1,9 +1,11 @@
 acme:
     issuer: ENC[AES256_GCM,data:HxfJf0lAN61t+jfBKW+cxy2tBQ==,iv:J9aDgpYaab/ObMH5CjoHhDLlhJfUKTSqaVI+SQpCkek=,tag:EuO7tDQhVNZuZkEs1BTD5A==,type:str]
 auth:
-    pocketid_vhost: ENC[AES256_GCM,data:MbhQgsuvv5NOCp1Gm9qIWGaA,iv:+jk1Yc+VxZY3+gDEbkgupx1WIdxFki8nwSAdYdG4KwU=,tag:mxy7H8SG4eats4/wT6nW2A==,type:str]
+    pocketid_vhost: ENC[AES256_GCM,data:GR2z8EMgmEKoNWCMscb/lWXA,iv:1E6JCxhkiNf6u4ZlpTvkJ7QsUETaGIwGqftNHYAaZ7A=,tag:12N8eP90WEnePSl80feFtg==,type:str]
 pass:
     vaultwarden_vhost: ENC[AES256_GCM,data:D6axRrwkc5FuInbcEhbdvhbvyuc=,iv:BuWXCNZBQvM+MVzwBXHUF/tdfOJIEMlZKKXWoqLj4ek=,tag:FtDsXv6plJ6ArTS9m32RvQ==,type:str]
+    client_id: ENC[AES256_GCM,data:Anrr9xh0prlAzNGH/Iv5W2NidwCKzCeFzCkcPTaXdPVVjZ5O,iv:FsJutMkZ6A0TeqrORz97h9Qgz9C8VBb7I/bNGHIrHlY=,tag:nrRiLsTAP6KRsCHWDsjfpg==,type:str]
+    client_secret: ENC[AES256_GCM,data:nnr9lUNNzW98HXam2kqkFfylnOmak8sGr0ya1fUJYDM=,iv:wW8OJNJaNBR5xLR8Z2VMxt+NYQ+Vq234UtyMyAM8ToI=,tag:5Clphj/xbgyhbhy0wLzOow==,type:str]
 wg:
     address: ENC[AES256_GCM,data:0wILv1BAhHbQaLC0oCOZ6u5WDXRpd8bvcn9ESUnRDt+JqaMQMg4QbXI=,iv:6QiX5vY5X903xcZPKHaQ/sHKEN9U2rn026XXzFCfHDA=,tag:Gl5NRcv+kyeRCa2fbQnTRA==,type:str]
     allowed_ips6: ENC[AES256_GCM,data:RGmleg7PKo0c3Jd51fd/G8X9BiWIoiOhcW5+e9+0osqpTE2Z7oB3USGte/EJSwQ/Jo46RVhdu0IQfmxGVWmFc9DVtZ7zg08SyA==,iv:EBYme+Z4Zv+bDBuEDMaA87u9bQHXAu7+E5IF2NueQpA=,tag:oYHeA+3UvV/putluLeKCog==,type:str]
@@ -37,7 +39,7 @@ sops:
             dGR6YkoyWFdqd21NRWJoeE03Y2I5VEkKGVIMlSjoc3562Jktzi2TWGaMKW2qFGzb
             w/H0IImSFK4OmikPXBC4wiT+4rO7O85N+IzUu/g/tTxWtuN3P48uwQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-02T15:18:38Z"
-    mac: ENC[AES256_GCM,data:ZMJDk49CdhyPgsgflN5+ab7AMd1V5/CnQFV64v13+ocAqVBHoRUAuNj7zfLytjUssqH2jqqatwQy2XmO1PHGpeUybcwtWu3gdOtcgKd8CXKQmCWGUvA4a8bIGl8vWObZ8taezPec/w+dF1W6e1ef1GYQyXKLqa2W2s4oLmp+QbI=,iv:3hSoYsYzGqBrANY2vLGdQj4GOOTGow8c8nNTS8Vozj8=,tag:WVyIfJ5p8oQkR/kFHtj8Sw==,type:str]
+    lastmodified: "2025-11-02T17:33:45Z"
+    mac: ENC[AES256_GCM,data:8kIM8FPHVTSRKSs6dTCteTl/h7UHk5HDSvd3gZf0PwVqiIhRZ2ppXNa85t1AE+FrlE8HGZDPsR6J8r9EnG2iW1m76EaBgZuovg94UP34OXRGQK/Y8MFMHzVtfqzkB0UvVwFHkjTak3Jp/dSk5Yx0qx8kYLdjuSsmJ3+6pptd7mY=,iv:A6OXLMlqQK/UtdX9q4SDagHJIW0V8FgoYXdFX8jfuLQ=,tag:c51URzO+feVG4G+UZLHoYg==,type:str]
     unencrypted_suffix: _unencrypted
     version: 3.11.0
