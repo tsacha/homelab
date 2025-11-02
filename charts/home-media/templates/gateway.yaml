@@ -22,3 +22,4 @@ spec:
         certificateRefs:
           - kind: Secret
             name: wildcard-cert
+        mode: Terminate

@@ -1,7 +1,7 @@
 acme:
     issuer: ENC[AES256_GCM,data:HxfJf0lAN61t+jfBKW+cxy2tBQ==,iv:J9aDgpYaab/ObMH5CjoHhDLlhJfUKTSqaVI+SQpCkek=,tag:EuO7tDQhVNZuZkEs1BTD5A==,type:str]
 auth:
-    pocketid_vhost: ENC[AES256_GCM,data:GR2z8EMgmEKoNWCMscb/lWXA,iv:1E6JCxhkiNf6u4ZlpTvkJ7QsUETaGIwGqftNHYAaZ7A=,tag:12N8eP90WEnePSl80feFtg==,type:str]
+    pocketid_vhost: ENC[AES256_GCM,data:pZRUiWT494M/NX9TGTMTjwxv,iv:LNiiszZXTSqbo+qCpWCKM7plmof4hTU31aFATa9SU+0=,tag:RLPzRNJZXfHlbSd/IfULUg==,type:str]
 pass:
     vaultwarden_vhost: ENC[AES256_GCM,data:D6axRrwkc5FuInbcEhbdvhbvyuc=,iv:BuWXCNZBQvM+MVzwBXHUF/tdfOJIEMlZKKXWoqLj4ek=,tag:FtDsXv6plJ6ArTS9m32RvQ==,type:str]
     client_id: ENC[AES256_GCM,data:Anrr9xh0prlAzNGH/Iv5W2NidwCKzCeFzCkcPTaXdPVVjZ5O,iv:FsJutMkZ6A0TeqrORz97h9Qgz9C8VBb7I/bNGHIrHlY=,tag:nrRiLsTAP6KRsCHWDsjfpg==,type:str]
@@ -39,7 +39,7 @@ sops:
             dGR6YkoyWFdqd21NRWJoeE03Y2I5VEkKGVIMlSjoc3562Jktzi2TWGaMKW2qFGzb
             w/H0IImSFK4OmikPXBC4wiT+4rO7O85N+IzUu/g/tTxWtuN3P48uwQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-02T17:33:45Z"
-    mac: ENC[AES256_GCM,data:8kIM8FPHVTSRKSs6dTCteTl/h7UHk5HDSvd3gZf0PwVqiIhRZ2ppXNa85t1AE+FrlE8HGZDPsR6J8r9EnG2iW1m76EaBgZuovg94UP34OXRGQK/Y8MFMHzVtfqzkB0UvVwFHkjTak3Jp/dSk5Yx0qx8kYLdjuSsmJ3+6pptd7mY=,iv:A6OXLMlqQK/UtdX9q4SDagHJIW0V8FgoYXdFX8jfuLQ=,tag:c51URzO+feVG4G+UZLHoYg==,type:str]
+    lastmodified: "2025-11-02T18:42:03Z"
+    mac: ENC[AES256_GCM,data:FZQp62+wYUPW/1/IIqRsvopVZcbc9zet2FCegUl2F6m4XsbYBCBxLPjMORYLUoChBciPli0GefWwo8woJe7vrrTA7sDIDSABpyk60RSdzH1smiTezOQC6B1qw2/w/7m4SJ8Ny+HUuyAYkxjWextzka+CSAm+5DhYigrl2QnuNoo=,iv:sjoF6nWSNZFCE+q2l5TyTzcrM8AbuOG4cbdNp2dSPGM=,tag:AgvOF3vCaKktw2Bvf9tdHw==,type:str]
     unencrypted_suffix: _unencrypted
     version: 3.11.0
