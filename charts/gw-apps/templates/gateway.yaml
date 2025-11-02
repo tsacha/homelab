@@ -31,3 +31,13 @@ spec:
             kind: Secret
             name: vaultwarden-cert
         mode: Terminate
+    - hostname: "{{ .Values.auth.pocketid_vhost }}"
+      name: pocketid-https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: pocketid-cert
+        mode: Terminate

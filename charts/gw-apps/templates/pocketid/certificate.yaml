@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pocketid
+spec:
+  secretName: pocketid-cert
+  dnsNames:
+    - "{{ .Values.auth.pocketid_vhost }}"
+  issuerRef:
+    name: letsencrypt
+    kind: Issuer
+    group: cert-manager.io

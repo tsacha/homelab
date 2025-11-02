@@ -1,5 +1,7 @@
 acme:
   issuer: issuer@example.tld
+auth:
+  pocketid_vhost: pocketid.example.tld
 pass:
   vaultwarden_vhost: vaultwarden.example.tld
 wg:
@@ -16,7 +18,6 @@ dns:
   http2136_vhost: example.tld
   http2136_token: http_token
   rndc_key: rndc_key
-  ipv4_prefix: 192.168.0.
   ipv6_prefix: 'fd00::'
   nodes:
     vm1: 10

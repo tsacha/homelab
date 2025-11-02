@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pocketid
+  name: pocketid
+spec:
+  selector:
+    app: pocketid
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+      targetPort: 1411

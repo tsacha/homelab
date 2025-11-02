@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pocketid
+  name: pocketid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pocketid
+  template:
+    metadata:
+      labels:
+        app: pocketid
+    spec:
+      containers:
+        - image: ghcr.io/pocket-id/pocket-id:v1
+          name: pocketid
+          env:
+            - name: APP_URL
+              value: https://{{ .Values.auth.pocketid_vhost }}
+            - name: TRUST_PROXY
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: pocketid-data
+              mountPath: /app/data
+          livenessProbe:
+            exec:
+              command:
+                - /app/pocket-id
+                - healthcheck
+            initialDelaySeconds: 10
+            periodSeconds: 90
+            timeoutSeconds: 5
+            failureThreshold: 2
+      volumes:
+        - name: pocketid-data
+          persistentVolumeClaim:
+            claimName: pocketid
