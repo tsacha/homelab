@@ -7,7 +7,7 @@ resources:
   - bgp.sops.yaml
   - cert-manager.yaml
   - cert-manager-home.sops.yaml
-  - velero.yaml
+  - k8up.yaml
   - github.com/rancher/local-path-provisioner/deploy?ref=v0.0.32
 patches:
   - patch: |-
@@ -52,9 +52,5 @@ secretGenerator:
     namespace: cert-manager
     files:
       - values.yaml=cert-manager-webhook-ovh-values.sops.yaml
-  - name: velero-values
-    namespace: velero
-    files:
-      - values.yaml=velero-values.sops.yaml
 generatorOptions:
   disableNameSuffixHash: true

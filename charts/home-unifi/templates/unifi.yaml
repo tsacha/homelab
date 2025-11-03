@@ -16,8 +16,6 @@ spec:
     metadata:
       labels:
         app: unifi-network-application
-      annotations:
-        backup.velero.io/backup-volumes: unifi-app-pvc
     spec:
       containers:
         - name: unifi-network-application

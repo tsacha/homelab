@@ -49,8 +49,6 @@ metadata:
   namespace: unifi
   labels:
     app: unifi-db
-  annotations:
-    backup.velero.io/backup-volumes: unifi-db-pvc
 spec:
   replicas: 1
   selector:

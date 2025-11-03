@@ -13,8 +13,6 @@ spec:
     metadata:
       labels:
         app: jellyfin
-      annotations:
-        backup.velero.io/backup-volumes: jellyfin-config
     spec:
       containers:
         - image: ghcr.io/jellyfin/jellyfin:latest

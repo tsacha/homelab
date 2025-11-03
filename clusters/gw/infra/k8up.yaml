@@ -2,40 +2,28 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: velero
+  name: k8up
   namespace: flux-system
 spec:
   interval: 5m0s
-  url: https://vmware-tanzu.github.io/helm-charts
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: velero
-  labels:
-    pod-security.kubernetes.io/enforce: privileged
+  url: https://k8up-io.github.io/k8up
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: velero
-  namespace: velero
+  name: k8up
+  namespace: kube-system
 spec:
   interval: 5m0s
   chart:
     spec:
-      chart: velero
+      chart: k8up
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        name: velero
+        name: k8up
         namespace: flux-system
   values:
-    kubectl:
-      image:
-        repository: docker.io/bitnami/kubectl
-        tag: latest
-  valuesFrom:
-    - kind: Secret
-      name: velero-values
+    k8up:
+      skipWithoutAnnotation: true
