@@ -62,6 +62,9 @@ spec:
     metadata:
       labels:
         app: unifi-db
+      annotations:
+        k8up.io/backupcommand: sh -c 'mongodump --username=$MONGODB_INITDB_ROOT_USERNAME --password=$MONGODB_INITDB_ROOT_PASSWORD --archive'
+        k8up.io/file-extension: .archive
     spec:
       containers:
         - name: unifi-db
