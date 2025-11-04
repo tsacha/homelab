@@ -7,3 +7,9 @@ mongodb:
   root_password: passwd
   user: unifi
   password: passwd
+backup:
+  ak: AKIAIOSFODNN7EXAMPLE
+  sk: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  restic: your-restic-password
+  endpoint: s3.example.com
+  bucket: backup-unifi

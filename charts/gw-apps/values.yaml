@@ -29,3 +29,9 @@ dns:
     myapp: vm1
   custom_records: |
     @ MX 10 smtp.example.tld.
+backup:
+  ak: AKIAIOSFODNN7EXAMPLE
+  sk: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  restic: your-restic-password
+  endpoint: s3.example.com
+  bucket: backup-gw-apps

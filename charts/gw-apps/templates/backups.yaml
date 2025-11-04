@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backup-credentials
+  namespace: apps
+type: Opaque
+stringData:
+  ak: "{{ .Values.backup.ak }}"
+  sk: "{{ .Values.backup.sk }}"
+  restic: "{{ .Values.backup.restic }}"
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: gw-apps
+  namespace: apps
+spec:
+  backend:
+    s3:
+      endpoint: '{{ .Values.backup.endpoint }}'
+      bucket: '{{ .Values.backup.bucket }}'
+      accessKeyIDSecretRef:
+        name: backup-credentials
+        key: ak
+      secretAccessKeySecretRef:
+        name: backup-credentials
+        key: sk
+    repoPasswordSecretRef:
+      name: backup-credentials
+      key: restic
+  backup:
+    schedule: '0 * * * *'
+    failedJobsHistoryLimit: 2
+    successfulJobsHistoryLimit: 2
+  check:
+    schedule: '1 * * * *'
+  prune:
+    schedule: '2 * * * *'
+    retention:
+      keepLast: 5
