@@ -5,6 +5,7 @@ metadata:
     app: jellyfin
   name: prowlarr
 spec:
+  ipFamilyPolicy: PreferDualStack # Radarr & Sonarr </3 IPv6
   selector:
     app: prowlarr
   ports:
