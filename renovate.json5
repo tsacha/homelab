@@ -4,6 +4,9 @@
   "flux": {
     "managerFilePatterns": ["/clusters/.+\\.yaml$/"]
   },
+  "kubernetes": {
+    "managerFilePatterns": ["/charts/.+\\.yaml$/"]
+  },
   "customManagers": [
     {
       "customType": "regex",
