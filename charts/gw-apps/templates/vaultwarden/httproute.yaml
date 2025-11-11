@@ -6,6 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: gw-apps
+      sectionName: vaultwarden-https
   hostnames:
     - "{{ .Values.pass.vaultwarden_vhost }}"
   rules:

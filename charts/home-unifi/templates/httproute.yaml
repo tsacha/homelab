@@ -6,6 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: gw-unifi
+      sectionName: https
   hostnames:
     - unifi.{{ .Values.wildcard_domain }}
   rules:

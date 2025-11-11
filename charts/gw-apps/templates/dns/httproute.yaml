@@ -5,6 +5,7 @@ metadata:
 spec:
   parentRefs:
     - name: gw-apps
+      sectionName: gw-https
   hostnames:
     - "{{ .Values.dns.http2136_vhost }}"
   rules:

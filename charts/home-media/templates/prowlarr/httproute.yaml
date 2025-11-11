@@ -5,6 +5,7 @@ metadata:
 spec:
   parentRefs:
     - name: gw-media
+      sectionName: https
   hostnames:
     - prowlarr.{{ .Values.wildcard_domain }}
   rules:
