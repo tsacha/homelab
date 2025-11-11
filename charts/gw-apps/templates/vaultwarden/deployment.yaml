@@ -17,6 +17,7 @@ spec:
       containers:
         - image: docker.io/vaultwarden/server:testing
           name: vaultwarden
+          imagePullPolicy: Always
           env:
             - name: DOMAIN
               value: https://{{ .Values.pass.vaultwarden_vhost }}

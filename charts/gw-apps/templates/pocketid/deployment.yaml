@@ -17,6 +17,7 @@ spec:
       containers:
         - image: ghcr.io/pocket-id/pocket-id:v1
           name: pocketid
+          imagePullPolicy: Always
           env:
             - name: APP_URL
               value: https://{{ .Values.auth.pocketid_vhost }}
