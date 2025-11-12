@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 vars:
-  UBUNTU_VERSION: 25.04 # renovate: datasource=repology depName=ubuntu_release packageName=ubuntu
+  UBUNTU_VERSION: 25.04 # renovate: datasource=endoflife-date depName=ubuntu versioning=ubuntu
+  UBUNTU_CODENAME: plucky # renovate: datasource=endoflife-date depName=ubuntu versioning=ubuntu
 tasks:
   geniso:
     dir: boot
@@ -85,7 +86,7 @@ tasks:
     cmds:
       - |
         if [ ! -f upstream.img ]; then
-          wget https://cloud-images.ubuntu.com/plucky/current/plucky-server-cloudimg-amd64.img -O upstream.img
+          wget https://cloud-images.ubuntu.com/{{ .UBUNTU_CODENAME }}/current/{{ .UBUNTU_CODENAME }}-server-cloudimg-amd64.img -O upstream.img
         fi
 
         cp -f upstream.img current.img

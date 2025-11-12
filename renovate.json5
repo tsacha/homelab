@@ -24,7 +24,7 @@
         "tasks/boot.yaml"
       ],
       "matchStrings": [
-        "\\s+\\w+_VERSION:\\s*(?<currentValue>.*?)\\s*# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) packageName=(?<packageName>.*?)\\n"
+        "\\s+\\w+_VERSION:\\s*(?<currentValue>.*?)\\s*# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) versioning=(?<versioning>.*?)\\n"
       ]
     }
   ],
