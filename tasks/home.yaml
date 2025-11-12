@@ -2,7 +2,7 @@
 version: "3"
 vars:
   CLUSTER:
-    sh: yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml || /bin/true
+    sh: yq -r '.network.fqdn|sub("\\.";"-")' .private/inventory.yaml || /bin/true
   FORGEJO_USER:
     sh: yq -r '.flux.forgejo_user' .private/inventory.yaml || /bin/true
   FORGEJO_PAT:
@@ -23,6 +23,6 @@ tasks:
           --from-file=age.agekey=/dev/stdin
 
         flux install
-        pushd clusters/gw/flux-system
+        pushd clusters/home/flux-system
         kubectl apply --server-side -k .
         popd

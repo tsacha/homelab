@@ -1,5 +1,7 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
+vars:
+  UBUNTU_VERSION: 25.04 # renovate: datasource=repology depName=ubuntu_release packageName=ubuntu
 tasks:
   geniso:
     dir: boot
@@ -7,7 +9,7 @@ tasks:
       - |
         sudo rm -rf output.iso iso/
         if [ ! -f upstream.iso ]; then
-          wget https://ubuntu.univ-nantes.fr/ubuntu-cd/25.04/ubuntu-25.04-live-server-amd64.iso -O upstream.iso
+          wget https://ubuntu.univ-nantes.fr/ubuntu-cd/{{ .UBUNTU_VERSION }}/ubuntu-{{ .UBUNTU_VERSION }}-live-server-amd64.iso -O upstream.iso
         fi
         osirrox -indev upstream.iso  -extract / iso/
 
@@ -63,7 +65,7 @@ tasks:
     cmds:
       - |
         if [ ! -f raspi.img.xz ]; then
-            wget https://cdimage.ubuntu.com/releases/25.04/release/ubuntu-25.04-preinstalled-server-arm64+raspi.img.xz -O raspi.img.xz
+            wget https://cdimage.ubuntu.com/releases/{{ .UBUNTU_VERSION }}/release/ubuntu-{{ .UBUNTU_VERSION }}-preinstalled-server-arm64+raspi.img.xz -O raspi.img.xz
         fi
 
         cat <<EOF

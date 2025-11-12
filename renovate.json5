@@ -10,12 +10,21 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "(^|/)dl\\.sh",
-        "(^|/)talos\\.yaml"
+      "managerFilePatterns": [
+        "templates/boot/http/dl.sh",
+        "tasks/talos.yaml"
       ],
       "matchStrings": [
         ".+?_VERSION=\"?v?(?<currentValue>.*?)\"? # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) packageName=(?<packageName>.*?)\\n"
+      ]
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "tasks/boot.yaml"
+      ],
+      "matchStrings": [
+        "\\s+\\w+_VERSION:\\s*(?<currentValue>.*?)\\s*# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) packageName=(?<packageName>.*?)\\n"
       ]
     }
   ],

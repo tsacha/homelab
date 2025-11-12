@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+tasks:
+  test:
+    desc: Test Renovate locally
+    vars:
+      FORGEJO_PAT:
+        sh: yq '.renovate.forgejo_pat' .private/inventory.yaml
+      GH_PAT:
+        sh: yq '.renovate.gh_pat' .private/inventory.yaml
+    cmds:
+      - |
+        LOG_LEVEL=info \
+        RENOVATE_PLATFORM=forgejo \
+        RENOVATE_ENDPOINT=https://codeberg.org \
+        RENOVATE_TOKEN={{.FORGEJO_PAT}} \
+        RENOVATE_GITHUB_COM_TOKEN={{.GH_PAT}} \
+        RENOVATE_REQUIRE_CONFIG=optional \
+        npx -y renovate --dry-run --platform=local --dry-run=extract
+  run:
+    desc: Run Renovate in Docker
+    vars:
+      FORGEJO_PAT:
+        sh: yq '.renovate.forgejo_pat' .private/inventory.yaml
+      GH_PAT:
+        sh: yq '.renovate.gh_pat' .private/inventory.yaml
+    cmds:
+      - |
+        docker run --rm \
+        -e RENOVATE_REPOSITORIES=tsacha/homelab \
+        -e RENOVATE_ENDPOINT=https://codeberg.org \
+        -e RENOVATE_PLATFORM=forgejo \
+        -e RENOVATE_GITHUB_COM_TOKEN={{.GH_PAT}} \
+        -e RENOVATE_TOKEN={{.FORGEJO_PAT}} \
+        -v $(pwd)/data:/data \
+        ghcr.io/renovatebot/renovate

@@ -7,3 +7,4 @@ includes:
   boot: ./tasks/boot.yaml
   gw: ./tasks/gw.yaml
   talos: ./tasks/talos.yaml
+  renovate: ./tasks/renovate.yaml
