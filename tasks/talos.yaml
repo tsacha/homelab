@@ -113,7 +113,7 @@ tasks:
     cmds:
       - |
         export KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml
-        export CILIUM_VERSION=1.18.3 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
+        export CILIUM_VERSION=1.18.4 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
         export GATEWAY_API_VERSION=v1.4.0 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
         kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_API_VERSION/experimental-install.yaml
         sops -d clusters/home/infra/cilium-values.sops.yaml \
