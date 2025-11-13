@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: papra
+  labels:
+    app: papra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: papra
+  template:
+    metadata:
+      labels:
+        app: papra
+    spec:
+      containers:
+        - name: papra
+          image: ghcr.io/papra-hq/papra:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1221
+          volumeMounts:
+            - name: papra-docs
+              mountPath: /app/app-data
+          env:
+            - name: APP_BASE_URL
+              value: https://docs.{{ .Values.wildcard_domain }}
+            - name: DOCUMENT_STORAGE_MAX_UPLOAD_SIZE
+              value: "0"
+            - name: DOCUMENTS_OCR_LANGUAGES
+              value: "fra"
+            - name: SERVER_HOSTNAME
+              value: "::"
+            - name: AUTH_PROVIDERS_EMAIL_IS_ENABLED
+              value: "false"
+            - name: AUTH_PROVIDERS_CUSTOMS
+              value: |
+                [
+                  {
+                    "providerId": "{{ .Values.papra.oauth.id }}",
+                    "providerName": "{{ .Values.papra.oauth.name }}",
+                    "providerIconUrl": "https://api.iconify.design/tabler:login-2.svg",
+                    "clientId": "{{ .Values.papra.oauth.clientId }}",
+                    "clientSecret": "{{ .Values.papra.oauth.clientSecret }}",
+                    "type": "oidc",
+                    "discoveryUrl": "{{ .Values.papra.oauth.url }}",
+                    "pkce": "true",
+                    "scopes": ["openid", "profile", "email"]
+                  }
+                ]
+      volumes:
+        - name: papra-docs
+          persistentVolumeClaim:
+            claimName: papra-docs

@@ -4,5 +4,6 @@ resources:
   - flux-system.yaml
   - gitrepository.yaml
   - infra.yaml
+  - apps.yaml
   - media.yaml
   - unifi.yaml
