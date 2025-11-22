@@ -7,6 +7,6 @@ spec:
   dnsNames:
     - "{{ .Values.pass.vaultwarden_vhost }}"
   issuerRef:
-    name: letsencrypt
-    kind: Issuer
+    name: le-prod
+    kind: ClusterIssuer
     group: cert-manager.io

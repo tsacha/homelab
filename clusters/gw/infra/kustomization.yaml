@@ -12,5 +12,9 @@ secretGenerator:
     namespace: kube-system
     files:
       - values.yaml=cilium-values.sops.yaml
+  - name: cert-manager-webhook-ovh-values
+    namespace: cert-manager
+    files:
+      - values.yaml=cert-manager-webhook-ovh-values.sops.yaml
 generatorOptions:
   disableNameSuffixHash: true

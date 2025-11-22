@@ -7,6 +7,6 @@ spec:
   dnsNames:
     - "{{ .Values.dns.http2136_vhost }}"
   issuerRef:
-    name: letsencrypt
-    kind: Issuer
+    name: le-prod
+    kind: ClusterIssuer
     group: cert-manager.io
