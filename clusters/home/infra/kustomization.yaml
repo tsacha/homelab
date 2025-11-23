@@ -9,6 +9,8 @@ resources:
   - cert-manager-home.sops.yaml
   - k8up.yaml
   - github.com/rancher/local-path-provisioner/deploy?ref=v0.0.32
+  - kubelet-serving-cert-approver.yaml
+  - metrics-server.yaml
 patches:
   - patch: |-
       kind: ConfigMap

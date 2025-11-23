@@ -8,6 +8,9 @@ machine:
     disabled: false
     servers:
       - {{ network.ipv6.gw_wan }}
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
 
 
 cluster:

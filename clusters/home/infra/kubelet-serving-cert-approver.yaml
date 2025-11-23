@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kubelet-serving-cert-approver
+  namespace: flux-system
+spec:
+  interval: 10m
+  url: https://github.com/alex1989hu/kubelet-serving-cert-approver
+  ref:
+    tag: v0.10.0
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubelet-serving-cert-approver
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kubelet-serving-cert-approver
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  prune: true
+  targetNamespace: kubelet-serving-cert-approver
+  sourceRef:
+    kind: GitRepository
+    name: kubelet-serving-cert-approver
+  path: ./deploy/standalone/
