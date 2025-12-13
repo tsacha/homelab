@@ -38,7 +38,7 @@ spec:
             claimName: jellyfin-cache
         - name: jellyfin-media
           hostPath:
-            path: /var/mnt/media-volume
+            path: /media
             type: Directory
         - name: jellyfin-dri
           hostPath:

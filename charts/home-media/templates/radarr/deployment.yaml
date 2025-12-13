@@ -34,5 +34,5 @@ spec:
             claimName: radarr-config
         - name: radarr-media
           hostPath:
-            path: /var/mnt/media-volume
+            path: /media
             type: Directory

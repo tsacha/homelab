@@ -1,7 +1,0 @@
-#!ipxe
-{% set n = nodes[node] %}
-{% set ip = n.ipv6.split("/")[0] %}
-{% set cidr = n.ipv6 .split("/")[1] %}
-kernel /vmlinuz-${buildarch} initrd=initramfs-${buildarch}.xz slab_nomerge pti=on talos.platform=metal talos.config=http://boot.{{ network.fqdn }}/nodes/{{ node }}.yaml ip=[{{ ip }}]:{{ cidr }}:[{{ network.ipv6.gw }}]::{{ node }}:::[{{ boot.dns64.ip }}]::[{{ network.ipv6.gw_wan }}]
-initrd /initramfs-${buildarch}.xz
-boot

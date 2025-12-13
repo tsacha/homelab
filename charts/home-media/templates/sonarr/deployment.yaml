@@ -34,5 +34,5 @@ spec:
             claimName: sonarr-config
         - name: sonarr-media
           hostPath:
-            path: /var/mnt/media-volume
+            path: /media
             type: Directory

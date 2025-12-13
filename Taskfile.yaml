@@ -4,7 +4,6 @@ tasks:
   default: go-task --list
 includes:
   templates: ./tasks/templates.yaml
-  boot: ./tasks/boot.yaml
   gw: ./tasks/gw.yaml
-  talos: ./tasks/talos.yaml
+  home: ./tasks/home.yaml
   renovate: ./tasks/renovate.yaml

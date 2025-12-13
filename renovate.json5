@@ -11,8 +11,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "templates/boot/http/dl.sh",
-        "tasks/talos.yaml"
+        "templates/boot/http/dl.sh"
       ],
       "matchStrings": [
         ".+?_VERSION=\"?v?(?<currentValue>.*?)\"? # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) packageName=(?<packageName>.*?)\\n"

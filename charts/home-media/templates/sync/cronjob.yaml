@@ -68,5 +68,5 @@ spec:
                 defaultMode: 0600
             - name: media-storage
               hostPath:
-                path: /var/mnt/media-volume
+                path: /media
                 type: Directory

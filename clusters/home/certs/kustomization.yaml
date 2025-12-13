@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - webhook.yaml
+  - issuers.sops.yaml
+secretGenerator:
+  - name: cert-manager-webhook-ovh-values
+    namespace: cert-manager
+    files:
+      - values.yaml=cert-manager-webhook-ovh-values.sops.yaml
+generatorOptions:
+  disableNameSuffixHash: true

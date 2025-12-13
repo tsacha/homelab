@@ -12,7 +12,7 @@ stringData:
 apiVersion: k8up.io/v1
 kind: Schedule
 metadata:
-  name: gw-apps
+  name: apps
   namespace: apps
 spec:
   backend:
