@@ -15,7 +15,7 @@ spec:
         app: pocketid
     spec:
       containers:
-        - image: ghcr.io/pocket-id/pocket-id:v1
+        - image: ghcr.io/pocket-id/pocket-id:v2
           name: pocketid
           imagePullPolicy: Always
           env:
