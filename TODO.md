@@ -1,5 +1,1 @@
-- k3s config.yaml
-- k3s install
 - restic task file
-- systemd unit mount for media
-- copy kubectl to local (gw + home)

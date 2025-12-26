@@ -43,3 +43,4 @@ tasks:
     cmds:
       - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml kubectl delete -f -
       - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/{{.CLUSTER}}.yaml kubectl apply -f -
+

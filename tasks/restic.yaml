@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+tasks:
+  cmd:
+    desc: Run restic commands on backups
+    vars:
+      RESTIC_PASSWORD:
+        sh: test -n "{{.cluster}}" && test -n "{{.scope}}" && sops -d clusters/{{.cluster}}/{{.scope}}/values.sops.yaml | yq '.backup.restic' || echo ""
+      AWS_ACCESS_KEY_ID:
+        sh: test -n "{{.cluster}}" && test -n "{{.scope}}" && sops -d clusters/{{.cluster}}/{{.scope}}/values.sops.yaml | yq '.backup.ak' || echo ""
+      AWS_SECRET_ACCESS_KEY:
+        sh: test -n "{{.cluster}}" && test -n "{{.scope}}" && sops -d clusters/{{.cluster}}/{{.scope}}/values.sops.yaml | yq '.backup.sk' || echo ""
+      RESTIC_ENDPOINT:
+        sh: test -n "{{.cluster}}" && test -n "{{.scope}}" && sops -d clusters/{{.cluster}}/{{.scope}}/values.sops.yaml | yq '.backup.endpoint' || echo ""
+      RESTIC_BUCKET:
+        sh: test -n "{{.cluster}}" && test -n "{{.scope}}" && sops -d clusters/{{.cluster}}/{{.scope}}/values.sops.yaml | yq '.backup.bucket' || echo ""
+    preconditions:
+      - sh: test -n "{{.cluster}}"
+        msg: "cluster variable is required. Usage: task restic:cmd cluster=home|gw scope=apps|media|unifi -- <restic commands>"
+      - sh: test -n "{{.scope}}"
+        msg: "scope variable is required. Usage: task restic:cmd cluster=home|gw scope=apps|media|unifi -- <restic commands>"
+    env:
+      RESTIC_PASSWORD: "{{.RESTIC_PASSWORD}}"
+      AWS_ACCESS_KEY_ID: "{{.AWS_ACCESS_KEY_ID}}"
+      AWS_SECRET_ACCESS_KEY: "{{.AWS_SECRET_ACCESS_KEY}}"
+    cmds:
+      - restic -r s3:{{.RESTIC_ENDPOINT}}/{{.RESTIC_BUCKET}} {{.CLI_ARGS}}
