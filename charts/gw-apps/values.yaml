@@ -2,6 +2,7 @@ acme:
   issuer: issuer@example.tld
 auth:
   pocketid_vhost: pocketid.example.tld
+  encryption_key: toto
 pass:
   vaultwarden_vhost: vaultwarden.example.tld
   client_id: toto

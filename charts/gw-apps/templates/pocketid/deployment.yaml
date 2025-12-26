@@ -21,6 +21,8 @@ spec:
           env:
             - name: APP_URL
               value: https://{{ .Values.auth.pocketid_vhost }}
+            - name: ENCRYPTION_KEY
+              value: {{ .Values.auth.encryption_key }}
             - name: TRUST_PROXY
               value: "true"
             - name: PUID
