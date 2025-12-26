@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: autobrr
+  name: autobrr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autobrr
+  template:
+    metadata:
+      labels:
+        app: autobrr
+    spec:
+      containers:
+        - image: ghcr.io/autobrr/autobrr:latest
+          env:
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
+          imagePullPolicy: Always
+          name: autobrr
+          volumeMounts:
+            - name: autobrr-config
+              mountPath: /config
+      volumes:
+        - name: autobrr-config
+          persistentVolumeClaim:
+            claimName: autobrr-config

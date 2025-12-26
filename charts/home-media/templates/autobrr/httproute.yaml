@@ -1,0 +1,13 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: autobrr
+spec:
+  parentRefs:
+    - name: gw-media
+  hostnames:
+    - autobrr.{{ .Values.wildcard_domain }}
+  rules:
+    - backendRefs:
+        - name: autobrr
+          port: 80
