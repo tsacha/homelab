@@ -8,6 +8,7 @@ backup:
   endpoint: s3.example.com
   bucket: backup-media
 papra:
+  auth_secret: papra-default-auth-secret-change-me
   oauth:
     id: providerid
     name: "Provider Name"

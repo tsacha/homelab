@@ -34,6 +34,8 @@ spec:
               value: "::"
             - name: AUTH_PROVIDERS_EMAIL_IS_ENABLED
               value: "false"
+            - name: AUTH_SECRET
+              value: "{{ .Values.papra.auth_secret }}"
             - name: AUTH_PROVIDERS_CUSTOMS
               value: |
                 [

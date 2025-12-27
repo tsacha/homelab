@@ -2,6 +2,7 @@ wildcard_domain: ENC[AES256_GCM,data:Mjjz5XvqJcWIX4fo+keEeaJi,iv:DZFg7sUu2faQNRz
 gw:
     ip: ENC[AES256_GCM,data:49VJf/OogQV8o+R9di94iSwnYzMx,iv:N6LVknt7H1FDvjCkJEWlcqO29tZG1zlrP69IGxSsInw=,tag:jjp5dcCl2WYjKTgMwpbLEg==,type:str]
 papra:
+    auth_secret: ENC[AES256_GCM,data:2eRCzcjqmj2XsPk5AfD6tURwnuSNe4OEv5M8Y5WohPADhIoI+NrxkWYh9ZkLbgoHCLWvIXdhmrLhgsYjvMo6bilzFadlblFRH9cNvWx1NsJQO4CR+lQniQUxxqy6m48B,iv:0lZLAfu6/59JYK/T1F79fM3Sx5ku95l8xHmnvsDds5g=,tag:1Wmi/j4gnF4D2zoHCsguIA==,type:str]
     oauth:
         id: ENC[AES256_GCM,data:m4P7QQp41wo=,iv:Gf6hUY5UY6iPjOdnmVlaMTern/SJur9WjRP2xOFAVKI=,tag:4vdm7ryR4ikUvzsd3Pi4gg==,type:str]
         name: ENC[AES256_GCM,data:qgUoUjPc+yCiueFY7i9DBQ==,iv:CsVONIJcfKhWh8Ic5bHyuEXz9b7TdH/v2O1Ivpd3Uzc=,tag:Pnow80MUTdnTatZrvYHs4A==,type:str]
@@ -25,7 +26,7 @@ sops:
             VzhQUDhGbTlDMHAvWXA0VFZkVCs2eWcKgpn/cePFeO+jJ8JpX+DmoZZhmQXC55GF
             l4r9WQ+lnjx/0KTsOwQ6IW+7OudE7r52tKeFISjTaCV2DQMAtro9OQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-13T18:45:34Z"
-    mac: ENC[AES256_GCM,data:IKlUXpN9csvkAtLouSsm8sH1xdUzdxHqUMRPaGkxJO7wi/52SLVVNtqzQt/Tjj39C2GXo2WoKY+Vwr6yWw5fqdiaIsAPI5qB5fo01VCKH6pCbjP9+czGXUxhDpGjtDXK925YEmNpcqJ2sjE3oAoTQfoVKZFlvLZvhTZipYnAN7k=,iv:d92RtpKmnMM4MALamUOWosiZcI7+VbECcLU7zmwYuNI=,tag:peTRVG3qvNqEIju+45C12g==,type:str]
+    lastmodified: "2025-12-27T11:38:26Z"
+    mac: ENC[AES256_GCM,data:IpMSjw1rkFr2yQu+d811UHb+jh/Hzef673fUKlRD0ICRiGZECBi53nmaerljv8/TEogDvm1ZeevZIiriDs8RInH0lity8eJcFasfLKA47dBU2dKqI+LwUd/tlXi1WqUpAuO9DGDFhmJ+wOwCCT++3nT24FE54ITAXB/6XvalsVw=,iv:X84TyM0nsJtDzkedjpBqMifrvKWtzODgJn9N995fO6g=,tag:d6cjP2M3st0yJJ1uyXy8/g==,type:str]
     unencrypted_suffix: _unencrypted
     version: 3.11.0
