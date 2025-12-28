@@ -6,7 +6,8 @@ resources:
   - ippool.sops.yaml
   - cert-manager.yaml
   - reloader.yaml
-  - k8up.yaml
+  - external-snapshotter-crds.yaml
+  - volsync.yaml
   - metrics-server.yaml
 secretGenerator:
   - name: cilium-values

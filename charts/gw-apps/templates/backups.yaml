@@ -1,40 +1,55 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: backup-credentials
+  name: restic-config-pocketid
   namespace: apps
 type: Opaque
 stringData:
-  ak: "{{ .Values.backup.ak }}"
-  sk: "{{ .Values.backup.sk }}"
-  restic: "{{ .Values.backup.restic }}"
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/pocketid
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
 ---
-apiVersion: k8up.io/v1
-kind: Schedule
+apiVersion: v1
+kind: Secret
 metadata:
-  name: gw-apps
+  name: restic-config-vaultwarden
+  namespace: apps
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/vaultwarden
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: pocketid
   namespace: apps
 spec:
-  backend:
-    s3:
-      endpoint: '{{ .Values.backup.endpoint }}'
-      bucket: '{{ .Values.backup.bucket }}'
-      accessKeyIDSecretRef:
-        name: backup-credentials
-        key: ak
-      secretAccessKeySecretRef:
-        name: backup-credentials
-        key: sk
-    repoPasswordSecretRef:
-      name: backup-credentials
-      key: restic
-  backup:
-    schedule: '0 * * * *'
-    failedJobsHistoryLimit: 2
-    successfulJobsHistoryLimit: 2
-  check:
-    schedule: '1 * * * *'
-  prune:
-    schedule: '2 * * * *'
-    retention:
-      keepLast: 5
+  sourcePVC: pocketid
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-pocketid
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: vaultwarden
+  namespace: apps
+spec:
+  sourcePVC: vaultwarden
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-vaultwarden
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5

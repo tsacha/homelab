@@ -1,0 +1,35 @@
+# Installs the external-snapshotter CRDs directly from upstream (no vendoring).
+# Source: https://github.com/kubernetes-csi/external-snapshotter
+# Tag: v8.3.0
+#
+# This exists so controllers (e.g. VolSync) can watch VolumeSnapshot* kinds.
+# We use force=true to emulate "kubectl replace" on CRDs.
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/gitrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: external-snapshotter
+  namespace: flux-system
+spec:
+  interval: 30m0s
+  url: https://github.com/kubernetes-csi/external-snapshotter
+  ref:
+    tag: v8.3.0
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: external-snapshotter-crds
+  namespace: flux-system
+spec:
+  interval: 30m0s
+  sourceRef:
+    kind: GitRepository
+    name: external-snapshotter
+  path: ./client/config/crd
+  prune: true
+  force: true
+  wait: true
+  timeout: 5m0s

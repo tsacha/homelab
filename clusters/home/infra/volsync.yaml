@@ -2,28 +2,29 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: k8up
+  name: backube
   namespace: flux-system
 spec:
   interval: 5m0s
-  url: https://k8up-io.github.io/k8up
+  url: https://backube.github.io/helm-charts
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: k8up
+  name: volsync
   namespace: kube-system
 spec:
   interval: 5m0s
   chart:
     spec:
-      chart: k8up
+      chart: volsync
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        name: k8up
+        name: backube
         namespace: flux-system
-  values:
-    k8up:
-      skipWithoutAnnotation: true
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace

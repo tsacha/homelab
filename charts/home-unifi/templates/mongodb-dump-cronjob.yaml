@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: unifi-mongodb-dump
+  namespace: unifi
+spec:
+  schedule: "55 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: mongodump
+              image: docker.io/mongodb/mongodb-community-server:8.2.3-ubi8
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  mongodump --username="$MONGODB_INITDB_ROOT_USERNAME" --password="$MONGODB_INITDB_ROOT_PASSWORD" --host="unifi-db" --port="27017" --archive=/dump/latest.archive.tmp
+                  mv /dump/latest.archive.tmp /dump/latest.archive
+              env:
+                - name: MONGODB_INITDB_ROOT_USERNAME
+                  value: root
+                - name: MONGODB_INITDB_ROOT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: unifi-secrets
+                      key: mongodb-root-password
+              volumeMounts:
+                - name: dump
+                  mountPath: /dump
+          volumes:
+            - name: dump
+              persistentVolumeClaim:
+                claimName: unifi-mongodb-dump

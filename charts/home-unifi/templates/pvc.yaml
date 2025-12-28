@@ -3,8 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: unifi-app-pvc
   namespace: unifi
-  annotations:
-    k8up.io/backup: "true"
+
 spec:
   accessModes:
     - ReadWriteOnce

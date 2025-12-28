@@ -1,40 +1,55 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: backup-credentials
+  name: restic-config-unifi-app-pvc
   namespace: unifi
 type: Opaque
 stringData:
-  ak: "{{ .Values.backup.ak }}"
-  sk: "{{ .Values.backup.sk }}"
-  restic: "{{ .Values.backup.restic }}"
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/unifi-app-pvc
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
 ---
-apiVersion: k8up.io/v1
-kind: Schedule
+apiVersion: v1
+kind: Secret
 metadata:
-  name: unifi
+  name: restic-config-unifi-mongodb-dump
+  namespace: unifi
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/unifi-mongodb-dump
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: unifi-app-pvc
   namespace: unifi
 spec:
-  backend:
-    s3:
-      endpoint: '{{ .Values.backup.endpoint }}'
-      bucket: '{{ .Values.backup.bucket }}'
-      accessKeyIDSecretRef:
-        name: backup-credentials
-        key: ak
-      secretAccessKeySecretRef:
-        name: backup-credentials
-        key: sk
-    repoPasswordSecretRef:
-      name: backup-credentials
-      key: restic
-  backup:
-    schedule: '0 * * * *'
-    failedJobsHistoryLimit: 2
-    successfulJobsHistoryLimit: 2
-  check:
-    schedule: '1 * * * *'
-  prune:
-    schedule: '2 * * * *'
-    retention:
-      keepLast: 5
+  sourcePVC: unifi-app-pvc
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-unifi-app-pvc
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: unifi-mongodb-dump
+  namespace: unifi
+spec:
+  sourcePVC: unifi-mongodb-dump
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-unifi-mongodb-dump
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5

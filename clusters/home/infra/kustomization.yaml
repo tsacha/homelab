@@ -6,7 +6,8 @@ resources:
   - ippool.sops.yaml
   - bgp.sops.yaml
   - cert-manager.yaml
-  - k8up.yaml
+  - external-snapshotter-crds.yaml
+  - volsync.yaml
   - kubelet-serving-cert-approver.yaml
   - metrics-server.yaml
 secretGenerator:

@@ -1,40 +1,139 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: backup-credentials
+  name: restic-config-autobrr-config
   namespace: media
 type: Opaque
 stringData:
-  ak: "{{ .Values.backup.ak }}"
-  sk: "{{ .Values.backup.sk }}"
-  restic: "{{ .Values.backup.restic }}"
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/autobrr-config
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
 ---
-apiVersion: k8up.io/v1
-kind: Schedule
+apiVersion: v1
+kind: Secret
 metadata:
-  name: media
+  name: restic-config-prowlarr-config
+  namespace: media
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/prowlarr-config
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-radarr-config
+  namespace: media
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/radarr-config
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-sonarr-config
+  namespace: media
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/sonarr-config
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-jellyfin-config
+  namespace: media
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/jellyfin-config
+  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
+  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
+  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: autobrr-config
   namespace: media
 spec:
-  backend:
-    s3:
-      endpoint: '{{ .Values.backup.endpoint }}'
-      bucket: '{{ .Values.backup.bucket }}'
-      accessKeyIDSecretRef:
-        name: backup-credentials
-        key: ak
-      secretAccessKeySecretRef:
-        name: backup-credentials
-        key: sk
-    repoPasswordSecretRef:
-      name: backup-credentials
-      key: restic
-  backup:
-    schedule: '0 * * * *'
-    failedJobsHistoryLimit: 2
-    successfulJobsHistoryLimit: 2
-  check:
-    schedule: '1 * * * *'
-  prune:
-    schedule: '2 * * * *'
-    retention:
-      keepLast: 5
+  sourcePVC: autobrr-config
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-autobrr-config
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: prowlarr-config
+  namespace: media
+spec:
+  sourcePVC: prowlarr-config
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-prowlarr-config
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: radarr-config
+  namespace: media
+spec:
+  sourcePVC: radarr-config
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-radarr-config
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: sonarr-config
+  namespace: media
+spec:
+  sourcePVC: sonarr-config
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-sonarr-config
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: jellyfin-config
+  namespace: media
+spec:
+  sourcePVC: jellyfin-config
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-jellyfin-config
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 5
