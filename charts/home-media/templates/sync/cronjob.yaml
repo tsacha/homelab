@@ -23,7 +23,7 @@ spec:
                 - "--ignore-checksum"
                 - "--config"
                 - "/config/rclone.conf"
-                - "seedbox:/home/neandre/downloads/$(SYNC_SUBFOLDER)"
+                - "seedbox:/home/neandre/$(SYNC_SUBFOLDER)"
                 - "/media/torrents/$(SYNC_SUBFOLDER)"
               volumeMounts:
                 - name: rclone-config-volume
@@ -45,7 +45,7 @@ spec:
                 - "--ignore-checksum"
                 - "--config"
                 - "/config/rclone.conf"
-                - "seedbox:/home/neandre/downloads/$(SYNC_SUBFOLDER)"
+                - "seedbox:/home/neandre/$(SYNC_SUBFOLDER)"
                 - "/media/torrents/$(SYNC_SUBFOLDER)"
               volumeMounts:
                 - name: rclone-config-volume
