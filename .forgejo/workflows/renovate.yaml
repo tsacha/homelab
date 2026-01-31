@@ -14,7 +14,7 @@ jobs:
   renovate:
     runs-on: codeberg-small-lazy
     container:
-      image: docker.io/renovate/renovate:42
+      image: docker.io/renovate/renovate:43
     steps:
       - name: Checkout
         uses: actions/checkout@v6
