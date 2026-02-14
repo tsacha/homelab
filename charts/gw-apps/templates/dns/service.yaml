@@ -4,8 +4,6 @@ metadata:
   name: dns
   labels:
     app: dns
-  annotations:
-    "lbipam.cilium.io/sharing-key": "external-ips"
 spec:
   type: LoadBalancer
   selector:

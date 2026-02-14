@@ -3,23 +3,23 @@ ipv6NativeRoutingCIDR: ENC[AES256_GCM,data:NnLPbk1Bs8ljad001B54LwZRvUF+dj0=,iv:l
 k8sServiceHost: ENC[AES256_GCM,data:dCNQQe0smaMkPBlFTd/u8abmsfuNKZ4=,iv:f63TUgxnKkwKLC73PzZxxC/oIV03p1YJ/Z8B+Z+lDEA=,tag:U7P4ceeqoWSM1T+kOAz19A==,type:str]
 k8sServicePort: 6443
 ipam:
-  operator:
-    clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:3JDJB8pEYG8wZJaz4A==,iv:OYuV5i7E7vw1qd1C0KzOYX6IB/Qhxc+HQSUQP7Sxw6E=,tag:/hkFglHi14v0GqPQSaIb1g==,type:str]
-    clusterPoolIPv4MaskSize: ENC[AES256_GCM,data:pmo=,iv:UlOpPLa/HUDCWYb4loMRV4NTLU0vER4Kwyx82VqzVT4=,tag:UHlgOIOF/qWBOOYeP3cOrw==,type:int]
-    clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:mo/ykFtD03Qv7l/kWh9p3xzSBH2jDEE=,iv:xFIJ1cT0vK3VVI23naUh53ztYG9n838o/LWzw9gSEbQ=,tag:17VyTbjx1i0P6RXR81xPuQ==,type:str]
-    clusterPoolIPv6MaskSize: ENC[AES256_GCM,data:w6w=,iv:TM/bCnBWWrA6CA+8ToTy+6o7QGuXbGiMfh37Bj1K6Pw=,tag:+ER/THEQkK3in6RyME6dCA==,type:int]
+    operator:
+        clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:3JDJB8pEYG8wZJaz4A==,iv:OYuV5i7E7vw1qd1C0KzOYX6IB/Qhxc+HQSUQP7Sxw6E=,tag:/hkFglHi14v0GqPQSaIb1g==,type:str]
+        clusterPoolIPv4MaskSize: ENC[AES256_GCM,data:pmo=,iv:UlOpPLa/HUDCWYb4loMRV4NTLU0vER4Kwyx82VqzVT4=,tag:UHlgOIOF/qWBOOYeP3cOrw==,type:int]
+        clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:mo/ykFtD03Qv7l/kWh9p3xzSBH2jDEE=,iv:xFIJ1cT0vK3VVI23naUh53ztYG9n838o/LWzw9gSEbQ=,tag:17VyTbjx1i0P6RXR81xPuQ==,type:str]
+        clusterPoolIPv6MaskSize: ENC[AES256_GCM,data:w6w=,iv:TM/bCnBWWrA6CA+8ToTy+6o7QGuXbGiMfh37Bj1K6Pw=,tag:+ER/THEQkK3in6RyME6dCA==,type:int]
 sops:
-  age:
-    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4cnF4czFyYzhFV0lGOGoy
-        NWM5YWQrNWFyV25zTG52UUgrdjlOVHphRWpjCjNheDlOdG9yQkk4bUdSMUpoWmNL
-        Z3B4UEpXM0Y1bGJ2QUhyMlhjb1dpNGsKLS0tIFA0WE5xQTI4QlluMGdNOURXMFJK
-        TEFxTk5Qd0F6L2FzZms2ZGdyNC9UR0kKPYpQU5tuHiHPHjMA4unA/Q0axRNIw4w1
-        qtQEnCz7VBrCZX6uIRt1OYv19wpqAmQn3K2JUIA2GnagVetBB6/m8A==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-06-26T19:47:46Z"
-  mac: ENC[AES256_GCM,data:473jvX/IJl8VXuxX4iPiEnRoKJpBxcgN65MrHbgyZ7VffGq08XUeNsk/YLomDlxrOEj1DL8xvkT4X76mmN1cAHG8C4qcrN6ERxWRBGektO5LHI5bxsEwKx/BWblKf1AzMxbBwyExr2QFx1pUzv/ttuODX0heQEMArmye61+eQQg=,iv:NPmRAwJACzNDV2PHybWpN+5ZO6Sw7k8ekq/eZ4pds/4=,tag:aEsZuEy7cv3lcn0TBwtCVw==,type:str]
-  encrypted_regex: ^(ipv[46]NativeRoutingCIDR|clusterPool.+|k8sServiceHost)$
-  version: 3.10.2
+    age:
+        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4cnF4czFyYzhFV0lGOGoy
+            NWM5YWQrNWFyV25zTG52UUgrdjlOVHphRWpjCjNheDlOdG9yQkk4bUdSMUpoWmNL
+            Z3B4UEpXM0Y1bGJ2QUhyMlhjb1dpNGsKLS0tIFA0WE5xQTI4QlluMGdNOURXMFJK
+            TEFxTk5Qd0F6L2FzZms2ZGdyNC9UR0kKPYpQU5tuHiHPHjMA4unA/Q0axRNIw4w1
+            qtQEnCz7VBrCZX6uIRt1OYv19wpqAmQn3K2JUIA2GnagVetBB6/m8A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-02-14T16:02:48Z"
+    mac: ENC[AES256_GCM,data:nK1TdjAxv5lakYIh11YXsljG15QUJamCVn3rHdxg1gvrzfpQPGJpAAwf1F2cPBw6ylRiBsIR1i6ediZHoGGjfgNtjLYle+8vAPXyhSKFVjldwL+8V2bmlb5Yv626DEeLH+yyQy5ALa3v3HdH3zyQPJMRfk6pzUcGzMkpHFoDXHs=,iv:PR3vGglk9s2d1xKCPr63F77w8mOgRihUgj05xXiuu7g=,tag:4x4//mu/71ZWN1MgDCz7bw==,type:str]
+    encrypted_regex: ^(ipv[46]NativeRoutingCIDR|clusterPool.+|k8sServiceHost)$
+    version: 3.11.0

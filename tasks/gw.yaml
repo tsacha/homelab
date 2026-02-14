@@ -1,6 +1,8 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 vars:
+  GW:
+    sh: yq -r '.gw.fqdn' .private/inventory.yaml || /bin/true
   GW_CLUSTER:
     sh: yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml || /bin/true
   FORGEJO_USER:
@@ -8,10 +10,23 @@ vars:
   FORGEJO_PAT:
     sh: yq -r '.flux.forgejo_pat' .private/inventory.yaml || /bin/true
 tasks:
+  kubeconfig:
+    cmds:
+      - |
+        ssh {{.GW}} -l root -C "kubectl config view --raw" | yq '
+                      .clusters[0].cluster.server = "https://{{.GW}}:6443" |
+                      .clusters[0].name = "{{.GW_CLUSTER}}" |
+                      .contexts[0].name = "{{.GW_CLUSTER}}" |
+                      .contexts[0].context.cluster = "{{.GW_CLUSTER}}" |
+                      .contexts[0].context.user = "admin@{{.GW_CLUSTER}}" |
+                      .contexts[0].context.namespace = "default" |
+                      .users[0].name = "admin@{{.GW_CLUSTER}}" |
+                      .current-context = "{{.GW_CLUSTER}}"
+                    '
   flux:
     cmds:
       - |
-        export KUBECONFIG=~/.kube/{{.GW_CLUSTER}}.yaml
+        export KUBECONFIG=~/.kube/clusters/{{.GW_CLUSTER}}.yaml
         export GITEA_TOKEN={{.FORGEJO_PAT}}
         kubectl get ns flux-system || kubectl create ns flux-system
         kubectl -n flux-system get secrets forgejo-auth || kubectl -n flux-system create secret generic forgejo-auth \
@@ -26,3 +41,15 @@ tasks:
         pushd clusters/gw/flux-system
         kubectl apply --server-side -k .
         popd
+  cni:
+    desc: Install Cilium with Gateway API CRDs
+    cmds:
+      - |
+        export KUBECONFIG=~/.kube/clusters/{{.GW_CLUSTER}}.yaml
+        export CILIUM_VERSION=1.19.0 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
+        export GATEWAY_API_VERSION=v1.4.1 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
+        kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_API_VERSION/experimental-install.yaml
+        helm repo add cilium https://helm.cilium.io/
+        sops -d clusters/gw/infra/cilium-values.sops.yaml \
+          | yq eval-all 'select(fi == 0).spec.values + select(fi == 1)' clusters/gw/infra/cilium.yaml - \
+          | helm upgrade --install cilium cilium/cilium -n kube-system --version=$CILIUM_VERSION -f -

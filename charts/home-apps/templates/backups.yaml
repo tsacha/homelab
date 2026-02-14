@@ -24,4 +24,8 @@ spec:
     copyMethod: Direct
     pruneIntervalDays: 14
     retain:
-      hourly: 5
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
