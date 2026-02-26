@@ -17,12 +17,15 @@ spec:
                 - sh
                 - -c
                 - |
-                  for subfolder in movies shows; do
-                    rclone sync -P --size-only --ignore-checksum \
-                      --config /config/rclone.conf \
-                      "seedbox:/home/neandre/${subfolder}" \
-                      "/media/torrents/${subfolder}"
-                  done
+                  rclone sync "seedbox:/home/neandre/" "/media/torrents/" \
+                    --config /config/rclone.conf \
+                    --include "/movies/**" \
+                    --include "/shows/**" \
+                    --fast-list \
+                    --tpslimit 3 \
+                    --checkers 2 \
+                    --size-only \
+                    -P
               volumeMounts:
                 - name: rclone-config-volume
                   mountPath: /config
