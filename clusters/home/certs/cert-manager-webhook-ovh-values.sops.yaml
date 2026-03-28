@@ -1,4 +1,3 @@
-configVersion: 0.0.2
 groupName: acme-ovh
 issuers:
     - name: le-prod
@@ -8,7 +7,7 @@ issuers:
       acmeServerUrl: https://acme-v02.api.letsencrypt.org/directory
       email: ENC[AES256_GCM,data:OMK/N8NnyZjvdG0uLzItThPMPA==,iv:fDDsIeaeAGPyO22AKqfgRu91mr5xsFeL/J49Jkq4L2M=,tag:XRG0U1arNK/74N1ccBGNXA==,type:str]
       ovhEndpointName: ENC[AES256_GCM,data:STCstDAs,iv:5pKQInMGDu0NtJMZInefNQ6lLN7x5OkGTon0UjxHZV8=,tag:DaXR96XnoyTAw6RDXWHLeA==,type:str]
-      ovhAuthenticationMethod: ENC[AES256_GCM,data:TOhu75ssdn7ojYw=,iv:S85kszfopM8jH6EDTkJFQGLW+XG2Zv1i1NA8zJg0E6Q=,tag:Gp++kyHlqT0BBPlToY2z+A==,type:str]
+      ovhAuthenticationMethod: ENC[AES256_GCM,data:D2irpuE3DZyt1eU=,iv:ZxoMo3GJfp2+5a+wzrYTjsa0acAXqrms6RkGaWC91rs=,tag:ZwO0axLdj1XSG59vW8ucmA==,type:str]
       ovhAuthentication:
         applicationKey: ENC[AES256_GCM,data:w0eNd5c9yLVYc2KXJOGPWg==,iv:fpAppjncmQ+Ri4NT8bHvEJQT/1LqW/qYdND5JbtSrqg=,tag:Lq0VAFTUCZeg8Qc4SWV7ew==,type:str]
         applicationSecret: ENC[AES256_GCM,data:LcoWXLRWmQ4j76F4l8lwCV4KibZN64dPuInnMiQnS10=,iv:EGcLZ/KZiPT4PDro3EYkThMeGWQLCIdW1AdHViKjlMY=,tag:C1wggv0aXTsix4c6woCt1Q==,type:str]
@@ -24,7 +23,7 @@ issuers:
       ovhAuthentication:
         applicationKey: ENC[AES256_GCM,data:w0eNd5c9yLVYc2KXJOGPWg==,iv:fpAppjncmQ+Ri4NT8bHvEJQT/1LqW/qYdND5JbtSrqg=,tag:Lq0VAFTUCZeg8Qc4SWV7ew==,type:str]
         applicationSecret: ENC[AES256_GCM,data:LcoWXLRWmQ4j76F4l8lwCV4KibZN64dPuInnMiQnS10=,iv:EGcLZ/KZiPT4PDro3EYkThMeGWQLCIdW1AdHViKjlMY=,tag:C1wggv0aXTsix4c6woCt1Q==,type:str]
-        consumerKey: ENC[AES256_GCM,data:EnPNOqxRK2ssVwaqxM1bqDz1iyQ+DwG9wVQ2rXmS6As=,iv:Bvgff2du+1jvJje6o9TCAcYV6dIDalqOGdHKjJumf+M=,tag:uhJSqV4kdj/07UbEI6foHA==,type:str]
+        applicationConsumerKey: ENC[AES256_GCM,data:sWwPXGL6cHYJUkFZ31uox5CwL8R5mCwsBefOroExCNc=,iv:jSMl2JQHBvcIWE/ybosfc5iF0CSW1GD0NzD+m7Ey524=,tag:Pdg15dg2et6idVpopsTwpQ==,type:str]
 sops:
     age:
         - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
@@ -36,7 +35,7 @@ sops:
             WWVPMUx5T1dRR3dvY2FKVnppenJJSmsKXWZd8Edhl1/yzxa3qkIxaPTIu5wctO6R
             yGtAdy5cW7cDR1IT8rXTtZ5iYkIITyhaxhPeqd3va0R5g0nzi+fL4Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-10-11T17:44:59Z"
-    mac: ENC[AES256_GCM,data:Nf34mpf5wQCKDnFk63YDtq/k9d1eGs5sVuTeQcW4i8nHWhE7v83fjRN0hdm+N95KISWlMAR+Z9d5eK7yRWinZO2bQIHk5rATU9RbImxGbwBNd3kaM9cnwDKrtx7X8VaKThmgyIet8QAF3+C2HiPgYGtWFJLYUSvNMYc+bG3AhTY=,iv:iY8O7GF8/aQfttJe5n1VIgx3ePicRDXQ3aoRPu/gPBQ=,tag:iyNgJevHecdN1wlTOQyRbQ==,type:str]
+    lastmodified: "2026-03-28T12:41:16Z"
+    mac: ENC[AES256_GCM,data:LzKAGz9KBkRjqOQFQ2SWRJYItEP0nrcTECtYfy56dHEj3M4434DUWEgBeY0NIVeYxKY9eHLK1vGz5mDW3InyABME6n4IBYqLuYZQSriV3p7QY1E+gBYzJWOAhvrDNCrem04SdJq7Sac0BxcNYmCfPfaxC4xIJWCgpQfXdsV72WE=,iv:hx8C3zBQCnJxHEBtJuIg2RaCyjMaSBQ0N2v4sw4RkKs=,tag:Btm5NwPmtHqP3QYA6E7xGA==,type:str]
     encrypted_regex: ^(ovh.+|email)$
-    version: 3.11.0
+    version: 3.12.2
