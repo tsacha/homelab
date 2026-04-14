@@ -8,3 +8,4 @@ resources:
   - apps.yaml
   - media.yaml
   - unifi.yaml
+  - registry.yaml

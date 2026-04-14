@@ -1,0 +1,22 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gw-registry
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      lbipam.cilium.io/ips: "{{ .Values.gw.ip }}"
+  listeners:
+    - protocol: HTTP
+      name: http
+      port: 80
+      hostname: '*.{{ .Values.wildcard_domain }}'
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.{{ .Values.wildcard_domain }}'
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: wildcard-cert
