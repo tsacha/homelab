@@ -37,20 +37,17 @@ spec:
             - name: AUTH_SECRET
               value: "{{ .Values.papra.auth_secret }}"
             - name: AUTH_PROVIDERS_CUSTOMS
-              value: |
-                [
-                  {
-                    "providerId": "{{ .Values.papra.oauth.id }}",
-                    "providerName": "{{ .Values.papra.oauth.name }}",
-                    "providerIconUrl": "https://api.iconify.design/tabler:login-2.svg",
-                    "clientId": "{{ .Values.papra.oauth.clientId }}",
-                    "clientSecret": "{{ .Values.papra.oauth.clientSecret }}",
-                    "type": "oidc",
-                    "discoveryUrl": "{{ .Values.papra.oauth.url }}",
-                    "pkce": "true",
-                    "scopes": ["openid", "profile", "email"]
-                  }
-                ]
+              value: {{ list (dict
+                "providerId" .Values.papra.oauth.id
+                "providerName" .Values.papra.oauth.name
+                "providerIconUrl" "https://api.iconify.design/tabler:login-2.svg"
+                "clientId" .Values.papra.oauth.clientId
+                "clientSecret" .Values.papra.oauth.clientSecret
+                "type" "oidc"
+                "discoveryUrl" .Values.papra.oauth.url
+                "pkce" true
+                "scopes" (list "openid" "profile" "email")
+              ) | toJson | quote }}
       volumes:
         - name: papra-docs
           persistentVolumeClaim:
