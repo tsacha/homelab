@@ -64,7 +64,7 @@ spec:
     spec:
       containers:
         - name: unifi-db
-          image: docker.io/mongodb/mongodb-community-server:8.2.4-ubi8
+          image: docker.io/mongodb/mongodb-community-server:8.3.4-ubi8
           args:
             - --ipv6
           ports:
