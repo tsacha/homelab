@@ -1,23 +1,11 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: restic-config-unifi-app-pvc
+  name: restic-config-unifi-os-pvc
   namespace: unifi
 type: Opaque
 stringData:
-  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/unifi-app-pvc
-  RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
-  AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
-  AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: restic-config-unifi-mongodb-dump
-  namespace: unifi
-type: Opaque
-stringData:
-  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/unifi-mongodb-dump
+  RESTIC_REPOSITORY: s3:{{ .Values.backup.endpoint }}/{{ .Values.backup.bucket }}/unifi-os-pvc
   RESTIC_PASSWORD: "{{ .Values.backup.restic }}"
   AWS_ACCESS_KEY_ID: "{{ .Values.backup.ak }}"
   AWS_SECRET_ACCESS_KEY: "{{ .Values.backup.sk }}"
@@ -25,34 +13,14 @@ stringData:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: unifi-app-pvc
+  name: unifi-os-pvc
   namespace: unifi
 spec:
-  sourcePVC: unifi-app-pvc
+  sourcePVC: unifi-os-pvc
   trigger:
     schedule: "0 * * * *"
   restic:
-    repository: restic-config-unifi-app-pvc
-    copyMethod: Direct
-    pruneIntervalDays: 14
-    retain:
-      hourly: 6
-      daily: 5
-      weekly: 4
-      monthly: 2
-      yearly: 1
----
-apiVersion: volsync.backube/v1alpha1
-kind: ReplicationSource
-metadata:
-  name: unifi-mongodb-dump
-  namespace: unifi
-spec:
-  sourcePVC: unifi-mongodb-dump
-  trigger:
-    schedule: "0 * * * *"
-  restic:
-    repository: restic-config-unifi-mongodb-dump
+    repository: restic-config-unifi-os-pvc
     copyMethod: Direct
     pruneIntervalDays: 14
     retain:

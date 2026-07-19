@@ -9,13 +9,25 @@ spec:
   type: LoadBalancer
   ipFamilyPolicy: PreferDualStack # No IPv6 on Unifi APs…
   selector:
-    app: unifi-network-application
+    app: unifi-os-server
   ports:
     - protocol: TCP
-      port: 8443
-      targetPort: 8443
-      name: api
+      port: 443
+      targetPort: 443
+      name: webui
     - protocol: TCP
       port: 8080
       targetPort: 8080
-      name: intercom
+      name: inform
+    - protocol: UDP
+      port: 3478
+      targetPort: 3478
+      name: stun
+    - protocol: UDP
+      port: 10003
+      targetPort: 10003
+      name: discovery
+    - protocol: TCP
+      port: 6789
+      targetPort: 6789
+      name: speedtest

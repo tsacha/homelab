@@ -1,52 +1,70 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: unifi-network-application
+  name: unifi-os-server
   namespace: unifi
   labels:
-    app: unifi-network-application
+    app: unifi-os-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: unifi-network-application
+      app: unifi-os-server
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: unifi-network-application
+        app: unifi-os-server
     spec:
+      hostname: unifi-os
       containers:
-        - name: unifi-network-application
-          image: lscr.io/linuxserver/unifi-network-application:latest
+        - name: unifi-os-server
+          image: ghcr.io/lemker/unifi-os-server:v1.4.0
+          securityContext:
+            privileged: true
           env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: MONGO_USER
+            - name: HOST_IP
               valueFrom:
-                secretKeyRef:
-                  name: unifi-secrets
-                  key: mongodb-user
-            - name: MONGO_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: unifi-secrets
-                  key: mongodb-password
-            - name: MONGO_HOST
-              value: unifi-db
-            - name: MONGO_PORT
-              value: "27017"
-            - name: MONGO_DBNAME
-              value: unifi
-            - name: MONGO_AUTHSOURCE
-              value: admin
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: UOS_SYSTEM_IP
+              value: "{{ .Values.uos.system_ip }}"
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash", "-c", "echo $HOST_IP host.docker.internal >> /etc/hosts"]
           volumeMounts:
-            - name: config
-              mountPath: /config
+            - name: data
+              mountPath: /persistent
+              subPath: persistent
+            - name: data
+              mountPath: /var/log
+              subPath: log
+            - name: data
+              mountPath: /data
+              subPath: data
+            - name: data
+              mountPath: /srv
+              subPath: srv
+            - name: data
+              mountPath: /var/lib/unifi
+              subPath: unifi
+            - name: data
+              mountPath: /var/lib/mongodb
+              subPath: mongodb
+            - name: data
+              mountPath: /etc/rabbitmq/ssl
+              subPath: rabbitmq
+          livenessProbe:
+            httpGet:
+              path: /api/ping
+              port: 80
+            initialDelaySeconds: 120
+            periodSeconds: 60
+            timeoutSeconds: 5
+            failureThreshold: 3
       volumes:
-        - name: config
+        - name: data
           persistentVolumeClaim:
-            claimName: unifi-app-pvc
+            claimName: unifi-os-pvc
