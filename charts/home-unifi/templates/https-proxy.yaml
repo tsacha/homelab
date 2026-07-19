@@ -36,6 +36,10 @@ data:
   Caddyfile: |
     :80 {
       reverse_proxy https://unifi-app:8443 {
+        # UniFi 10.x rejects logins (403) when the Origin header does not
+        # match the Host header; keep the client Host instead of the
+        # upstream address rewritten by Caddy >= 2.11
+        header_up Host {host}
         transport http {
           tls_insecure_skip_verify
         }
