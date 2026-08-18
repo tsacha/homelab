@@ -23,7 +23,7 @@ data:
     }
   ldap.json: |
     {
-      "address": "lldap.${SECRET_DOMAIN}:636",
+      "address": "${LLDAP_VHOST}:636",
       "bindDN": "uid=%s,ou=people,dc=homelab,dc=internal",
       "transport": "tls",
       "insecureSkipVerify": false
