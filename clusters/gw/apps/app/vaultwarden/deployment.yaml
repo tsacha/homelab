@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: DOMAIN
-              value: https://{{ .Values.pass.vaultwarden_vhost }}
+              value: https://${VAULTWARDEN_VHOST}
             - name: SSO_ENABLED
               value: "true"
             - name: SSO_ONLY
@@ -30,15 +30,16 @@ spec:
             - name: SSO_ALLOW_UNKNOWN_EMAIL_VERIFICATION
               value: "false"
             - name: SSO_AUTHORITY
-              value: "https://{{ .Values.auth.pocketid_vhost }}"
+              value: "https://${POCKETID_VHOST}"
             - name: SSO_SCOPES
               value: "email profile"
             - name: SSO_AUTHORIZE_EXTRA_PARAMS
               value: ""
             - name: SSO_PKCE
               value: "true"
+            # $$ escapes the substitution: this is a regex meaning "empty", not a variable.
             - name: SSO_AUDIENCE_TRUSTED
-              value: "^$"
+              value: "^$$"
             - name: SSO_CLIENT_ID
               valueFrom:
                 secretKeyRef:

@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - flux-system.yaml
   - gitrepository.yaml
-  - apps.yaml
   - infra.yaml
+  - ../apps
+  - ../dns
   - ../vars

@@ -2,13 +2,12 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: pocketid
-  namespace: apps
 spec:
   parentRefs:
     - name: gw-apps
       sectionName: pocketid-https
   hostnames:
-    - "{{ .Values.auth.pocketid_vhost }}"
+    - "${POCKETID_VHOST}"
   rules:
     - backendRefs:
         - name: pocketid

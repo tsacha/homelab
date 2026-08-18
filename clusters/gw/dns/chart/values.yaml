@@ -1,0 +1,15 @@
+dns:
+  ns: example.tld
+  zone: gw.example.tld
+  http2136_vhost: example.tld
+  http2136_token: http_token
+  rndc_key: rndc_key
+  ipv6_prefix: 'fd00::'
+  nodes:
+    vm1: 10
+  kube:
+    - vm1
+  apps:
+    myapp: vm1
+  custom_records: |
+    @ MX 10 smtp.example.tld.

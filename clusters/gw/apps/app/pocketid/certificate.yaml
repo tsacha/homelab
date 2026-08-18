@@ -5,7 +5,7 @@ metadata:
 spec:
   secretName: pocketid-cert
   dnsNames:
-    - "{{ .Values.auth.pocketid_vhost }}"
+    - "${POCKETID_VHOST}"
   issuerRef:
     name: le-prod
     kind: ClusterIssuer

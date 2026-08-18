@@ -1,5 +1,0 @@
-apiVersion: v2
-name: gw-apps
-description: Gateway Apps
-type: application
-version: 1.0.2

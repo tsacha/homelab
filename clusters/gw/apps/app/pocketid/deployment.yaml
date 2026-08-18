@@ -20,9 +20,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name: APP_URL
-              value: https://{{ .Values.auth.pocketid_vhost }}
+              value: https://${POCKETID_VHOST}
             - name: ENCRYPTION_KEY
-              value: {{ .Values.auth.encryption_key }}
+              value: ${POCKETID_ENCRYPTION_KEY}
             - name: TRUST_PROXY
               value: "true"
             - name: PUID

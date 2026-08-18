@@ -17,15 +17,17 @@ spec:
         app: wg
     spec:
       initContainers:
+        # WG_ENDPOINT_HOST is the host half of WG_ENDPOINT; Helm used to split
+        # it inline, substitution cannot, so it is stored as its own key.
         - name: wait-for-dns
           image: docker.io/alpine:latest
-          command: ["sh", "-c", "until nslookup {{ (split ":" .Values.wg.endpoint)._0 }}; do echo waiting for DNS; sleep 2; done;"]
+          command: ["sh", "-c", "until nslookup ${WG_ENDPOINT_HOST}; do echo waiting for DNS; sleep 2; done;"]
       containers:
         - name: wireguard
           image: docker.io/linuxserver/wireguard
           livenessProbe:
             exec:
-              command: ["ping6", "-c", "1", "{{ .Values.wg.healthcheck }}"]
+              command: ["ping6", "-c", "1", "${WG_HEALTHCHECK}"]
             initialDelaySeconds: 3
             periodSeconds: 30
             timeoutSeconds: 1

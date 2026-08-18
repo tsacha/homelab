@@ -2,13 +2,12 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: vaultwarden
-  namespace: apps
 spec:
   parentRefs:
     - name: gw-apps
       sectionName: vaultwarden-https
   hostnames:
-    - "{{ .Values.pass.vaultwarden_vhost }}"
+    - "${VAULTWARDEN_VHOST}"
   rules:
     - backendRefs:
         - name: vaultwarden

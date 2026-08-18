@@ -5,7 +5,7 @@ metadata:
 spec:
   secretName: vaultwarden-cert
   dnsNames:
-    - "{{ .Values.pass.vaultwarden_vhost }}"
+    - "${VAULTWARDEN_VHOST}"
   issuerRef:
     name: le-prod
     kind: ClusterIssuer

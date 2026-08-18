@@ -11,7 +11,8 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - hostname: "{{ .Values.dns.http2136_vhost }}"
+    # http2136-cert is issued by the dns tenant, which owns the bind workload.
+    - hostname: "${DNS_HTTP2136_VHOST}"
       name: gw-https
       port: 443
       protocol: HTTPS
@@ -21,7 +22,7 @@ spec:
             kind: Secret
             name: http2136-cert
         mode: Terminate
-    - hostname: "{{ .Values.pass.vaultwarden_vhost }}"
+    - hostname: "${VAULTWARDEN_VHOST}"
       name: vaultwarden-https
       port: 443
       protocol: HTTPS
@@ -31,7 +32,7 @@ spec:
             kind: Secret
             name: vaultwarden-cert
         mode: Terminate
-    - hostname: "{{ .Values.auth.pocketid_vhost }}"
+    - hostname: "${POCKETID_VHOST}"
       name: pocketid-https
       port: 443
       protocol: HTTPS
