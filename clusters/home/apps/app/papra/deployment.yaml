@@ -25,7 +25,7 @@ spec:
               mountPath: /app/app-data
           env:
             - name: APP_BASE_URL
-              value: https://docs.{{ .Values.wildcard_domain }}
+              value: https://docs.${SECRET_DOMAIN}
             - name: DOCUMENT_STORAGE_MAX_UPLOAD_SIZE
               value: "0"
             - name: DOCUMENTS_OCR_LANGUAGES
@@ -35,19 +35,11 @@ spec:
             - name: AUTH_PROVIDERS_EMAIL_IS_ENABLED
               value: "false"
             - name: AUTH_SECRET
-              value: "{{ .Values.papra.auth_secret }}"
+              value: "${PAPRA_AUTH_SECRET}"
+            # Key order is alphabetical because Helm's toJson sorted the map it
+            # replaced; keeping it makes the render diff against the old chart empty.
             - name: AUTH_PROVIDERS_CUSTOMS
-              value: {{ list (dict
-                "providerId" .Values.papra.oauth.id
-                "providerName" .Values.papra.oauth.name
-                "providerIconUrl" "https://api.iconify.design/tabler:login-2.svg"
-                "clientId" .Values.papra.oauth.clientId
-                "clientSecret" .Values.papra.oauth.clientSecret
-                "type" "oidc"
-                "discoveryUrl" .Values.papra.oauth.url
-                "pkce" true
-                "scopes" (list "openid" "profile" "email")
-              ) | toJson | quote }}
+              value: '[{"clientId":"${PAPRA_OAUTH_CLIENT_ID}","clientSecret":"${PAPRA_OAUTH_CLIENT_SECRET}","discoveryUrl":"${PAPRA_OAUTH_URL}","pkce":true,"providerIconUrl":"https://api.iconify.design/tabler:login-2.svg","providerId":"${PAPRA_OAUTH_ID}","providerName":"${PAPRA_OAUTH_NAME}","scopes":["openid","profile","email"],"type":"oidc"}]'
       volumes:
         - name: papra-docs
           persistentVolumeClaim:

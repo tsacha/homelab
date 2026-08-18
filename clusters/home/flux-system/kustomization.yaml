@@ -5,8 +5,8 @@ resources:
   - gitrepository.yaml
   - infra.yaml
   - certs.yaml
-  - apps.yaml
-  - unifi.yaml
+  - ../apps
   - ../media
   - ../registry
+  - ../unifi
   - ../vars

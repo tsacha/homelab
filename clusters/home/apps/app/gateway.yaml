@@ -6,7 +6,7 @@ spec:
   gatewayClassName: cilium
   infrastructure:
     annotations:
-      lbipam.cilium.io/ips: "{{ .Values.gw.ip }}"
+      lbipam.cilium.io/ips: "${GW_APPS_IP}"
   listeners:
     - name: http
       protocol: HTTP
@@ -17,7 +17,7 @@ spec:
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.{{ .Values.wildcard_domain }}"
+      hostname: "*.${SECRET_DOMAIN}"
       tls:
         certificateRefs:
           - kind: Secret

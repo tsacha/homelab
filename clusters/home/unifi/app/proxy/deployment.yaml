@@ -1,0 +1,28 @@
+## No support for HTTPS backend in Cilium GW (yet)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-http
+  template:
+    metadata:
+      labels:
+        app: unifi-http
+    spec:
+      containers:
+        - name: caddy
+          image: docker.io/caddy:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: caddy-config
+              mountPath: /etc/caddy
+              readOnly: true
+      volumes:
+        - name: caddy-config
+          configMap:
+            name: caddy-configmap

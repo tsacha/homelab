@@ -2,16 +2,18 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: unifi
+  name: apps
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/home/unifi
+  path: ./clusters/home/apps/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  dependsOn:
+    - name: cluster-vars
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets

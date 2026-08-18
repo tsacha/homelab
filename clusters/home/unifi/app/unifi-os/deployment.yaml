@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: unifi-os-server
-  namespace: unifi
   labels:
     app: unifi-os-server
 spec:
@@ -29,11 +28,13 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: UOS_SYSTEM_IP
-              value: "{{ .Values.uos.system_ip }}"
+              value: "${UNIFI_SYSTEM_IP}"
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/bash", "-c", "echo $HOST_IP host.docker.internal >> /etc/hosts"]
+                # $$ escapes the substitution: Flux replaces ${...} across the
+                # whole rendered output, and $HOST_IP must survive to the shell.
+                command: ["/bin/bash", "-c", "echo $$HOST_IP host.docker.internal >> /etc/hosts"]
           volumeMounts:
             - name: data
               mountPath: /persistent

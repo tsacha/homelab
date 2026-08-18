@@ -2,8 +2,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: unifi-os-pvc
-  namespace: unifi
   annotations:
+    # Must stay until the old Helm release is gone: helm uninstall would
+    # otherwise delete the volume out from under the new manifests.
     helm.sh/resource-policy: keep
 spec:
   accessModes:

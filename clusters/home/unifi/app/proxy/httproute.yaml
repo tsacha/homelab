@@ -7,7 +7,7 @@ spec:
     - name: gw-unifi
       sectionName: https
   hostnames:
-    - unifi.{{ .Values.wildcard_domain }}
+    - unifi.${SECRET_DOMAIN}
   rules:
     - backendRefs:
         - name: unifi-http
