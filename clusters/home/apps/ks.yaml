@@ -13,6 +13,7 @@ spec:
     name: flux-system
   dependsOn:
     - name: cluster-vars
+    - name: certs
   postBuild:
     substituteFrom:
       - kind: Secret

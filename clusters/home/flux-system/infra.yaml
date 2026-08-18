@@ -8,6 +8,9 @@ spec:
   interval: 10m0s
   path: ./clusters/home/infra
   prune: true
+  wait: true
+  timeout: 5m0s
+  retryInterval: 1m0s
   sourceRef:
     kind: GitRepository
     name: flux-system

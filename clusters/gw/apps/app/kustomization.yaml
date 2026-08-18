@@ -6,6 +6,6 @@ resources:
   - namespace.yaml
   - gateway.yaml
   - http-redirect.yaml
-  - pocketid
-  - vaultwarden
-  - wg
+  - pocketid.yaml
+  - vaultwarden.yaml
+  - wg.yaml

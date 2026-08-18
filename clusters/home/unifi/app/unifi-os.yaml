@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-os-server
+  labels:
+    app: unifi-os-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-os-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: unifi-os-server
+    spec:
+      hostname: unifi-os
+      containers:
+        - name: unifi-os-server
+          image: ghcr.io/lemker/unifi-os-server:v1.4.0
+          securityContext:
+            privileged: true
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: UOS_SYSTEM_IP
+              value: "${UNIFI_SYSTEM_IP}"
+          lifecycle:
+            postStart:
+              exec:
+                # $$ escapes the substitution: Flux replaces ${...} across the
+                # whole rendered output, and $HOST_IP must survive to the shell.
+                command: ["/bin/bash", "-c", "echo $$HOST_IP host.docker.internal >> /etc/hosts"]
+          volumeMounts:
+            - name: data
+              mountPath: /persistent
+              subPath: persistent
+            - name: data
+              mountPath: /var/log
+              subPath: log
+            - name: data
+              mountPath: /data
+              subPath: data
+            - name: data
+              mountPath: /srv
+              subPath: srv
+            - name: data
+              mountPath: /var/lib/unifi
+              subPath: unifi
+            - name: data
+              mountPath: /var/lib/mongodb
+              subPath: mongodb
+            - name: data
+              mountPath: /etc/rabbitmq/ssl
+              subPath: rabbitmq
+          livenessProbe:
+            httpGet:
+              path: /api/ping
+              port: 80
+            initialDelaySeconds: 120
+            periodSeconds: 60
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: unifi-os-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-app
+  annotations:
+    lbipam.cilium.io/ips: "${UNIFI_LB_IP}"
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack # No IPv6 on Unifi APs…
+  selector:
+    app: unifi-os-server
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 443
+      name: webui
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      name: inform
+    - protocol: UDP
+      port: 3478
+      targetPort: 3478
+      name: stun
+    - protocol: UDP
+      port: 10003
+      targetPort: 10003
+      name: discovery
+    - protocol: TCP
+      port: 6789
+      targetPort: 6789
+      name: speedtest
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: unifi-os-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 32Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-unifi-os-pvc
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_UNIFI}/unifi-os-pvc
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: unifi-os-pvc
+spec:
+  sourcePVC: unifi-os-pvc
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-unifi-os-pvc
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1

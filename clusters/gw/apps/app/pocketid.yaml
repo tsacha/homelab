@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pocketid
+  name: pocketid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pocketid
+  template:
+    metadata:
+      labels:
+        app: pocketid
+    spec:
+      containers:
+        - image: ghcr.io/pocket-id/pocket-id:v2.11.0
+          name: pocketid
+          imagePullPolicy: Always
+          env:
+            - name: APP_URL
+              value: https://${POCKETID_VHOST}
+            - name: ENCRYPTION_KEY
+              value: ${POCKETID_ENCRYPTION_KEY}
+            - name: TRUST_PROXY
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          volumeMounts:
+            - name: pocketid-data
+              mountPath: /app/data
+          livenessProbe:
+            exec:
+              command:
+                - /app/pocket-id
+                - healthcheck
+            initialDelaySeconds: 10
+            periodSeconds: 90
+            timeoutSeconds: 5
+            failureThreshold: 2
+      volumes:
+        - name: pocketid-data
+          persistentVolumeClaim:
+            claimName: pocketid
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pocketid
+  name: pocketid
+spec:
+  selector:
+    app: pocketid
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+      targetPort: 1411
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pocketid
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: pocketid-https
+  hostnames:
+    - "${POCKETID_VHOST}"
+  rules:
+    - backendRefs:
+        - name: pocketid
+          namespace: apps
+          port: 80
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pocketid
+spec:
+  secretName: pocketid-cert
+  dnsNames:
+    - "${POCKETID_VHOST}"
+  issuerRef:
+    name: le-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pocketid
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-pocketid
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_APPS}/pocketid
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: pocketid
+spec:
+  sourcePVC: pocketid
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-pocketid
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1

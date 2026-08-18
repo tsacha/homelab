@@ -1,0 +1,76 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: rclone-sync
+spec:
+  schedule: "*/2 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: rclone-sync
+              image: docker.io/rclone/rclone:1.75.0
+              command:
+                - sh
+                - -c
+                - |
+                  rclone sync "seedbox:/home/${SEEDBOX_USER}/" "/media/torrents/" \
+                    --config /config/rclone.conf \
+                    --include "/movies/**" \
+                    --include "/shows/**" \
+                    --fast-list \
+                    --tpslimit 3 \
+                    --checkers 2 \
+                    --size-only \
+                    -P
+              volumeMounts:
+                - name: rclone-config-volume
+                  mountPath: /config
+                - name: ssh-key-volume
+                  mountPath: /root/.ssh
+                  readOnly: true
+                - name: media-storage
+                  mountPath: /media
+          volumes:
+            - name: rclone-config-volume
+              configMap:
+                name: rclone-config
+            - name: ssh-key-volume
+              secret:
+                secretName: rclone-ssh-key
+                items:
+                  - key: id_ed25519
+                    path: id_ed25519
+                defaultMode: 0600
+            - name: media-storage
+              hostPath:
+                path: /media
+                type: Directory
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rclone-config
+data:
+  rclone.conf: |
+    [seedbox]
+    type = sftp
+    host = ${SEEDBOX_HOST}
+    user = ${SEEDBOX_USER}
+    key_file = /root/.ssh/id_ed25519
+    shell_type = unix
+    md5sum_command = md5sum
+    sha1sum_command = sha1sum
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rclone-ssh-key
+type: Opaque
+# data, not stringData: postBuild substitution is plain string replacement and
+# cannot indent, so a multi-line PEM has to arrive already base64-encoded.
+data:
+  id_ed25519: ${SEEDBOX_SSH_KEY_B64}

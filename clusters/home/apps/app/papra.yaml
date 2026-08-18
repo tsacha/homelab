@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: papra
+  labels:
+    app: papra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: papra
+  template:
+    metadata:
+      labels:
+        app: papra
+    spec:
+      containers:
+        - name: papra
+          image: ghcr.io/papra-hq/papra:26.6.1-rootless
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1221
+          volumeMounts:
+            - name: papra-docs
+              mountPath: /app/app-data
+          env:
+            - name: APP_BASE_URL
+              value: https://docs.${SECRET_DOMAIN}
+            - name: DOCUMENT_STORAGE_MAX_UPLOAD_SIZE
+              value: "0"
+            - name: DOCUMENTS_OCR_LANGUAGES
+              value: "fra"
+            - name: SERVER_HOSTNAME
+              value: "::"
+            - name: AUTH_PROVIDERS_EMAIL_IS_ENABLED
+              value: "false"
+            - name: AUTH_SECRET
+              value: "${PAPRA_AUTH_SECRET}"
+            - name: AUTH_PROVIDERS_CUSTOMS
+              value: '[{"clientId":"${PAPRA_OAUTH_CLIENT_ID}","clientSecret":"${PAPRA_OAUTH_CLIENT_SECRET}","discoveryUrl":"${PAPRA_OAUTH_URL}","pkce":true,"providerIconUrl":"https://api.iconify.design/tabler:login-2.svg","providerId":"${PAPRA_OAUTH_ID}","providerName":"${PAPRA_OAUTH_NAME}","scopes":["openid","profile","email"],"type":"oidc"}]'
+      volumes:
+        - name: papra-docs
+          persistentVolumeClaim:
+            claimName: papra-docs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: papra
+  name: papra
+spec:
+  selector:
+    app: papra
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 1221
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: papra
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: https
+  hostnames:
+    - docs.${SECRET_DOMAIN}
+  rules:
+    - backendRefs:
+        - name: papra
+          port: 80
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: papra-docs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-papra-docs
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_APPS}/papra-docs
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: papra-docs
+spec:
+  sourcePVC: papra-docs
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-papra-docs
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1

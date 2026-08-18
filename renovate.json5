@@ -9,6 +9,11 @@
   },
   "packageRules": [
     {
+      "description": "Disable digest-only updates",
+      "matchUpdateTypes": ["digest"],
+      "enabled": false
+    },
+    {
       "description": "Fix duplicate registryUrls for Cilium",
       "matchDatasources": ["helm"],
       "matchPackageNames": ["cilium"],

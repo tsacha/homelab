@@ -7,4 +7,4 @@ resources:
   - certificate.yaml
   - gateway.yaml
   - http-redirect.yaml
-  - registry
+  - registry.yaml

@@ -7,5 +7,5 @@ resources:
   - certificate.yaml
   - gateway.yaml
   - http-redirect.yaml
-  - unifi-os
-  - proxy
+  - unifi-os.yaml
+  - proxy.yaml

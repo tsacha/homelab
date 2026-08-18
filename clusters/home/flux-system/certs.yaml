@@ -8,6 +8,9 @@ spec:
   interval: 10m0s
   path: ./clusters/home/certs
   prune: true
+  wait: true
+  timeout: 5m0s
+  retryInterval: 1m0s
   dependsOn:
     - name: infra
   sourceRef:
