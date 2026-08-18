@@ -7,7 +7,7 @@ spec:
     - name: gw-registry
       sectionName: https
   hostnames:
-    - registry.{{ .Values.wildcard_domain }}
+    - registry.${SECRET_DOMAIN}
   rules:
     - backendRefs:
         - name: registry

@@ -5,9 +5,11 @@ metadata:
   name: registry
   namespace: flux-system
 spec:
-  interval: 5m0s
-  path: ./clusters/home/registry
+  interval: 10m0s
+  path: ./clusters/home/registry/app
   prune: true
+  dependsOn:
+    - name: cluster-vars
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -15,3 +17,7 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-secrets
