@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing-discovery
+  labels:
+    app: syncthing-discovery
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: syncthing-discovery
+  template:
+    metadata:
+      labels:
+        app: syncthing-discovery
+    spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: syncthing-discovery
+          image: docker.io/syncthing/discosrv:2.1.3
+          args:
+            - --listen=:8443
+            - --db-dir=/var/stdiscosrv
+            - --cert=/etc/stdiscosrv/tls.crt
+            - --key=/etc/stdiscosrv/tls.key
+          ports:
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: https
+            initialDelaySeconds: 2
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: https
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: data
+              mountPath: /var/stdiscosrv
+            - name: tls
+              mountPath: /etc/stdiscosrv
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: syncthing-discovery
+        - name: tls
+          secret:
+            secretName: wildcard-cert
+            defaultMode: 0440
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncthing-discovery
+  annotations:
+    lbipam.cilium.io/ips: "${SYNCTHING_DISCOVERY_IP}"
+spec:
+  type: LoadBalancer
+  ipFamilies:
+    - IPv6
+  selector:
+    app: syncthing-discovery
+  ports:
+    - name: https
+      protocol: TCP
+      port: 8443
+      targetPort: https
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: syncthing-discovery
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-syncthing-discovery
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_APPS}/syncthing-discovery
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: syncthing-discovery
+spec:
+  sourcePVC: syncthing-discovery
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-syncthing-discovery
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1

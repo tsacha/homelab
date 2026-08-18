@@ -7,6 +7,7 @@ resources:
   - ippool.sops.yaml
   - bgp.sops.yaml
   - cert-manager.yaml
+  - reloader.yaml
   - external-snapshotter-crds.yaml
   - volsync.yaml
   - kubelet-serving-cert-approver.yaml
