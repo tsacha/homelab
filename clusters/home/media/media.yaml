@@ -26,3 +26,18 @@ spec:
   valuesFrom:
     - kind: Secret
       name: media-values
+  # Scaffolding for the move off Helm: makes `helm uninstall` a no-op so the
+  # plain-YAML manifests adopt the live objects instead of racing their deletion.
+  # Must reconcile before the HelmRelease is removed. Delete along with it.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: .*
+            patch: |
+              apiVersion: v1
+              kind: placeholder
+              metadata:
+                name: placeholder
+                annotations:
+                  helm.sh/resource-policy: keep
