@@ -17,8 +17,6 @@ spec:
         app: wg
     spec:
       initContainers:
-        # WG_ENDPOINT_HOST is the host half of WG_ENDPOINT; Helm used to split
-        # it inline, substitution cannot, so it is stored as its own key.
         - name: wait-for-dns
           image: docker.io/alpine:latest
           command: ["sh", "-c", "until nslookup ${WG_ENDPOINT_HOST}; do echo waiting for DNS; sleep 2; done;"]

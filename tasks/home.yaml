@@ -31,7 +31,7 @@ tasks:
     cmds:
       - |
         export KUBECONFIG=~/.kube/clusters/{{.CLUSTER}}.yaml
-        export CILIUM_VERSION=1.19.0 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
+        export CILIUM_VERSION=1.19.6 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
         export GATEWAY_API_VERSION=v1.4.1 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
         kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_API_VERSION/experimental-install.yaml
         helm repo add cilium https://helm.cilium.io/

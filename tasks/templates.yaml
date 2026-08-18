@@ -7,8 +7,3 @@ tasks:
       - rm -Rf .private/
       - mkdir -p .private
       - sops -d secrets/inventory.sops.yaml > .private/inventory.yaml
-  init:
-    desc: Initialize repository templates
-    cmds:
-      - task: inventory
-      - makejinja

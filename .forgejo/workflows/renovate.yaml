@@ -9,7 +9,7 @@ on:
     branches:
       - zen
     paths:
-      - 'renovate5.json'
+      - 'renovate.json5'
 jobs:
   renovate:
     runs-on: codeberg-small-lazy

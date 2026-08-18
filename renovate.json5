@@ -5,28 +5,8 @@
     "managerFilePatterns": ["/clusters/.+\\.yaml$/"]
   },
   "kubernetes": {
-    "managerFilePatterns": ["/charts/.+\\.yaml$/"]
+    "managerFilePatterns": ["/clusters/.+\\.yaml$/"]
   },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "templates/boot/http/dl.sh"
-      ],
-      "matchStrings": [
-        ".+?_VERSION=\"?v?(?<currentValue>.*?)\"? # renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) packageName=(?<packageName>.*?)\\n"
-      ]
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "tasks/boot.yaml"
-      ],
-      "matchStrings": [
-        "\\s+\\w+_VERSION:\\s*(?<currentValue>.*?)\\s*# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) versioning=(?<versioning>.*?)\\n"
-      ]
-    }
-  ],
   "packageRules": [
     {
       "description": "Fix duplicate registryUrls for Cilium",

@@ -9,7 +9,7 @@ spec:
     app: wg
   ipFamilyPolicy: PreferDualStack
   ports:
-    - name: dns-udp
+    - name: wireguard
       protocol: UDP
       port: 51820
       targetPort: 51820

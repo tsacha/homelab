@@ -8,15 +8,11 @@ spec:
   interval: 10m0s
   path: ./clusters/home/registry/app
   prune: true
-  dependsOn:
-    - name: cluster-vars
   sourceRef:
     kind: GitRepository
     name: flux-system
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  dependsOn:
+    - name: cluster-vars
   postBuild:
     substituteFrom:
       - kind: Secret

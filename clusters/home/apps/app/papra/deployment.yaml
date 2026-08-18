@@ -36,8 +36,6 @@ spec:
               value: "false"
             - name: AUTH_SECRET
               value: "${PAPRA_AUTH_SECRET}"
-            # Key order is alphabetical because Helm's toJson sorted the map it
-            # replaced; keeping it makes the render diff against the old chart empty.
             - name: AUTH_PROVIDERS_CUSTOMS
               value: '[{"clientId":"${PAPRA_OAUTH_CLIENT_ID}","clientSecret":"${PAPRA_OAUTH_CLIENT_SECRET}","discoveryUrl":"${PAPRA_OAUTH_URL}","pkce":true,"providerIconUrl":"https://api.iconify.design/tabler:login-2.svg","providerId":"${PAPRA_OAUTH_ID}","providerName":"${PAPRA_OAUTH_NAME}","scopes":["openid","profile","email"],"type":"oidc"}]'
       volumes:
