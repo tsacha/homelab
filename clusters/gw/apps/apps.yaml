@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: apps
   annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json

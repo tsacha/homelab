@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: unifi
   annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json
@@ -24,3 +25,19 @@ spec:
   valuesFrom:
     - kind: Secret
       name: unifi-values
+  # Scaffolding for the move off Helm: makes `helm uninstall` a no-op so the
+  # plain-YAML manifests adopt the live objects instead of racing their deletion.
+  # Also what allows the duplicate Namespace to leave the chart without helm
+  # upgrade deleting it. Must reconcile before either change. Delete with it.
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: .*
+            patch: |
+              apiVersion: v1
+              kind: placeholder
+              metadata:
+                name: placeholder
+                annotations:
+                  helm.sh/resource-policy: keep

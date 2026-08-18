@@ -11,6 +11,8 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
   name: reloader
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/helmrelease-helm-v2.json

@@ -13,6 +13,8 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    kustomize.toolkit.fluxcd.io/prune: disabled
   name: kubelet-serving-cert-approver
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
