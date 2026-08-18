@@ -2,7 +2,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pocketid
-
+  annotations:
+    helm.sh/resource-policy: keep
 spec:
   accessModes:
     - ReadWriteOnce

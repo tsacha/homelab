@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: unifi-os-pvc
   namespace: unifi
+  annotations:
+    helm.sh/resource-policy: keep
 spec:
   accessModes:
     - ReadWriteOnce
