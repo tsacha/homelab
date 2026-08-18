@@ -8,4 +8,5 @@ resources:
   - gateway.yaml
   - http-redirect.yaml
   - papra.yaml
+  - syncthing.yaml
   - syncthing-discovery.yaml

@@ -1,0 +1,249 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: syncthing-config
+data:
+  options.json: |
+    {
+      "listenAddresses": [
+        "tcp://[::]:22000",
+        "quic://[::]:22000"
+      ],
+      "globalAnnounceServers": [
+        "https://discovery.${SECRET_DOMAIN}:8443/"
+      ],
+      "globalAnnounceEnabled": true,
+      "localAnnounceEnabled": false,
+      "relaysEnabled": false,
+      "natEnabled": false,
+      "stunServers": [],
+      "announceLANAddresses": false,
+      "urAccepted": -1,
+      "crashReportingEnabled": false
+    }
+  configure: |
+    #!/bin/sh
+    set -eu
+
+    attempt=0
+    until curl --noproxy '*' --fail --silent http://[::1]:8384/rest/noauth/health >/dev/null; do
+      attempt=$((attempt + 1))
+      if [ "$attempt" -ge 30 ]; then
+        exit 1
+      fi
+      sleep 1
+    done
+
+    curl --noproxy '*' --fail --silent \
+      --request PATCH \
+      --header "X-API-Key: $STGUIAPIKEY" \
+      --header 'Content-Type: application/json' \
+      --data-binary @/etc/syncthing/options.json \
+      http://[::1]:8384/rest/config/options
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: syncthing-api
+type: Opaque
+stringData:
+  api-key: "${SYNCTHING_API_KEY}"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncthing
+  labels:
+    app: syncthing
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: syncthing
+  template:
+    metadata:
+      labels:
+        app: syncthing
+    spec:
+      hostname: syncthing-home
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: configure
+          image: docker.io/syncthing/syncthing:2.1.3
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              if [ ! -f /var/syncthing/config/config.xml ]; then
+                /bin/syncthing generate --no-port-probing
+              fi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1000
+            runAsGroup: 1000
+          volumeMounts:
+            - name: data
+              mountPath: /var/syncthing
+      containers:
+        - name: syncthing
+          image: docker.io/syncthing/syncthing:2.1.3
+          env:
+            - name: STGUIADDRESS
+              value: "[::]:8384"
+            - name: STGUIAPIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: syncthing-api
+                  key: api-key
+          ports:
+            - name: gui
+              containerPort: 8384
+              protocol: TCP
+            - name: sync-tcp
+              containerPort: 22000
+              protocol: TCP
+            - name: sync-quic
+              containerPort: 22000
+              protocol: UDP
+          readinessProbe:
+            httpGet:
+              path: /rest/noauth/health
+              port: gui
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /rest/noauth/health
+              port: gui
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /etc/syncthing/configure
+          volumeMounts:
+            - name: data
+              mountPath: /var/syncthing
+            - name: config
+              mountPath: /etc/syncthing
+              readOnly: true
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: syncthing
+        - name: config
+          configMap:
+            name: syncthing-config
+            defaultMode: 0555
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncthing
+  annotations:
+    lbipam.cilium.io/ips: "${SYNCTHING_IP}"
+spec:
+  type: LoadBalancer
+  ipFamilies:
+    - IPv6
+  ipFamilyPolicy: SingleStack
+  selector:
+    app: syncthing
+  ports:
+    - name: sync-tcp
+      protocol: TCP
+      port: 22000
+      targetPort: sync-tcp
+    - name: sync-quic
+      protocol: UDP
+      port: 22000
+      targetPort: sync-quic
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncthing-gui
+spec:
+  ipFamilies:
+    - IPv6
+  ipFamilyPolicy: SingleStack
+  selector:
+    app: syncthing
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8384
+      targetPort: gui
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: syncthing-gui
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: https
+  hostnames:
+    - syncthing-ui.${SECRET_DOMAIN}
+  rules:
+    - backendRefs:
+        - name: syncthing-gui
+          port: 8384
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: syncthing
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-syncthing
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_APPS}/syncthing
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: syncthing
+spec:
+  sourcePVC: syncthing
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-syncthing
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
