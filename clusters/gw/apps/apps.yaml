@@ -25,3 +25,15 @@ spec:
   valuesFrom:
     - kind: Secret
       name: apps-values
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: .*
+            patch: |
+              apiVersion: v1
+              kind: placeholder
+              metadata:
+                name: placeholder
+                annotations:
+                  helm.sh/resource-policy: keep

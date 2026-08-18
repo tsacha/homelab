@@ -5,3 +5,4 @@ resources:
   - gitrepository.yaml
   - apps.yaml
   - infra.yaml
+  - ../vars
