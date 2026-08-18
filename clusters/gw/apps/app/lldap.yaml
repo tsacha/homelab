@@ -1,0 +1,192 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lldap
+  name: lldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lldap
+  template:
+    metadata:
+      labels:
+        app: lldap
+    spec:
+      containers:
+        - image: lldap/lldap:v0.6.3
+          name: lldap
+          imagePullPolicy: Always
+          env:
+            - name: UID
+              value: "1000"
+            - name: GID
+              value: "1000"
+            - name: LLDAP_JWT_SECRET
+              value: "${LLDAP_JWT_SECRET}"
+            - name: LLDAP_KEY_SEED
+              value: "${LLDAP_KEY_SEED}"
+            - name: LLDAP_LDAP_BASE_DN
+              value: dc=homelab,dc=internal
+            - name: LLDAP_LDAP_USER_DN
+              value: tsacha
+            - name: LLDAP_LDAP_USER_EMAIL
+              value: "${LLDAP_ADMIN_EMAIL}"
+            - name: LLDAP_LDAP_USER_PASS
+              value: "${LLDAP_ADMIN_PASSWORD}"
+            - name: LLDAP_LDAP_HOST
+              value: "::"
+            - name: LLDAP_HTTP_HOST
+              value: "::"
+            - name: LLDAP_LDAPS_OPTIONS__ENABLED
+              value: "true"
+            - name: LLDAP_LDAPS_OPTIONS__PORT
+              value: "6360"
+            - name: LLDAP_LDAPS_OPTIONS__CERT_FILE
+              value: /run/lldap/tls/tls.crt
+            - name: LLDAP_LDAPS_OPTIONS__KEY_FILE
+              value: /run/lldap/tls/tls.key
+          ports:
+            - name: ldaps
+              containerPort: 6360
+            - name: web
+              containerPort: 17170
+          readinessProbe:
+            tcpSocket:
+              port: web
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: lldap-data
+              mountPath: /data
+            - name: lldap-tls
+              mountPath: /run/lldap/tls
+              readOnly: true
+      volumes:
+        - name: lldap-data
+          persistentVolumeClaim:
+            claimName: lldap
+        - name: lldap-tls
+          secret:
+            secretName: lldap-cert
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: lldap
+  name: lldap-web
+spec:
+  ipFamilyPolicy: PreferDualStack
+  selector:
+    app: lldap
+  ports:
+    - name: web
+      protocol: TCP
+      port: 17170
+      targetPort: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: lldap
+  name: lldap-ldaps
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack
+  selector:
+    app: lldap
+  ports:
+    - name: ldaps
+      protocol: TCP
+      port: 6360
+      targetPort: ldaps
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: lldap
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: lldap-https
+  hostnames:
+    - "${LLDAP_VHOST}"
+  rules:
+    - backendRefs:
+        - name: lldap-web
+          namespace: apps
+          port: 17170
+---
+apiVersion: gateway.networking.k8s.io/v1alpha3
+kind: TLSRoute
+metadata:
+  name: lldap
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: lldap-ldaps
+  hostnames:
+    - "${LLDAP_VHOST}"
+  rules:
+    - backendRefs:
+        - name: lldap-ldaps
+          namespace: apps
+          port: 6360
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: lldap-ldaps
+spec:
+  secretName: lldap-cert
+  dnsNames:
+    - "${LLDAP_VHOST}"
+  issuerRef:
+    name: le-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lldap
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-lldap
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_APPS}/lldap
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: lldap
+spec:
+  sourcePVC: lldap
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-lldap
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1

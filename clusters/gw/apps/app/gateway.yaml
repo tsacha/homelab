@@ -42,3 +42,19 @@ spec:
             kind: Secret
             name: pocketid-cert
         mode: Terminate
+    - hostname: "${LLDAP_VHOST}"
+      name: lldap-https
+      port: 443
+      protocol: HTTPS
+      tls:
+        certificateRefs:
+          - group: ""
+            kind: Secret
+            name: lldap-cert
+        mode: Terminate
+    - hostname: "${LLDAP_VHOST}"
+      name: lldap-ldaps
+      port: 636
+      protocol: TLS
+      tls:
+        mode: Passthrough

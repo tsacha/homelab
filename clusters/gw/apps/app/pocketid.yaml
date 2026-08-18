@@ -29,6 +29,45 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
+            # The LLDAP admin is automatically a member of lldap_admin, which
+            # is the Pocket ID administrator group. Create at most one other
+            # user from the LLDAP web UI.
+            - name: UI_CONFIG_DISABLED
+              value: "true"
+            - name: LDAP_ENABLED
+              value: "true"
+            - name: LDAP_URL
+              value: ldaps://${LLDAP_VHOST}:636
+            - name: LDAP_BIND_DN
+              value: cn=tsacha,ou=people,dc=homelab,dc=internal
+            - name: LDAP_BIND_PASSWORD
+              value: "${LLDAP_ADMIN_PASSWORD}"
+            - name: LDAP_BASE
+              value: dc=homelab,dc=internal
+            - name: LDAP_USER_SEARCH_FILTER
+              value: (objectClass=person)
+            - name: LDAP_USER_GROUP_SEARCH_FILTER
+              value: (objectClass=groupOfUniqueNames)
+            - name: LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER
+              value: uuid
+            - name: LDAP_ATTRIBUTE_USER_USERNAME
+              value: uid
+            - name: LDAP_ATTRIBUTE_USER_EMAIL
+              value: mail
+            - name: LDAP_ATTRIBUTE_USER_FIRST_NAME
+              value: givenName
+            - name: LDAP_ATTRIBUTE_USER_LAST_NAME
+              value: sn
+            - name: LDAP_ATTRIBUTE_GROUP_MEMBER
+              value: member
+            - name: LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER
+              value: uuid
+            - name: LDAP_ATTRIBUTE_GROUP_NAME
+              value: cn
+            - name: LDAP_ADMIN_GROUP_NAME
+              value: lldap_admin
+            - name: LDAP_SOFT_DELETE_USERS
+              value: "true"
           volumeMounts:
             - name: pocketid-data
               mountPath: /app/data
