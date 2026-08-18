@@ -9,3 +9,4 @@ resources:
   - media.yaml
   - unifi.yaml
   - registry.yaml
+  - ../vars
