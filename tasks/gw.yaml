@@ -37,9 +37,7 @@ tasks:
           --namespace=flux-system \
           --from-file=age.agekey=/dev/stdin
 
-        flux install
-        kubectl -n flux-system patch deployment kustomize-controller --type=json \
-          -p='[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--requeue-dependency=5s"}]'
+        kubectl apply --server-side -f clusters/gw/flux-system/gotk-components.yaml
         pushd clusters/gw/flux-system
         kubectl apply --server-side -k .
         popd
