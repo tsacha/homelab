@@ -3,10 +3,10 @@ kind: Kustomization
 resources:
   - flux-system.yaml
   - gitrepository.yaml
+  - ../vars
   - infra.yaml
   - certs.yaml
   - ../apps
   - ../media
   - ../registry
   - ../unifi
-  - ../vars

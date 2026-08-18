@@ -13,6 +13,7 @@ spec:
   retryInterval: 1m0s
   dependsOn:
     - name: infra
+    - name: cluster-vars
   sourceRef:
     kind: GitRepository
     name: flux-system
