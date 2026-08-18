@@ -21,6 +21,17 @@ data:
       "urAccepted": -1,
       "crashReportingEnabled": false
     }
+  ldap.json: |
+    {
+      "address": "lldap.${SECRET_DOMAIN}:636",
+      "bindDN": "uid=%s,ou=people,dc=homelab,dc=internal",
+      "transport": "tls",
+      "insecureSkipVerify": false
+    }
+  gui.json: |
+    {
+      "authMode": "ldap"
+    }
   configure: |
     #!/bin/sh
     set -eu
@@ -40,6 +51,20 @@ data:
       --header 'Content-Type: application/json' \
       --data-binary @/etc/syncthing/options.json \
       http://[::1]:8384/rest/config/options
+
+    curl --noproxy '*' --fail --silent \
+      --request PATCH \
+      --header "X-API-Key: $STGUIAPIKEY" \
+      --header 'Content-Type: application/json' \
+      --data-binary @/etc/syncthing/ldap.json \
+      http://[::1]:8384/rest/config/ldap
+
+    curl --noproxy '*' --fail --silent \
+      --request PATCH \
+      --header "X-API-Key: $STGUIAPIKEY" \
+      --header 'Content-Type: application/json' \
+      --data-binary @/etc/syncthing/gui.json \
+      http://[::1]:8384/rest/config/gui
 ---
 apiVersion: v1
 kind: Secret
