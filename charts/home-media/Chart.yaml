@@ -1,5 +1,0 @@
-apiVersion: v2
-name: home-media
-description: Home Media
-type: application
-version: 1.0.0

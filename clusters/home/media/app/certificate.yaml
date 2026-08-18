@@ -5,8 +5,8 @@ metadata:
 spec:
   secretName: wildcard-cert
   dnsNames:
-    - "{{ .Values.wildcard_domain }}"
-    - "*.{{ .Values.wildcard_domain }}"
+    - "${SECRET_DOMAIN}"
+    - "*.${SECRET_DOMAIN}"
   issuerRef:
     name: le-home-prod
     kind: ClusterIssuer

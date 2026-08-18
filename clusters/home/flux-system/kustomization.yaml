@@ -6,7 +6,7 @@ resources:
   - infra.yaml
   - certs.yaml
   - apps.yaml
-  - media.yaml
   - unifi.yaml
+  - ../media
   - ../registry
   - ../vars

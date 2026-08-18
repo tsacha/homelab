@@ -6,7 +6,7 @@ spec:
   parentRefs:
     - name: gw-media
   hostnames:
-    - autobrr.{{ .Values.wildcard_domain }}
+    - autobrr.${SECRET_DOMAIN}
   rules:
     - backendRefs:
         - name: autobrr
