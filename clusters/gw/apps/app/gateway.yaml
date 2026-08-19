@@ -64,3 +64,48 @@ spec:
     - name: dns-udp
       protocol: UDP
       port: 53
+---
+# Cilium exposes all Gateway API listeners through the reserved ingress
+# identity, so this policy describes access to the complete shared Gateway.
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: gw-apps-ingress
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: reserved:ingress
+        operator: Exists
+  ingress:
+    # Public listeners and HTTPS virtual hosts.
+    - fromEntities:
+        - world
+        - cluster
+        - host
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
+            - port: "636"
+              protocol: TCP
+            - port: "53"
+              protocol: TCP
+            - port: "53"
+              protocol: UDP
+        - ports:
+            - port: "443"
+              protocol: TCP
+          rules:
+            http:
+              - host: "^${DNS_HTTP2136_VHOST}$"
+              - host: "^${POCKETID_VHOST}$"
+              - host: "^${VAULTWARDEN_VHOST}$"
+    # LLDAP web UI is restricted to the configured IPv6 ranges.
+    - fromCIDR: ${LLDAP_WEBUI_ALLOWED_CIDRS6}
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+          rules:
+            http:
+              - host: "^${LLDAP_VHOST}$"
