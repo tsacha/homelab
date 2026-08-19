@@ -70,6 +70,8 @@ spec:
       enabled: true
       enableAlpn: true
       enableAppProtocol: true
+      gatewayClass:
+        create: "false"
     operator:
       replicas: 1
     envoy:
