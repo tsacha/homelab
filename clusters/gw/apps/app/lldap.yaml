@@ -76,7 +76,7 @@ kind: Service
 metadata:
   labels:
     app: lldap
-  name: lldap-web
+  name: lldap
 spec:
   ipFamilyPolicy: PreferDualStack
   selector:
@@ -86,19 +86,6 @@ spec:
       protocol: TCP
       port: 17170
       targetPort: web
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: lldap
-  name: lldap-ldaps
-spec:
-  type: LoadBalancer
-  ipFamilyPolicy: PreferDualStack
-  selector:
-    app: lldap
-  ports:
     - name: ldaps
       protocol: TCP
       port: 6360
@@ -116,7 +103,7 @@ spec:
     - "${LLDAP_VHOST}"
   rules:
     - backendRefs:
-        - name: lldap-web
+        - name: lldap
           namespace: apps
           port: 17170
 ---
@@ -127,19 +114,19 @@ metadata:
 spec:
   parentRefs:
     - name: gw-apps
-      sectionName: lldap-ldaps
+      sectionName: lldap-tls
   hostnames:
     - "${LLDAP_VHOST}"
   rules:
     - backendRefs:
-        - name: lldap-ldaps
+        - name: lldap
           namespace: apps
           port: 6360
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: lldap-ldaps
+  name: lldap
 spec:
   secretName: lldap-cert
   dnsNames:

@@ -13,7 +13,7 @@ spec:
           from: All
     # http2136-cert is issued by the dns tenant, which owns the bind workload.
     - hostname: "${DNS_HTTP2136_VHOST}"
-      name: gw-https
+      name: dns-https
       port: 443
       protocol: HTTPS
       tls:
@@ -53,7 +53,7 @@ spec:
             name: lldap-cert
         mode: Terminate
     - hostname: "${LLDAP_VHOST}"
-      name: lldap-ldaps
+      name: lldap-tls
       port: 636
       protocol: TLS
       tls:
