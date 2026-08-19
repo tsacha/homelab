@@ -7,11 +7,24 @@
   "kubernetes": {
     "managerFilePatterns": ["/clusters/.+\\.yaml$/"]
   },
+  "customManagers": [
+    {
+      "description": "Bootstrap pins live in shell exports, outside any standard manager",
+      "customType": "regex",
+      "managerFilePatterns": ["/^tasks/.+\\.yaml$/"],
+      "matchStrings": ["export \\w+=(?<currentValue>\\S+) # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) packageName=(?<packageName>\\S+)"]
+    }
+  ],
   "packageRules": [
     {
       "description": "Disable digest-only updates",
       "matchUpdateTypes": ["digest"],
       "enabled": false
+    },
+    {
+      "description": "Cilium 1.20 requires Gateway API v1 TLSRoute and ReferenceGrant, so the two must land together",
+      "matchPackageNames": ["cilium", "cilium/cilium", "kubernetes-sigs/gateway-api"],
+      "groupName": "cilium and gateway-api"
     },
     {
       "description": "Fix duplicate registryUrls for Cilium",
