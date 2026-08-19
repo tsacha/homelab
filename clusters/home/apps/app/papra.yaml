@@ -63,7 +63,8 @@ metadata:
   name: papra
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw
+      namespace: gateway
       sectionName: https
   hostnames:
     - docs.${SECRET_DOMAIN}

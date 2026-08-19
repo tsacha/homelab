@@ -58,7 +58,8 @@ metadata:
   name: radarr
 spec:
   parentRefs:
-    - name: gw-media
+    - name: gw
+      namespace: gateway
       sectionName: https
   hostnames:
     - radarr.${SECRET_DOMAIN}

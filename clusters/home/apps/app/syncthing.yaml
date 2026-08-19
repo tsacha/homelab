@@ -181,10 +181,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: syncthing
-  annotations:
-    lbipam.cilium.io/ips: "${SYNCTHING_IP}"
 spec:
-  type: LoadBalancer
   ipFamilies:
     - IPv6
   ipFamilyPolicy: SingleStack
@@ -199,6 +196,34 @@ spec:
       protocol: UDP
       port: 22000
       targetPort: sync-quic
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: syncthing-bep
+spec:
+  parentRefs:
+    - name: gw
+      namespace: gateway
+      sectionName: syncthing-bep
+  rules:
+    - backendRefs:
+        - name: syncthing
+          port: 22000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: UDPRoute
+metadata:
+  name: syncthing-quic
+spec:
+  parentRefs:
+    - name: gw
+      namespace: gateway
+      sectionName: syncthing-quic
+  rules:
+    - backendRefs:
+        - name: syncthing
+          port: 22000
 ---
 apiVersion: v1
 kind: Service
@@ -222,7 +247,8 @@ metadata:
   name: syncthing-gui
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw
+      namespace: gateway
       sectionName: https
   hostnames:
     - syncthing-ui.${SECRET_DOMAIN}

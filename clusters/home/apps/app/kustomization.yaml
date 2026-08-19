@@ -8,9 +8,6 @@ labels:
       app.kubernetes.io/part-of: apps
 resources:
   - namespace.yaml
-  - certificate.yaml
-  - gateway.yaml
-  - http-redirect.yaml
   - papra.yaml
   - syncthing.yaml
   - syncthing-discovery.yaml

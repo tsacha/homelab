@@ -58,7 +58,8 @@ metadata:
   name: sonarr
 spec:
   parentRefs:
-    - name: gw-media
+    - name: gw
+      namespace: gateway
       sectionName: https
   hostnames:
     - sonarr.${SECRET_DOMAIN}

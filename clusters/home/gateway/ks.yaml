@@ -2,17 +2,18 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: registry
+  name: gateway
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/home/registry/app
+  path: ./clusters/home/gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   dependsOn:
     - name: cluster-vars
+    - name: certs
   postBuild:
     substituteFrom:
       - kind: Secret

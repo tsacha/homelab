@@ -63,17 +63,27 @@ spec:
             claimName: syncthing-discovery
         - name: tls
           secret:
-            secretName: wildcard-cert
+            secretName: syncthing-discovery-cert
             defaultMode: 0440
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: syncthing-discovery
+spec:
+  secretName: syncthing-discovery-cert
+  dnsNames:
+    - discovery.${SECRET_DOMAIN}
+  issuerRef:
+    name: le-home-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: syncthing-discovery
-  annotations:
-    lbipam.cilium.io/ips: "${SYNCTHING_DISCOVERY_IP}"
 spec:
-  type: LoadBalancer
   ipFamilies:
     - IPv6
   selector:
@@ -83,6 +93,20 @@ spec:
       protocol: TCP
       port: 8443
       targetPort: https
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: syncthing-discovery
+spec:
+  parentRefs:
+    - name: gw
+      namespace: gateway
+      sectionName: syncthing-discovery
+  rules:
+    - backendRefs:
+        - name: syncthing-discovery
+          port: 8443
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

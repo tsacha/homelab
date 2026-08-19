@@ -5,10 +5,36 @@ metadata:
 spec:
   parentRefs:
     - name: gw-apps
-      sectionName: dns-https
+      sectionName: http2136-https
   hostnames:
     - "{{ .Values.dns.http2136_vhost }}"
   rules:
     - backendRefs:
         - name: http2136
           port: 2136
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: TCPRoute
+metadata:
+  name: dns-tcp
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: dns-tcp
+  rules:
+    - backendRefs:
+        - name: dns
+          port: 53
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: UDPRoute
+metadata:
+  name: dns-udp
+spec:
+  parentRefs:
+    - name: gw-apps
+      sectionName: dns-udp
+  rules:
+    - backendRefs:
+        - name: dns
+          port: 53

@@ -3,7 +3,7 @@ kind: Gateway
 metadata:
   name: gw-apps
 spec:
-  gatewayClassName: cilium
+  gatewayClassName: cilium-gw
   listeners:
     - protocol: HTTP
       port: 80
@@ -13,7 +13,7 @@ spec:
           from: All
     # http2136-cert is issued by the dns tenant, which owns the bind workload.
     - hostname: "${DNS_HTTP2136_VHOST}"
-      name: dns-https
+      name: http2136-https
       port: 443
       protocol: HTTPS
       tls:
@@ -58,3 +58,9 @@ spec:
       protocol: TLS
       tls:
         mode: Passthrough
+    - name: dns-tcp
+      protocol: TCP
+      port: 53
+    - name: dns-udp
+      protocol: UDP
+      port: 53

@@ -57,7 +57,8 @@ metadata:
   name: prowlarr
 spec:
   parentRefs:
-    - name: gw-media
+    - name: gw
+      namespace: gateway
       sectionName: https
   hostnames:
     - prowlarr.${SECRET_DOMAIN}

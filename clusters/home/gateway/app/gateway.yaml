@@ -1,0 +1,70 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gw
+spec:
+  gatewayClassName: cilium-gw
+  infrastructure:
+    annotations:
+      lbipam.cilium.io/ips: "${GW_IPV6},${GW_IPV4}"
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${SECRET_DOMAIN}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: wildcard-cert
+        mode: Terminate
+    - name: syncthing-bep
+      protocol: TCP
+      port: 22000
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: syncthing-quic
+      protocol: UDP
+      port: 22000
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: syncthing-discovery
+      protocol: TCP
+      port: 8443
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: unifi-inform
+      protocol: TCP
+      port: 8080
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: unifi-speedtest
+      protocol: TCP
+      port: 6789
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: unifi-stun
+      protocol: UDP
+      port: 3478
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: unifi-discovery
+      protocol: UDP
+      port: 10003
+      allowedRoutes:
+        namespaces:
+          from: All

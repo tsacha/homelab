@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - storageclass.yaml
   - cilium.yaml
+  - gatewayclass.yaml
   - cert-manager.yaml
   - reloader.yaml
   - external-snapshotter-crds.yaml
