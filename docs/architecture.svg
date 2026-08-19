@@ -1,0 +1,156 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1560 972' font-family='monospace'>
+<rect x='0' y='0' width='1560' height='972' fill='#f7f7f5'/>
+<defs><marker id='arrow' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0,0 L10,5 L0,10 z' fill='#8a8a8a'/></marker></defs>
+<text x='780.0' y='30' font-family='Menlo,Consolas,monospace' font-size='19' font-weight='700' fill='#1a1a1a' text-anchor='middle'>homelab — GitOps architecture</text>
+<text x='780.0' y='48' font-family='Menlo,Consolas,monospace' font-size='11.5' fill='#5a5a5a' text-anchor='middle'>Flux v2 · one directory per tenant (ks.yaml + kustomization.yaml + app/) · plain YAML + postBuild.substituteFrom, Helm kept only for dns</text>
+<rect x='610.0' y='64' width='340' height='54' rx='8' ry='8' fill='#e9e3f7' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='622.0' y='84' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>Forgejo — tsacha/homelab</text>
+<text x='622.0' y='106' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>branch: zen</text>
+<rect x='40' y='152' width='720' height='30' rx='8' ry='8' fill='#ffffff' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='52' y='172' font-family='Menlo,Consolas,monospace' font-size='12' font-weight='700' fill='#1a1a1a'>cluster: gw  (public edge, OVH VPS)</text>
+<rect x='800' y='152' width='720' height='30' rx='8' ry='8' fill='#ffffff' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='172' font-family='Menlo,Consolas,monospace' font-size='12' font-weight='700' fill='#1a1a1a'>cluster: home  (on-prem, bare metal)</text>
+<rect x='40' y='190' width='720' height='55' rx='8' ry='8' fill='#dfe7f5' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='52' y='210' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>flux-system</text>
+<text x='52' y='233' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>bootstrap chain: kubectl apply -k (plain kubectl, no SOPS)</text>
+<rect x='800' y='190' width='720' height='55' rx='8' ry='8' fill='#dfe7f5' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='210' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>flux-system</text>
+<text x='812' y='233' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>bootstrap chain: kubectl apply -k (plain kubectl, no SOPS)</text>
+<rect x='40' y='269' width='330' height='89' rx='8' ry='8' fill='#dfe7f5' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='52' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>cluster-vars</text>
+<text x='52' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Secret/cluster-secrets (sops)</text>
+<text x='52' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>SECRET_DOMAIN, S3_*, RESTIC_PASSWORD,</text>
+<text x='52' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GW_&lt;TENANT&gt;_IP</text>
+<rect x='390' y='269' width='370' height='89' rx='8' ry='8' fill='#e4f0e6' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='402' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>infra</text>
+<text x='402' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Cilium (Gateway API), cert-manager + OVH webhook,</text>
+<text x='402' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GatewayClass,</text>
+<text x='402' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>storageclass, volsync, reloader, metrics-server</text>
+<rect x='800' y='269' width='330' height='89' rx='8' ry='8' fill='#dfe7f5' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>cluster-vars</text>
+<text x='812' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Secret/cluster-secrets (sops)</text>
+<text x='812' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>SECRET_DOMAIN, S3_*, RESTIC_PASSWORD,</text>
+<text x='812' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GW_&lt;TENANT&gt;_IP</text>
+<rect x='1150' y='269' width='370' height='89' rx='8' ry='8' fill='#e4f0e6' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='1162' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>infra</text>
+<text x='1162' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Cilium (BGP + IPPool), cert-manager, storageclass</text>
+<text x='1162' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>(local-path + local-path-retain), volsync,</text>
+<text x='1162' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>reloader, metrics-server</text>
+<rect x='800' y='378' width='720' height='55' rx='8' ry='8' fill='#e4f0e6' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='398' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>certs — depends on: infra, cluster-vars</text>
+<text x='812' y='421' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>cert-manager-webhook-ovh + ClusterIssuer (wildcard *.domain)</text>
+<rect x='40' y='378' width='432' height='153.5' rx='8' ry='8' fill='#fdeedb' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='52' y='398' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>apps  ·  ns: apps — deps: cluster-vars, infra</text>
+<text x='52' y='420.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>Gateway/gw-apps (edge TLS termination) + http-redirect</text>
+<text x='52' y='437.0' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>lldap        LDAP directory, identity source of truth</text>
+<text x='52' y='453.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>pocketid     OIDC provider, backed by lldap</text>
+<text x='52' y='470.0' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>vaultwarden  Bitwarden-compatible password manager</text>
+<text x='52' y='486.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>wg           WireGuard + reresolve sidecar (re-runs `wg set`</text>
+<text x='52' y='503.0' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>             peer endpoint every 30s, works around bind</text>
+<text x='52' y='519.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>             restarts breaking the tunnel's DNS)</text>
+<rect x='492' y='378' width='268' height='153.5' rx='8' ry='8' fill='#fff6d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='504' y='398' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>dns  ·  HelmRelease — deps: apps</text>
+<text x='504' y='420' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>bind9, dynamic zone from cluster-vars</text>
+<text x='504' y='436' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>.dns.nodes / .dns.apps</text>
+<text x='504' y='452' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>TCPRoute 53, UDPRoute 53,</text>
+<text x='504' y='468' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>HTTPRoute (ACME http-01 :2136)</text>
+<text x='504' y='484' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>SOA serial = {{ now }} → hourly</text>
+<text x='504' y='500' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>restart via Reloader</text>
+<rect x='800' y='453' width='720' height='55' rx='8' ry='8' fill='#fdeedb' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='473' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>gateway  ·  ns: gateway — deps: cluster-vars, certs</text>
+<text x='812' y='496' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GatewayClass (cilium-gw) + Gateway/gw + wildcard Certificate + http-redirect</text>
+<rect x='800' y='528' width='168.0' height='166' rx='8' ry='8' fill='#fff6d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='548' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>apps</text>
+<text x='812' y='570' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>ns: apps</text>
+<text x='812' y='586' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>deps: cluster-vars,</text>
+<text x='812' y='602' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>certs</text>
+<text x='812' y='634' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>papra — docs</text>
+<text x='812' y='650' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>syncthing — file sync</text>
+<text x='812' y='666' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>syncthing-discovery —</text>
+<text x='812' y='682' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>own discovery svc</text>
+<rect x='984.0' y='528' width='168.0' height='166' rx='8' ry='8' fill='#fff6d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='996.0' y='548' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>media</text>
+<text x='996.0' y='570' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>ns: media</text>
+<text x='996.0' y='586' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>deps: cluster-vars</text>
+<text x='996.0' y='618' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>jellyfin, sonarr,</text>
+<text x='996.0' y='634' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>radarr,</text>
+<text x='996.0' y='650' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>prowlarr, autobrr,</text>
+<text x='996.0' y='666' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>flaresolverr,</text>
+<text x='996.0' y='682' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>rclone-sync (CronJob)</text>
+<rect x='1168.0' y='528' width='168.0' height='166' rx='8' ry='8' fill='#fff6d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='1180.0' y='548' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>registry</text>
+<text x='1180.0' y='570' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>ns: registry</text>
+<text x='1180.0' y='586' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>deps: cluster-vars</text>
+<text x='1180.0' y='618' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>OCI registry</text>
+<text x='1180.0' y='650' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>no restic bucket —</text>
+<text x='1180.0' y='666' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>deliberately unbacked</text>
+<text x='1180.0' y='682' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>(see README)</text>
+<rect x='1352.0' y='528' width='168.0' height='166' rx='8' ry='8' fill='#fff6d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='1364.0' y='548' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>unifi</text>
+<text x='1364.0' y='570' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>ns: unifi</text>
+<text x='1364.0' y='586' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>deps: cluster-vars</text>
+<text x='1364.0' y='618' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>unifi-os-server +</text>
+<text x='1364.0' y='634' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>TCPRoute</text>
+<text x='1364.0' y='650' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>unifi-http (proxy) +</text>
+<text x='1364.0' y='666' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>HTTPRoute</text>
+<rect x='40' y='734' width='330' height='70' rx='8' ry='8' fill='#f3d9d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='52' y='754' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>S3 (OVH) — restic backups</text>
+<text x='52' y='776' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>volsync ReplicationSource per stateful PVC,</text>
+<text x='52' y='792' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>hourly trigger, prune 14d</text>
+<rect x='390' y='734' width='300' height='70' rx='8' ry='8' fill='#f3d9d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='402' y='754' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>OVH DNS API</text>
+<text x='402' y='776' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>cert-manager-webhook-ovh, ACME DNS-01</text>
+<text x='402' y='792' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>(both clusters)</text>
+<rect x='800' y='734' width='720' height='70' rx='8' ry='8' fill='#f3d9d9' stroke='#8a8a8a' stroke-width='1.2'/>
+<text x='812' y='754' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>LAN clients + WireGuard road-warriors</text>
+<text x='812' y='776' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>reach home tenants through gw's WireGuard tunnel,</text>
+<text x='812' y='792' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>name resolved via gw's dns tenant</text>
+<line x1='780.0' y1='118' x2='400.0' y2='190' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<rect x='561.2' y='139.0' width='57.6' height='15' fill='#f7f7f5' opacity='0.92'/>
+<text x='590.0' y='150.0' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a' text-anchor='middle'>git pull</text>
+<line x1='780.0' y1='118' x2='1160.0' y2='190' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<rect x='941.2' y='139.0' width='57.6' height='15' fill='#f7f7f5' opacity='0.92'/>
+<text x='970.0' y='150.0' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a' text-anchor='middle'>git pull</text>
+<line x1='220.0' y1='245' x2='205.0' y2='269' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='580.0' y1='245' x2='575.0' y2='269' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='980.0' y1='245' x2='965.0' y2='269' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1340.0' y1='245' x2='1335.0' y2='269' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='205.0' y1='358' x2='169.6' y2='378' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='575.0' y1='358' x2='385.6' y2='378' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='466' y1='541.5' x2='498' y2='541.5' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<rect x='450.1' y='526.5' width='63.800000000000004' height='15' fill='#f7f7f5' opacity='0.92'/>
+<text x='482.0' y='537.5' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a' text-anchor='middle'>dependsOn</text>
+<line x1='1335.0' y1='358' x2='1304.0' y2='378' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='965.0' y1='358' x2='1016.0' y2='378' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='433' x2='1160.0' y2='453' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='508' x2='884.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='508' x2='1068.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='508' x2='1252.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='508' x2='1436.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='148.0' y1='531.5' x2='271.0' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<line x1='884.0' y1='694' x2='89.5' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<line x1='1068.0' y1='694' x2='122.5' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<line x1='1436.0' y1='694' x2='155.5' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<line x1='667.5' y1='358' x2='480.0' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<path d='M572.4,531.5 L572.4,706.0 L908.0,706.0 L908.0,734' fill='none' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<rect x='683.5' y='695.0' width='113.4' height='15' fill='#f7f7f5' opacity='0.92'/>
+<text x='740.2' y='710.0' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a' text-anchor='middle'>resolves *.domain</text>
+<path d='M364.0,531.5 L364.0,722.0 L1412.0,722.0 L1412.0,734' fill='none' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
+<rect x='834.4' y='711.0' width='107.2' height='15' fill='#f7f7f5' opacity='0.92'/>
+<text x='888.0' y='726.0' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a' text-anchor='middle'>WireGuard tunnel</text>
+<rect x='44' y='834' width='14' height='14' fill='#dfe7f5' stroke='#8a8a8a'/>
+<text x='64' y='846' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>bootstrap / vars</text>
+<rect x='190.8' y='834' width='14' height='14' fill='#e4f0e6' stroke='#8a8a8a'/>
+<text x='210.8' y='846' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>infra / certs</text>
+<rect x='318.7' y='834' width='14' height='14' fill='#fdeedb' stroke='#8a8a8a'/>
+<text x='338.7' y='846' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>gateway / edge</text>
+<rect x='452.9' y='834' width='14' height='14' fill='#fff6d9' stroke='#8a8a8a'/>
+<text x='472.9' y='846' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>app tenant</text>
+<rect x='561.9' y='834' width='14' height='14' fill='#f3d9d9' stroke='#8a8a8a'/>
+<text x='581.9' y='846' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>external system</text>
+<text x='708.4' y='846' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>┄┄ dashed = data flow / dependency, not a Flux object</text>
+<rect x='40' y='868' width='1480' height='84' rx='8' fill='#ffffff' stroke='#8a8a8a' stroke-dasharray='3,3'/>
+<text x='54' y='890' font-family='Menlo,Consolas,monospace' font-size='11' fill='#1a1a1a'>Every stateful Namespace: kustomize.toolkit.fluxcd.io/prune: disabled. Data PVs: reclaimPolicy Retain (local-path-retain), not the default local-path (Delete).</text>
+<text x='54' y='912' font-family='Menlo,Consolas,monospace' font-size='11' fill='#1a1a1a'>Tenant migrations: suspend the tenant Kustomization before push -&gt; reconcile flux-system --with-source -&gt; resume. Never push a path rename straight to a live tenant.</text>
+<text x='54' y='934' font-family='Menlo,Consolas,monospace' font-size='11' fill='#1a1a1a'>Ownership of every non-dns resource is kustomize-controller only (no leftover helm-controller field claims) as of 2026-08-19.</text>
+</svg>
