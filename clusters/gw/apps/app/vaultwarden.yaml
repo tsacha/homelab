@@ -79,7 +79,7 @@ metadata:
   name: vaultwarden
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-public
       sectionName: vaultwarden-https
   hostnames:
     - "${VAULTWARDEN_VHOST}"

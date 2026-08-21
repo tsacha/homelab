@@ -106,7 +106,7 @@ metadata:
   name: inform
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: unifi-inform
   rules:
@@ -120,7 +120,7 @@ metadata:
   name: speedtest
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: unifi-speedtest
   rules:
@@ -134,7 +134,7 @@ metadata:
   name: stun
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: unifi-stun
   rules:
@@ -148,7 +148,7 @@ metadata:
   name: discovery
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: unifi-discovery
   rules:

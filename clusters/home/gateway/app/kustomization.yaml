@@ -11,4 +11,5 @@ resources:
   - gatewayclass.yaml
   - certificate.yaml
   - gateway.yaml
+  - gateway-public.yaml
   - http-redirect.yaml

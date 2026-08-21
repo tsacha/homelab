@@ -106,7 +106,7 @@ metadata:
   name: pocketid
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-public
       sectionName: pocketid-https
   hostnames:
     - "${POCKETID_VHOST}"

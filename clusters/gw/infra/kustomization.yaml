@@ -5,6 +5,7 @@ resources:
   - storageclass.yaml
   - cilium.yaml
   - gatewayclass.yaml
+  - ippool.sops.yaml
   - cert-manager.yaml
   - reloader.yaml
   - external-snapshotter-crds.yaml

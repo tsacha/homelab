@@ -97,7 +97,7 @@ metadata:
   name: lldap
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-private
       sectionName: lldap-https
   hostnames:
     - "${LLDAP_VHOST}"
@@ -113,7 +113,7 @@ metadata:
   name: lldap
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-private
       sectionName: lldap-tls
   hostnames:
     - "${LLDAP_VHOST}"

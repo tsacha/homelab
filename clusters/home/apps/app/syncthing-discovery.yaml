@@ -100,7 +100,7 @@ metadata:
   name: syncthing-discovery
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: syncthing-discovery
   rules:

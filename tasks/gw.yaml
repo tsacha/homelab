@@ -41,6 +41,10 @@ tasks:
         pushd clusters/gw/flux-system
         kubectl apply --server-side -k .
         popd
+  wg:
+    desc: Configure host-level wireguard tunnel to home (idempotent)
+    cmds:
+      - bash tasks/wg-host.sh
   cni:
     desc: Install Cilium with Gateway API CRDs
     cmds:

@@ -203,7 +203,7 @@ metadata:
   name: syncthing-bep
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: syncthing-bep
   rules:
@@ -217,7 +217,7 @@ metadata:
   name: syncthing-quic
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: syncthing-quic
   rules:
@@ -247,7 +247,7 @@ metadata:
   name: syncthing-gui
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: https
   hostnames:

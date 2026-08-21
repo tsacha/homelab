@@ -58,7 +58,7 @@ metadata:
   name: radarr
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: https
   hostnames:

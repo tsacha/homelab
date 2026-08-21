@@ -45,7 +45,7 @@ metadata:
   name: unifi
 spec:
   parentRefs:
-    - name: gw
+    - name: gw-private
       namespace: gateway
       sectionName: https
   hostnames:

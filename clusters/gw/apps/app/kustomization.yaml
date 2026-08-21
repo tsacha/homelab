@@ -9,8 +9,8 @@ labels:
 resources:
   - namespace.yaml
   - gateway.yaml
+  - gateway-private.yaml
   - http-redirect.yaml
   - lldap.yaml
   - pocketid.yaml
   - vaultwarden.yaml
-  - wg.yaml

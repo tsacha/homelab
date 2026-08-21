@@ -31,6 +31,10 @@ spec:
     ipv4:
       enabled: true
     kubeProxyReplacement: true
+    # wg0 must carry service translation for the gw-private VIPs coming from home.
+    devices:
+      - eth0
+      - wg0
     ipam:
       mode: kubernetes
     gatewayAPI:

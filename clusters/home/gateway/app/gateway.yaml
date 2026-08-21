@@ -1,9 +1,9 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: gw
+  name: gw-private
 spec:
-  gatewayClassName: cilium-gw
+  gatewayClassName: cilium-gw-private
   infrastructure:
     annotations:
       lbipam.cilium.io/ips: "${GW_IPV6},${GW_IPV4}"

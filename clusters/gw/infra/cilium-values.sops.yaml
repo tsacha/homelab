@@ -8,11 +8,10 @@ ipam:
         clusterPoolIPv6MaskSize: ENC[AES256_GCM,data:Dzc=,iv:tnSPU+2LI41r47mJzEYPXWC87BbaBjaIc6LP+2WxKfQ=,tag:1JmD5PehuGP2ZTIDrZCejw==,type:int]
 nodeIPAM:
     enabled: ENC[AES256_GCM,data:nY+LqA==,iv:RYYankLj726vAei6o0K1MPyKp3XweIGHG4CzStQSTcE=,tag:aLKasRtxlBfE61+qCsy4rg==,type:bool]
-defaultLBServiceIPAM: ENC[AES256_GCM,data:75d4UjBfrlQ=,iv:Y9i+2ZwXuYJnh4NNCe/r4fyyZDYyqALPgA5EMFdEQKw=,tag:Y8kOOFpdFn9C9wNnfDkKzw==,type:str]
+defaultLBServiceIPAM: ENC[AES256_GCM,data:VY+fFNxh,iv:BP8pH+FROpIPUu4isBkapus8jscXQeJJoAau/HVuVis=,tag:wXk/2NTIen25cy4XRZ9/tw==,type:str]
 sops:
     age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
+        - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
             YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBRRkwxMVc5c2dsU2w0bGdJ
             RE1HRmlTRkxmU0IrZnpCVTNyVzhFVmhNRkNRCmpHOUQ3Rm9LanMweENJQnMyMUJi
@@ -20,7 +19,8 @@ sops:
             QVVQM29uRWx3L1VhbmtaOUZpdm8zRzAKRE6+nGRMK9F2pgPBiq8Fiyvb8sQCvN0j
             kCF4sQJT4gEiRfT6GMJiLe8ZhatfJKF+K4zW9zfZRTNRvrfRg7mVgg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-02-14T16:03:04Z"
-    mac: ENC[AES256_GCM,data:w5L5NfRXwUVjV/Sj3M+Sv+N0QMFsArBgrzmJyy6VyNSBrTSTYg+Pm8shmlTIqyRUwGMqUD3KGsLEDEiaJIPdWHKphJAm38vlnUC60gH4lv0cSvbSSEmC+PIOcXDB7206lhutAZObXJJA/iDBiyTK3LpIMY+15udV7kLr5XURJDE=,iv:khmHNw1DGWSncw6OU1MXd6/Tp/TJ65EVtfMJxBX+NZo=,tag:tdj26A6K5Lcf17y2IuilBg==,type:str]
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    lastmodified: "2026-08-21T14:31:23Z"
+    mac: ENC[AES256_GCM,data:0Brdt+C+8OT6zNO59wIbASkGorvVx7vFYGQ2adyJYxtW1AN7vsCCBmcXjibGeLTv+ZNHzt4FzA31/rMP94rr0+NMxJ9Ar13SFcBJ98hsnRdRlBmjdedyuOhO+rcEfsPd4fpAOJxQI9FbfD7wzNn6LxVW+gf3NvnoO/0HaBtWM50=,iv:FoelCuA4WaUra2oqWMLgwbGSDZx9cf1prlLfrUG6Pd0=,tag:qLfk3ZihpYCJtoGA7YaEGA==,type:str]
     unencrypted_suffix: _unencrypted
     version: 3.11.0

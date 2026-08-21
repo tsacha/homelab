@@ -20,17 +20,17 @@
 <text x='52' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>cluster-vars</text>
 <text x='52' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Secret/cluster-secrets (sops)</text>
 <text x='52' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>SECRET_DOMAIN, S3_*, RESTIC_PASSWORD,</text>
-<text x='52' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GW_&lt;TENANT&gt;_IP</text>
+<text x='52' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GW_PRIVATE_IP{V4,V6}</text>
 <rect x='390' y='269' width='370' height='89' rx='8' ry='8' fill='#e4f0e6' stroke='#8a8a8a' stroke-width='1.2'/>
 <text x='402' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>infra</text>
 <text x='402' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Cilium (Gateway API), cert-manager + OVH webhook,</text>
-<text x='402' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GatewayClass,</text>
+<text x='402' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GatewayClasses: public=nodeIPAM, private=wg-ippool,</text>
 <text x='402' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>storageclass, volsync, reloader, metrics-server</text>
 <rect x='800' y='269' width='330' height='89' rx='8' ry='8' fill='#dfe7f5' stroke='#8a8a8a' stroke-width='1.2'/>
 <text x='812' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>cluster-vars</text>
 <text x='812' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Secret/cluster-secrets (sops)</text>
 <text x='812' y='329' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>SECRET_DOMAIN, S3_*, RESTIC_PASSWORD,</text>
-<text x='812' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GW_&lt;TENANT&gt;_IP</text>
+<text x='812' y='346' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GW_IP{V4,V6}, GW_PUBLIC_IP{V4,V6}</text>
 <rect x='1150' y='269' width='370' height='89' rx='8' ry='8' fill='#e4f0e6' stroke='#8a8a8a' stroke-width='1.2'/>
 <text x='1162' y='289' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>infra</text>
 <text x='1162' y='312' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Cilium (BGP + IPPool), cert-manager, storageclass</text>
@@ -41,8 +41,8 @@
 <text x='812' y='421' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>cert-manager-webhook-ovh + ClusterIssuer (wildcard *.domain)</text>
 <rect x='40' y='378' width='432' height='153.5' rx='8' ry='8' fill='#fdeedb' stroke='#8a8a8a' stroke-width='1.2'/>
 <text x='52' y='398' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>apps  ·  ns: apps — deps: cluster-vars, infra</text>
-<text x='52' y='420.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>Gateway/gw-apps (edge TLS termination) + http-redirect</text>
-<text x='52' y='437.0' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>lldap        LDAP directory, identity source of truth</text>
+<text x='52' y='420.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>Gateway/gw-public (edge TLS) + gw-private (WG-only VIP)</text>
+<text x='52' y='437.0' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>lldap        LDAP directory, on gw-private only</text>
 <text x='52' y='453.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>pocketid     OIDC provider, backed by lldap</text>
 <text x='52' y='470.0' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>vaultwarden  Bitwarden-compatible password manager</text>
 <text x='52' y='486.5' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5a5a5a'>wg           WireGuard + reresolve sidecar (re-runs `wg set`</text>
@@ -56,9 +56,10 @@
 <text x='504' y='468' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>HTTPRoute (ACME http-01 :2136)</text>
 <text x='504' y='484' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>SOA serial = {{ now }} → hourly</text>
 <text x='504' y='500' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>restart via Reloader</text>
-<rect x='800' y='453' width='720' height='55' rx='8' ry='8' fill='#fdeedb' stroke='#8a8a8a' stroke-width='1.2'/>
+<rect x='800' y='453' width='720' height='65' rx='8' ry='8' fill='#fdeedb' stroke='#8a8a8a' stroke-width='1.2'/>
 <text x='812' y='473' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>gateway  ·  ns: gateway — deps: cluster-vars, certs</text>
-<text x='812' y='496' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GatewayClass (cilium-gw) + Gateway/gw + wildcard Certificate + http-redirect</text>
+<text x='812' y='493' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>GatewayClasses cilium-gw-public/-private + Gateway/gw-private (all tenant routes)</text>
+<text x='812' y='509' font-family='Menlo,Consolas,monospace' font-size='11' fill='#5a5a5a'>Gateway/gw-public (empty for now) + wildcard Certificate + http-redirect</text>
 <rect x='800' y='528' width='168.0' height='166' rx='8' ry='8' fill='#fff6d9' stroke='#8a8a8a' stroke-width='1.2'/>
 <text x='812' y='548' font-family='Menlo,Consolas,monospace' font-size='13' font-weight='700' fill='#1a1a1a'>apps</text>
 <text x='812' y='570' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5a5a5a'>ns: apps</text>
@@ -123,10 +124,10 @@
 <line x1='1335.0' y1='358' x2='1304.0' y2='378' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
 <line x1='965.0' y1='358' x2='1016.0' y2='378' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
 <line x1='1160.0' y1='433' x2='1160.0' y2='453' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
-<line x1='1160.0' y1='508' x2='884.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
-<line x1='1160.0' y1='508' x2='1068.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
-<line x1='1160.0' y1='508' x2='1252.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
-<line x1='1160.0' y1='508' x2='1436.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='518' x2='884.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='518' x2='1068.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='518' x2='1252.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
+<line x1='1160.0' y1='518' x2='1436.0' y2='528' stroke='#8a8a8a' stroke-width='1.4'  marker-end='url(#arrow)'/>
 <line x1='148.0' y1='531.5' x2='271.0' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
 <line x1='884.0' y1='694' x2='89.5' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>
 <line x1='1068.0' y1='694' x2='122.5' y2='734' stroke='#8a8a8a' stroke-width='1.4' stroke-dasharray='5,3' marker-end='url(#arrow)'/>

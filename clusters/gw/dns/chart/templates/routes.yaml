@@ -4,7 +4,7 @@ metadata:
   name: http2136
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-private
       sectionName: http2136-https
   hostnames:
     - "{{ .Values.dns.http2136_vhost }}"
@@ -19,7 +19,7 @@ metadata:
   name: dns-tcp
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-public
       sectionName: dns-tcp
   rules:
     - backendRefs:
@@ -32,7 +32,7 @@ metadata:
   name: dns-udp
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-public
       sectionName: dns-udp
   rules:
     - backendRefs:

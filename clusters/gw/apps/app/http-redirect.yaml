@@ -4,7 +4,7 @@ metadata:
   name: redirect-http-to-https
 spec:
   parentRefs:
-    - name: gw-apps
+    - name: gw-public
       sectionName: http
   rules:
     - filters:
