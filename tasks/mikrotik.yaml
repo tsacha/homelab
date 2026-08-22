@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+vars:
+  ROUTER_HOST: admin@router.internal
+  FIBER_HOST: admin@fiber.internal
+  EXPORT_DIR: secrets/exports
+tasks:
+  export:
+    desc: Export router + fiber configs (show-sensitive), sops-encrypted in secrets/exports/
+    cmds:
+      - task: _export
+        vars: {NAME: router, HOST: "{{.ROUTER_HOST}}"}
+      - task: _export
+        vars: {NAME: fiber, HOST: "{{.FIBER_HOST}}"}
+  _export:
+    internal: true
+    cmds:
+      - |
+        set -eo pipefail
+        mkdir -p {{.EXPORT_DIR}}
+        ssh {{.HOST}} '/export show-sensitive' \
+          | sops encrypt --filename-override {{.NAME}}.sops.rsc /dev/stdin \
+          > {{.EXPORT_DIR}}/{{.NAME}}.sops.rsc.tmp
+        mv {{.EXPORT_DIR}}/{{.NAME}}.sops.rsc.tmp {{.EXPORT_DIR}}/{{.NAME}}.sops.rsc
+  cat:
+    desc: "Decrypt a stored export to stdout (usage: task mikrotik:cat -- router|fiber)"
+    cmds:
+      - sops decrypt {{.EXPORT_DIR}}/{{.CLI_ARGS}}.sops.rsc

@@ -1,4 +1,6 @@
 creation_rules:
+  - path_regex: \.sops\.rsc$
+    age: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
   - path_regex: cluster-secrets\.sops\.yaml$
     encrypted_regex: ^(data|stringData)$
     age: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00

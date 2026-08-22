@@ -5,6 +5,7 @@ tasks:
 includes:
   templates: ./tasks/templates.yaml
   gw: ./tasks/gw.yaml
+  mikrotik: ./tasks/mikrotik.yaml
   home: ./tasks/home.yaml
   renovate: ./tasks/renovate.yaml
   restic: ./tasks/restic.yaml
