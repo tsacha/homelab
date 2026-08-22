@@ -1,18 +1,17 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 vars:
+  SECRETS: clusters/home/vars/app/cluster-secrets.sops.yaml
   RESTIC_PASSWORD:
-    sh: test -n "home" && test -n "apps" && sops -d clusters/home/apps/values.sops.yaml | yq '.backup.restic' || echo ""
+    sh: sops -d {{.SECRETS}} | yq '.stringData.RESTIC_PASSWORD'
   AWS_ACCESS_KEY_ID:
-    sh: test -n "home" && test -n "apps" && sops -d clusters/home/apps/values.sops.yaml | yq '.backup.ak' || echo ""
+    sh: sops -d {{.SECRETS}} | yq '.stringData.S3_ACCESS_KEY'
   AWS_SECRET_ACCESS_KEY:
-    sh: test -n "home" && test -n "apps" && sops -d clusters/home/apps/values.sops.yaml | yq '.backup.sk' || echo ""
+    sh: sops -d {{.SECRETS}} | yq '.stringData.S3_SECRET_KEY'
   RESTIC_ENDPOINT:
-    sh: test -n "home" && test -n "apps" && sops -d clusters/home/apps/values.sops.yaml | yq '.backup.endpoint' || echo ""
-  RESTIC_BUCKET:
-    sh: test -n "home" && test -n "apps" && sops -d clusters/home/apps/values.sops.yaml | yq '.backup.bucket' || echo ""
+    sh: sops -d {{.SECRETS}} | yq '.stringData.S3_ENDPOINT'
   RESTIC_REGION:
-    sh: test -n "home" && test -n "apps" && sops -d clusters/home/apps/values.sops.yaml | yq '.backup.region' || echo ""
+    sh: sops -d {{.SECRETS}} | yq '.stringData.S3_ENDPOINT | sub("^https?://s3\.", "") | sub("\..*$", "")'
 tasks:
   cmd:
     desc: Run restic commands on backups
