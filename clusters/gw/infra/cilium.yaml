@@ -25,18 +25,55 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
+  # The addressing lives in cilium-values.sops.yaml. ⚠ Both files carry an
+  # `ipam:` key: merge them recursively or `mode` below is lost.
   values:
+    # KubePrism: at bootstrap there is no CoreDNS to resolve a name with.
+    k8sServiceHost: localhost
+    k8sServicePort: 7445
     ipv6:
       enabled: true
     ipv4:
       enabled: true
     kubeProxyReplacement: true
-    # wg0 must carry service translation for the gw-private VIPs coming from home.
+    # wg0 must carry service translation for the gw-private VIPs from home.
+    # Wildcards, not names: Talos derives NIC names from the PCI path, not eth0.
     devices:
-      - eth0
+      - en+
+      - eth+
       - wg0
     ipam:
-      mode: kubernetes
+      # cluster-pool: controlplane.yaml sets allocate-node-cidrs=false.
+      mode: cluster-pool
+    # `io.cilium/node` opts a Service into the node's address instead of ippool.
+    nodeIPAM:
+      enabled: true
+    defaultLBServiceIPAM: lbipam
+    # Talos mounts cgroup2 read-only and grants only the capabilities listed here.
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - PERFMON
+          - BPF
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+    cgroup:
+      hostRoot: /sys/fs/cgroup
+      autoMount:
+        enabled: false
     gatewayAPI:
       enabled: true
       enableAlpn: true

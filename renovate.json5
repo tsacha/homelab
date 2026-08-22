@@ -9,6 +9,12 @@
   },
   "customManagers": [
     {
+      "description": "Talos and Kubernetes pins live in the taskfile env block — no native manager",
+      "customType": "regex",
+      "managerFilePatterns": ["/^tasks/talos\\.yaml$/"],
+      "matchStrings": ["(?<depType>TALOS_VERSION|KUBERNETES_VERSION): (?<currentValue>\\S+) # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)"]
+    },
+    {
       "description": "Bootstrap pins live in shell exports, outside any standard manager",
       "customType": "regex",
       "managerFilePatterns": ["/^tasks/.+\\.yaml$/"],

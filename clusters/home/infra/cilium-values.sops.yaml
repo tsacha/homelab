@@ -1,25 +1,23 @@
-ipv4NativeRoutingCIDR: ENC[AES256_GCM,data:nHuyVpJxTrNq7HXkOA==,iv:cRUg6rWM9vHD4GQB813DJ6SnB7AaHNg4k4asLNUVdXw=,tag:cR+edYNeb+TiGn980Y0Bqg==,type:str]
-ipv6NativeRoutingCIDR: ENC[AES256_GCM,data:NnLPbk1Bs8ljad001B54LwZRvUF+dj0=,iv:lMvpRnBKUfMb8gDyeTRXOHv1IyXYIIkrs88pozmwVNk=,tag:NDYegKyXkWxG8O2rXOSJyw==,type:str]
-k8sServiceHost: ENC[AES256_GCM,data:dCNQQe0smaMkPBlFTd/u8abmsfuNKZ4=,iv:f63TUgxnKkwKLC73PzZxxC/oIV03p1YJ/Z8B+Z+lDEA=,tag:U7P4ceeqoWSM1T+kOAz19A==,type:str]
-k8sServicePort: 6443
 ipam:
     operator:
-        clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:3JDJB8pEYG8wZJaz4A==,iv:OYuV5i7E7vw1qd1C0KzOYX6IB/Qhxc+HQSUQP7Sxw6E=,tag:/hkFglHi14v0GqPQSaIb1g==,type:str]
-        clusterPoolIPv4MaskSize: ENC[AES256_GCM,data:pmo=,iv:UlOpPLa/HUDCWYb4loMRV4NTLU0vER4Kwyx82VqzVT4=,tag:UHlgOIOF/qWBOOYeP3cOrw==,type:int]
-        clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:mo/ykFtD03Qv7l/kWh9p3xzSBH2jDEE=,iv:xFIJ1cT0vK3VVI23naUh53ztYG9n838o/LWzw9gSEbQ=,tag:17VyTbjx1i0P6RXR81xPuQ==,type:str]
-        clusterPoolIPv6MaskSize: ENC[AES256_GCM,data:w6w=,iv:TM/bCnBWWrA6CA+8ToTy+6o7QGuXbGiMfh37Bj1K6Pw=,tag:+ER/THEQkK3in6RyME6dCA==,type:int]
+        clusterPoolIPv4PodCIDRList: ENC[AES256_GCM,data:/rh8GJQXEWMeY8jadA==,iv:jOASZn1S6iuM7w5U5vbx2mLVJBcoOf1JqrmOQcOEktk=,tag:6vMQ5YOcVLwPJOt8Gmdgzw==,type:str]
+        clusterPoolIPv4MaskSize: ENC[AES256_GCM,data:CQs=,iv:3AXr1sRX6A40KWYTDG+/4AJ4ca8sLvtVcEKJq/R4Nkg=,tag:O+wxUlj0v3+giSV82Hlh9g==,type:int]
+        clusterPoolIPv6PodCIDRList: ENC[AES256_GCM,data:1hQK2+ufvT6mveYpnRTbgY+Wyo4VjP0=,iv:tdjRvvOI/vwC4KyQEiX7yC+nlTfPkg6k+UPSOYNRI4g=,tag:zsu0PnFF0e4ZfbSFCda30A==,type:str]
+        clusterPoolIPv6MaskSize: ENC[AES256_GCM,data:Jpk=,iv:qfwzfnt3mgu0NnkYGXanADtIN1MHgAsJg37yg42h5PY=,tag:PJ8rhnAjH3Bm65Yt4fBugw==,type:int]
+ipv4NativeRoutingCIDR: ENC[AES256_GCM,data:FYbdz7RYge/qRYIX2Q==,iv:z86J3n4RfV38NB6ryqeUDsUngJH53YlwazmmsSSjakU=,tag:11bMU4v8mo6U2JRHABusdQ==,type:str]
+ipv6NativeRoutingCIDR: ENC[AES256_GCM,data:/jQHdSDvt9MDxyoA2SEtAJsNKqSk5NI=,iv:1AyrmMgcEmuiGyoSoa32Z3AGBgQZcsv5faJkPp6tSKk=,tag:IUCQp8LG3MTUDAprMb477g==,type:str]
 sops:
     age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
+        - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4cnF4czFyYzhFV0lGOGoy
-            NWM5YWQrNWFyV25zTG52UUgrdjlOVHphRWpjCjNheDlOdG9yQkk4bUdSMUpoWmNL
-            Z3B4UEpXM0Y1bGJ2QUhyMlhjb1dpNGsKLS0tIFA0WE5xQTI4QlluMGdNOURXMFJK
-            TEFxTk5Qd0F6L2FzZms2ZGdyNC9UR0kKPYpQU5tuHiHPHjMA4unA/Q0axRNIw4w1
-            qtQEnCz7VBrCZX6uIRt1OYv19wpqAmQn3K2JUIA2GnagVetBB6/m8A==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3VTFvbi9RNFZsTUxQZ3hJ
+            Q1hxMnF4eDZpdEJyU2FkcWs3eEorVVRVVGdBClkvLzJxQWpzMkNaR2F4NW9zS2pr
+            cEwrZDE1RVhvYmFJNVdCU2lBVzNpZXMKLS0tIEhCdWlLK1ZscDZBZ1BrRm1mQTNU
+            Uk9ZWk1qY3NkRlF1Y3kxMFlGZ0hQR3cKJS/TfEQTr1bgUXlDCfLFmhoePGm8q4Oh
+            vGbcXRkS9lyVakpz6oYtDniHPNsM+6FnYqEhxD3jaheIXgAj0kNJJw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-02-14T16:02:48Z"
-    mac: ENC[AES256_GCM,data:nK1TdjAxv5lakYIh11YXsljG15QUJamCVn3rHdxg1gvrzfpQPGJpAAwf1F2cPBw6ylRiBsIR1i6ediZHoGGjfgNtjLYle+8vAPXyhSKFVjldwL+8V2bmlb5Yv626DEeLH+yyQy5ALa3v3HdH3zyQPJMRfk6pzUcGzMkpHFoDXHs=,iv:PR3vGglk9s2d1xKCPr63F77w8mOgRihUgj05xXiuu7g=,tag:4x4//mu/71ZWN1MgDCz7bw==,type:str]
-    encrypted_regex: ^(ipv[46]NativeRoutingCIDR|clusterPool.+|k8sServiceHost)$
-    version: 3.11.0
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    lastmodified: "2026-08-22T22:43:50Z"
+    mac: ENC[AES256_GCM,data:0UvmwW6Ux6T4l8TVmGyTWCAH2eGhRLINek279RunaqDD/roq88S8Qw/xFBQTDQW0zkwnpLVAxpPSIq0ul65ngBcPcHezmt7fg0WzGtw7TonqIw7DxS1ZNXxB5ICia8tSLGs3F+P2K4UytCuKivJ3P2eTKspcCe7ode+rArUpXho=,iv:9GvVxbscNHFISdipPrL2g4oyl/kRTYulE0JOg6y8DGI=,tag:IE5pgW0twAK2UKUJSTSmNw==,type:str]
+    unencrypted_suffix: _unencrypted
+    version: 3.13.3

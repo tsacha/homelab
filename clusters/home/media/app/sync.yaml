@@ -47,7 +47,7 @@ spec:
                 defaultMode: 0600
             - name: media-storage
               hostPath:
-                path: /media
+                path: /var/mnt/media
                 type: Directory
 ---
 apiVersion: v1

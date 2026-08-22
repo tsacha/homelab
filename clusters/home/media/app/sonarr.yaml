@@ -34,7 +34,7 @@ spec:
             claimName: sonarr-config
         - name: sonarr-media
           hostPath:
-            path: /media
+            path: /var/mnt/media
             type: Directory
 ---
 apiVersion: v1

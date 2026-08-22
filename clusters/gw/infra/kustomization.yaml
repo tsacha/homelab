@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - storageclass.yaml
+  - local-path-provisioner.yaml
   - cilium.yaml
   - gatewayclass.yaml
   - ippool.sops.yaml
@@ -10,6 +11,7 @@ resources:
   - reloader.yaml
   - external-snapshotter-crds.yaml
   - volsync.yaml
+  - kubelet-serving-cert-approver.yaml
   - metrics-server.yaml
 secretGenerator:
   - name: cilium-values

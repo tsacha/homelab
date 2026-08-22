@@ -34,7 +34,7 @@ spec:
             claimName: radarr-config
         - name: radarr-media
           hostPath:
-            path: /media
+            path: /var/mnt/media
             type: Directory
 ---
 apiVersion: v1

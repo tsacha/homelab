@@ -7,5 +7,7 @@ includes:
   gw: ./tasks/gw.yaml
   mikrotik: ./tasks/mikrotik.yaml
   home: ./tasks/home.yaml
+  talos: ./tasks/talos.yaml
   renovate: ./tasks/renovate.yaml
+  secrets: ./tasks/secrets.yaml
   restic: ./tasks/restic.yaml

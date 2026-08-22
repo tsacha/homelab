@@ -1,0 +1,27 @@
+machine:
+  install:
+    disk: ${BL3_INSTALL_DISK}
+    image: factory.talos.dev/metal-installer/${SCHEMATIC_ID}:${TALOS_VERSION}
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+auto: 'off'
+hostname: bl3
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+  - address: ${DNS6}
+  - address: ${GW4}
+searchDomains:
+  disableDefault: false
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ${BL3_IFACE}
+addresses:
+  - address: ${BL3_ADDR6}/64
+  - address: ${BL3_ADDR4}/24
+routes:
+  - gateway: ${GW6}
+  - gateway: ${GW4}

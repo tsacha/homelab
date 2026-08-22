@@ -1,0 +1,21 @@
+# Cluster-wide intent — what talconfig.yaml used to carry.
+machine:
+  certSANs:
+    - ${KUBE_FQDN}
+    - ${BL3_FQDN}
+cluster:
+  allowSchedulingOnControlPlanes: true
+  network:
+    cni:
+      name: none
+    # First family is primary: IPv6 by default, IPv4 for legacy.
+    podSubnets:
+      - ${POD_CIDR6}
+      - ${POD_CIDR4}
+    serviceSubnets:
+      - ${SVC_CIDR6}
+      - ${SVC_CIDR4}
+  apiServer:
+    certSANs:
+      - ${KUBE_FQDN}
+      - ${BL3_FQDN}

@@ -1,0 +1,12 @@
+machine:
+  time:
+    disabled: false
+    servers:
+      - ${NTP6}
+  kubelet:
+    extraArgs:
+      # Needs kubelet-serving-cert-approver, deployed in clusters/home/infra.
+      rotate-server-certificates: "true"
+cluster:
+  discovery:
+    enabled: false

@@ -1,0 +1,9 @@
+# Nameservers and NTP come from DHCP.
+machine:
+  kubelet:
+    extraArgs:
+      # Needs kubelet-serving-cert-approver, deployed in clusters/gw/infra.
+      rotate-server-certificates: "true"
+cluster:
+  discovery:
+    enabled: false

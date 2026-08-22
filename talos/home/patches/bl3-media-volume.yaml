@@ -1,0 +1,7 @@
+# Adopted, never UserVolumeConfig: that formats, and /media has no backup.
+apiVersion: v1alpha1
+kind: ExistingVolumeConfig
+name: media
+discovery:
+  volumeSelector:
+    match: volume.partition_label == "u-media-volume"

@@ -1,0 +1,12 @@
+cluster:
+  proxy:
+    disabled: true
+  controllerManager:
+    extraArgs:
+      allocate-node-cidrs: "false"
+  etcd:
+    # Never on the public IP.
+    listenSubnets:
+      - ${WG_SUBNET6}
+    advertisedSubnets:
+      - ${WG_SUBNET6}

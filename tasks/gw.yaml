@@ -2,13 +2,13 @@
 version: "3"
 vars:
   GW:
-    sh: yq -r '.gw.fqdn' .private/inventory.yaml || /bin/true
+    sh: yq -r '.gw.fqdn' .private/inventory.yaml 2>/dev/null || /bin/true
   GW_CLUSTER:
-    sh: yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml || /bin/true
+    sh: yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml 2>/dev/null || /bin/true
   FORGEJO_USER:
-    sh: yq -r '.flux.forgejo_user' .private/inventory.yaml || /bin/true
+    sh: yq -r '.flux.forgejo_user' .private/inventory.yaml 2>/dev/null || /bin/true
   FORGEJO_PAT:
-    sh: yq -r '.flux.forgejo_pat' .private/inventory.yaml || /bin/true
+    sh: yq -r '.flux.forgejo_pat' .private/inventory.yaml 2>/dev/null || /bin/true
 tasks:
   kubeconfig:
     cmds:
@@ -41,6 +41,7 @@ tasks:
         pushd clusters/gw/flux-system
         kubectl apply --server-side -k .
         popd
+  # Delete with wg-host.sh once the old server is gone: Talos does wg0 itself.
   wg:
     desc: Configure host-level wireguard tunnel to home (idempotent)
     cmds:
@@ -54,6 +55,5 @@ tasks:
         export GATEWAY_API_VERSION=v1.6.1 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
         kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_API_VERSION/experimental-install.yaml
         helm repo add cilium https://helm.cilium.io/
-        sops -d clusters/gw/infra/cilium-values.sops.yaml \
-          | yq eval-all 'select(fi == 0).spec.values + select(fi == 1)' clusters/gw/infra/cilium.yaml - \
+        bash tasks/cilium-values.sh gw \
           | helm upgrade --install cilium cilium/cilium -n kube-system --version=$CILIUM_VERSION -f -

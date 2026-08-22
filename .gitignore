@@ -4,3 +4,4 @@ inventory.yaml
 /debug
 /.task
 /CLAUDE.md
+/talos/*/clusterconfig

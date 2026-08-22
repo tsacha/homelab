@@ -1,0 +1,11 @@
+cluster:
+  proxy:
+    disabled: true
+  controllerManager:
+    extraArgs:
+      allocate-node-cidrs: "false"
+  etcd:
+    listenSubnets:
+      - ${VLAN_CIDR6}
+    advertisedSubnets:
+      - ${VLAN_CIDR6}

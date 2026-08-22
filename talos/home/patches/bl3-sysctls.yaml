@@ -1,0 +1,4 @@
+machine:
+  sysctls:
+    # Static addressing; home-router advertises ND with other-configuration=yes.
+    net.ipv6.conf.${BL3_IFACE}.accept_ra: "0"

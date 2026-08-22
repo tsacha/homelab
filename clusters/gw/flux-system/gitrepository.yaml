@@ -10,5 +10,3 @@ spec:
   secretRef:
     name: forgejo-auth
   url: https://codeberg.org/tsacha/homelab.git
-  ignore: |
-    /clusters/gw/k3s

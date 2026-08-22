@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - storageclass.yaml
+  - local-path-provisioner.yaml
   - cilium.yaml
   - ippool.sops.yaml
   - bgp.sops.yaml
