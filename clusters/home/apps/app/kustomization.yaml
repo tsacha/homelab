@@ -11,3 +11,4 @@ resources:
   - papra.yaml
   - syncthing.yaml
   - syncthing-discovery.yaml
+  - http2136.yaml

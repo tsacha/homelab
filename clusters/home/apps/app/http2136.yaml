@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: http2136
+  labels:
+    app: http2136
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 30
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 50
+      template:
+        metadata:
+          labels:
+            app: http2136
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: http2136
+              image: docker.io/curlimages/curl:8.21.0
+              command:
+                - sh
+                - -c
+                - |
+                  set -eu
+
+                  # -6 : sans la contrainte, un v6 cassé bascule en silence sur le v4
+                  # masqueradé, qui marche aussi et masquerait le trou d'AllowedIPs côté gw.
+                  put() {
+                    curl -6 -fsS --connect-timeout 5 --max-time 10 -o /dev/null \
+                      -X PUT "https://$VHOST/" \
+                      -H 'content-type: application/json' \
+                      -d "{\"token\":\"$TOKEN\",\"record\":\"$1\",\"record_type\":\"$2\",\"value\":\"$3\",\"zone\":\"$ZONE\"}"
+                  }
+
+                  put "wg4.$ZONE" A "$WG_IPV4"
+                  put "wg6.$ZONE" AAAA "$WG_IPV6"
+              env:
+                - name: VHOST
+                  value: "${HTTP2136_VHOST}"
+                - name: TOKEN
+                  value: "${HTTP2136_TOKEN}"
+                - name: ZONE
+                  value: "${SECRET_DOMAIN}"
+                - name: WG_IPV6
+                  value: "${WG_IPV6}"
+                - name: WG_IPV4
+                  value: "${WG_IPV4}"
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 16Mi
+                limits:
+                  memory: 64Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
