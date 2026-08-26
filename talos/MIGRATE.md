@@ -20,11 +20,11 @@ There are still **zero `ReplicationDestination` objects committed** to the repo,
 
 `clusters/*/flux-system/gitrepository.yaml` → `ref.branch: zen`. Merging this branch wholesale would push, onto a **running k3s**:
 
-| Change                                             | Effect on live k3s                                                                       |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Change                                           | Effect on live k3s                                                                       |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
 | `cilium.yaml` → `k8sServiceHost: localhost:7445` | 🔴 KubePrism does not exist on k3s. Cilium loses the apiserver. Cluster networking dies. |
-| hostPath `/var/mnt/media`                          | Media stack fails to start — the path does not exist on Ubuntu.                          |
-| `local-path-provisioner` HelmRelease               | Fights k3s's built-in provisioner over the `local-path` StorageClass.                    |
+| hostPath `/var/mnt/media`                        | Media stack fails to start — the path does not exist on Ubuntu.                          |
+| `local-path-provisioner` HelmRelease             | Fights k3s's built-in provisioner over the `local-path` StorageClass.                    |
 
 So: **`clusters/gw/**`must not reach`zen` while the old gw is running.\*\* Flux scopes by path, so splitting by path is clean. In practice the old gw is powered off just before that merge (Phase 2, step 4), which makes the window trivial.
 
@@ -310,11 +310,11 @@ A second Hetzner Cloud server, built alongside the current one. The old gw is **
 
 Same shape as §0.4: a delegated /64, host on `::1`, gateway `fe80::1`. The current values are `GW_ADDR6` in `talos/gw/talenv.sops.yaml`; the new server gets a different prefix.
 
-| Name                   | Points at                              | Moves?                              |
-| ---------------------- | -------------------------------------- | ----------------------------------- |
-| `gw`, `pass.s`, `auth` | the public IPs                         | yes                                 |
-| `gw6`                  | the public IPv6                        | yes — this is the WireGuard cutover |
-| `lldap`, `http2136`    | the wg VIP, `clusters/gw/infra/ippool.sops.yaml` | no, follows the tunnel    |
+| Name                   | Points at                                        | Moves?                              |
+| ---------------------- | ------------------------------------------------ | ----------------------------------- |
+| `gw`, `pass.s`, `auth` | the public IPs                                   | yes                                 |
+| `gw6`                  | the public IPv6                                  | yes — this is the WireGuard cutover |
+| `lldap`, `http2136`    | the wg VIP, `clusters/gw/infra/ippool.sops.yaml` | no, follows the tunnel              |
 
 **The WireGuard cutover needs no router change.** home-router's peer dials a name, not an address: its `endpoint-address` is `WG_ENDPOINT_FQDN`. Repointing that record moves the tunnel, so the read-only doctrine on the MikroTik holds.
 

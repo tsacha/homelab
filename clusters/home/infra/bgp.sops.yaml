@@ -1,129 +1,177 @@
 apiVersion: cilium.io/v2
 kind: CiliumBGPClusterConfig
 metadata:
-  name: cilium-bgp
+    name: cilium-bgp
 spec:
-  nodeSelector:
-    matchLabels:
-      kubernetes.io/os: linux
-  bgpInstances:
-    - name: to-router
-      localASN: ENC[AES256_GCM,data:8JU8EKA=,iv:H5Au+mqHadhCN2CO2wiUSY+2nCB9VwOc3Wi5fMm20jo=,tag:9qj8wT/yX6gA2ZOx4j53Vg==,type:int]
-      peers:
-        - name: router4
-          peerASN: ENC[AES256_GCM,data:eZnoDug=,iv:VYPZK7cBxlcYGOYfz2gKVVRnyS8UF+3iGbmYb83Qqbw=,tag:IdpnBFYMbz+V0Lua1+KXqw==,type:int]
-          peerAddress: ENC[AES256_GCM,data:YY71y+dECzhCIw==,iv:u2qKlWI97YPEmxbbhBE88xjOSjh4h6PddpXr9LqUw6M=,tag:x+syr7GoFDkUb0XD3h25YA==,type:str]
-          peerConfigRef:
-            name: cilium-peer
-        - name: router6
-          peerASN: ENC[AES256_GCM,data:eZnoDug=,iv:VYPZK7cBxlcYGOYfz2gKVVRnyS8UF+3iGbmYb83Qqbw=,tag:IdpnBFYMbz+V0Lua1+KXqw==,type:int]
-          peerAddress: ENC[AES256_GCM,data:jtNUarfAzuH/TiQN1PDWNP5eFRVn,iv:qKPTsN87qD/hFpO/CZGi3XvVq++w72xeJmw/DP2FKEg=,tag:ZH85TNVah/dl8KMkXeTqVA==,type:str]
-          peerConfigRef:
-            name: cilium-peer
+    nodeSelector:
+        matchLabels:
+            kubernetes.io/os: linux
+    bgpInstances:
+        - name: to-router
+          localASN: ENC[AES256_GCM,data:8JU8EKA=,iv:H5Au+mqHadhCN2CO2wiUSY+2nCB9VwOc3Wi5fMm20jo=,tag:9qj8wT/yX6gA2ZOx4j53Vg==,type:int]
+          peers:
+            - name: router4
+              peerASN: ENC[AES256_GCM,data:eZnoDug=,iv:VYPZK7cBxlcYGOYfz2gKVVRnyS8UF+3iGbmYb83Qqbw=,tag:IdpnBFYMbz+V0Lua1+KXqw==,type:int]
+              peerAddress: ENC[AES256_GCM,data:YY71y+dECzhCIw==,iv:u2qKlWI97YPEmxbbhBE88xjOSjh4h6PddpXr9LqUw6M=,tag:x+syr7GoFDkUb0XD3h25YA==,type:str]
+              peerConfigRef:
+                name: cilium-peer
+            - name: router6
+              peerASN: ENC[AES256_GCM,data:eZnoDug=,iv:VYPZK7cBxlcYGOYfz2gKVVRnyS8UF+3iGbmYb83Qqbw=,tag:IdpnBFYMbz+V0Lua1+KXqw==,type:int]
+              peerAddress: ENC[AES256_GCM,data:jtNUarfAzuH/TiQN1PDWNP5eFRVn,iv:qKPTsN87qD/hFpO/CZGi3XvVq++w72xeJmw/DP2FKEg=,tag:ZH85TNVah/dl8KMkXeTqVA==,type:str]
+              peerConfigRef:
+                name: cilium-peer
 sops:
-  age:
-    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBHM2QxM0hrWWs3NFlFRFRy
-        bFhUMXdlN1hwOVlsZ2VKZTNKdTJoTS9JRGo4CnlwWWJWb2h5a3FKOGJMWEFwd09P
-        bDVnVG0rN0pOQUxUL2VUdFp0dms0ZFkKLS0tIEFXTC9TRy92dUtlUGlBOUZkcjBm
-        aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
-        X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-06-26T20:02:45Z"
-  mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
-  encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
-  version: 3.10.2
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBucHh6UnNnNnBGcTNuYW9E
+            elZpMHYvWGRCWnk3Y29oTXNnZnlObFUxNW00CmdYMmtVTy9lQWQ3enFBa2NDR1Bv
+            OUxmZkdRSkN2VmdUYWU1MU9mR24yMk0KLS0tIE44V3ZjMmpvV0ZFa0pnUjdWL293
+            amEvVTZlbzBuNWE4Z0tJVUREOG1BM0kKosTrtIiLH9cNBp5quH8/ViCY6qVHC4ZS
+            /Q8XcgStn+XC27w9YSAA94V6qJ/rTnSJpCtPr823hzXVTrC44cjriw==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
+    pgp:
+        - created_at: "2026-08-26T16:59:31Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4D8x4N7lmZIqkSAQdAw3cOr0LCHMIv/IQL1eC4uxKSCusFWAwGxIvZ9DGl2Bgw
+            XzQTHvXyltoHIbRZGIdxWXZrUEJAvxiNrDhqE72xUhTm/RrNblmyfDSXsMiydepK
+            0lwBFRkZYxCjv7laiYzsHIZ9i6PhyuUjEtLFMLNj0MZ9bzvognHcPO4e5BTMbFYA
+            uVFIo4XYOm5FEhMN+c+0ZB3l2k41AL0FYFhd/iPCdrTPPIgO8c2umc1XKUT6qQ==
+            =rvjl
+            -----END PGP MESSAGE-----
+          fp: 50C5DE2634B79DEA87206C8B27165D579CEB4919
+    version: 3.10.2
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: bgp-auth-secret
-  namespace: kube-system
+    name: bgp-auth-secret
+    namespace: kube-system
 type: Opaque
 stringData:
-  password: ENC[AES256_GCM,data:gD2vRiyoLnFVWjbHCFeI0/cJuFLmVaTgNQvjHmAi9KNt/W8pV5cZNVQk+VQgm+QYkl4ZBfr5ruveyEm1xHNfGg==,iv:9LM49d2bxiexy4HjVkKrw8IbQH17MUSPfmheM3h0sm4=,tag:QV2/X4LNLZRtAjz15qhU9A==,type:str]
+    password: ENC[AES256_GCM,data:gD2vRiyoLnFVWjbHCFeI0/cJuFLmVaTgNQvjHmAi9KNt/W8pV5cZNVQk+VQgm+QYkl4ZBfr5ruveyEm1xHNfGg==,iv:9LM49d2bxiexy4HjVkKrw8IbQH17MUSPfmheM3h0sm4=,tag:QV2/X4LNLZRtAjz15qhU9A==,type:str]
 sops:
-  age:
-    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBHM2QxM0hrWWs3NFlFRFRy
-        bFhUMXdlN1hwOVlsZ2VKZTNKdTJoTS9JRGo4CnlwWWJWb2h5a3FKOGJMWEFwd09P
-        bDVnVG0rN0pOQUxUL2VUdFp0dms0ZFkKLS0tIEFXTC9TRy92dUtlUGlBOUZkcjBm
-        aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
-        X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-06-26T20:02:45Z"
-  mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
-  encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
-  version: 3.10.2
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBucHh6UnNnNnBGcTNuYW9E
+            elZpMHYvWGRCWnk3Y29oTXNnZnlObFUxNW00CmdYMmtVTy9lQWQ3enFBa2NDR1Bv
+            OUxmZkdRSkN2VmdUYWU1MU9mR24yMk0KLS0tIE44V3ZjMmpvV0ZFa0pnUjdWL293
+            amEvVTZlbzBuNWE4Z0tJVUREOG1BM0kKosTrtIiLH9cNBp5quH8/ViCY6qVHC4ZS
+            /Q8XcgStn+XC27w9YSAA94V6qJ/rTnSJpCtPr823hzXVTrC44cjriw==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
+    pgp:
+        - created_at: "2026-08-26T16:59:31Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4D8x4N7lmZIqkSAQdAw3cOr0LCHMIv/IQL1eC4uxKSCusFWAwGxIvZ9DGl2Bgw
+            XzQTHvXyltoHIbRZGIdxWXZrUEJAvxiNrDhqE72xUhTm/RrNblmyfDSXsMiydepK
+            0lwBFRkZYxCjv7laiYzsHIZ9i6PhyuUjEtLFMLNj0MZ9bzvognHcPO4e5BTMbFYA
+            uVFIo4XYOm5FEhMN+c+0ZB3l2k41AL0FYFhd/iPCdrTPPIgO8c2umc1XKUT6qQ==
+            =rvjl
+            -----END PGP MESSAGE-----
+          fp: 50C5DE2634B79DEA87206C8B27165D579CEB4919
+    version: 3.10.2
 ---
 apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
 metadata:
-  name: cilium-peer
+    name: cilium-peer
 spec:
-  authSecretRef: bgp-auth-secret
-  families:
-    - afi: ipv6
-      safi: unicast
-      advertisements:
-        matchLabels:
-          advertise: bgp
-    - afi: ipv4
-      safi: unicast
-      advertisements:
-        matchLabels:
-          advertise: bgp
+    authSecretRef: bgp-auth-secret
+    families:
+        - afi: ipv6
+          safi: unicast
+          advertisements:
+            matchLabels:
+                advertise: bgp
+        - afi: ipv4
+          safi: unicast
+          advertisements:
+            matchLabels:
+                advertise: bgp
 sops:
-  age:
-    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBHM2QxM0hrWWs3NFlFRFRy
-        bFhUMXdlN1hwOVlsZ2VKZTNKdTJoTS9JRGo4CnlwWWJWb2h5a3FKOGJMWEFwd09P
-        bDVnVG0rN0pOQUxUL2VUdFp0dms0ZFkKLS0tIEFXTC9TRy92dUtlUGlBOUZkcjBm
-        aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
-        X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-06-26T20:02:45Z"
-  mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
-  encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
-  version: 3.10.2
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBucHh6UnNnNnBGcTNuYW9E
+            elZpMHYvWGRCWnk3Y29oTXNnZnlObFUxNW00CmdYMmtVTy9lQWQ3enFBa2NDR1Bv
+            OUxmZkdRSkN2VmdUYWU1MU9mR24yMk0KLS0tIE44V3ZjMmpvV0ZFa0pnUjdWL293
+            amEvVTZlbzBuNWE4Z0tJVUREOG1BM0kKosTrtIiLH9cNBp5quH8/ViCY6qVHC4ZS
+            /Q8XcgStn+XC27w9YSAA94V6qJ/rTnSJpCtPr823hzXVTrC44cjriw==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
+    pgp:
+        - created_at: "2026-08-26T16:59:31Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4D8x4N7lmZIqkSAQdAw3cOr0LCHMIv/IQL1eC4uxKSCusFWAwGxIvZ9DGl2Bgw
+            XzQTHvXyltoHIbRZGIdxWXZrUEJAvxiNrDhqE72xUhTm/RrNblmyfDSXsMiydepK
+            0lwBFRkZYxCjv7laiYzsHIZ9i6PhyuUjEtLFMLNj0MZ9bzvognHcPO4e5BTMbFYA
+            uVFIo4XYOm5FEhMN+c+0ZB3l2k41AL0FYFhd/iPCdrTPPIgO8c2umc1XKUT6qQ==
+            =rvjl
+            -----END PGP MESSAGE-----
+          fp: 50C5DE2634B79DEA87206C8B27165D579CEB4919
+    version: 3.10.2
 ---
 apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
 metadata:
-  name: bgp-advertisements
-  labels:
-    advertise: bgp
+    name: bgp-advertisements
+    labels:
+        advertise: bgp
 spec:
-  advertisements:
-    - advertisementType: PodCIDR
-    - advertisementType: Service
-      service:
-        addresses:
-          - LoadBalancerIP
-      selector:
-        matchExpressions:
-          - key: somekey
-            operator: NotIn
-            values:
-              - never-used-value
+    advertisements:
+        - advertisementType: PodCIDR
+        - advertisementType: Service
+          service:
+            addresses:
+                - LoadBalancerIP
+          selector:
+            matchExpressions:
+                - key: somekey
+                  operator: NotIn
+                  values:
+                    - never-used-value
 sops:
-  age:
-    - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBHM2QxM0hrWWs3NFlFRFRy
-        bFhUMXdlN1hwOVlsZ2VKZTNKdTJoTS9JRGo4CnlwWWJWb2h5a3FKOGJMWEFwd09P
-        bDVnVG0rN0pOQUxUL2VUdFp0dms0ZFkKLS0tIEFXTC9TRy92dUtlUGlBOUZkcjBm
-        aGExOEdJU25IWk5nZkZ6MVNmc0ZLeUEKmkUzWrC02Nzt8OhMmxsn63YGgXhw0PJh
-        X/h+Qdewkvej7S3i6yFcaHYjkh23GI7oqgoz4luAPcnA177wLDtLzQ==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-06-26T20:02:45Z"
-  mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
-  encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
-  version: 3.10.2
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBucHh6UnNnNnBGcTNuYW9E
+            elZpMHYvWGRCWnk3Y29oTXNnZnlObFUxNW00CmdYMmtVTy9lQWQ3enFBa2NDR1Bv
+            OUxmZkdRSkN2VmdUYWU1MU9mR24yMk0KLS0tIE44V3ZjMmpvV0ZFa0pnUjdWL293
+            amEvVTZlbzBuNWE4Z0tJVUREOG1BM0kKosTrtIiLH9cNBp5quH8/ViCY6qVHC4ZS
+            /Q8XcgStn+XC27w9YSAA94V6qJ/rTnSJpCtPr823hzXVTrC44cjriw==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    encrypted_regex: ^(peerAddress|peerASN|localASN|password)$
+    lastmodified: "2025-06-26T20:02:45Z"
+    mac: ENC[AES256_GCM,data:s0soCmTVZMqNTor8bgK19gK75MlyG+KIn0ndb+iDDX3jgorwSYbIp8X1mE39ef/o0N6ux5X2IEKMc15ozF6OF3cIXWje+lz10jQ/MRwICOI314qhMThzPJKmtlXGZ7vgeppRW5oUUXa9287zl9paRjbv/cW0SRY0if95OGKY/qE=,iv:5t8LLVCyRNdXhk3TYWmsheGPan/OiJb2cJdYsTBo97Y=,tag:jNgZVfSgbpWC41PKpIUq5g==,type:str]
+    pgp:
+        - created_at: "2026-08-26T16:59:31Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4D8x4N7lmZIqkSAQdAw3cOr0LCHMIv/IQL1eC4uxKSCusFWAwGxIvZ9DGl2Bgw
+            XzQTHvXyltoHIbRZGIdxWXZrUEJAvxiNrDhqE72xUhTm/RrNblmyfDSXsMiydepK
+            0lwBFRkZYxCjv7laiYzsHIZ9i6PhyuUjEtLFMLNj0MZ9bzvognHcPO4e5BTMbFYA
+            uVFIo4XYOm5FEhMN+c+0ZB3l2k41AL0FYFhd/iPCdrTPPIgO8c2umc1XKUT6qQ==
+            =rvjl
+            -----END PGP MESSAGE-----
+          fp: 50C5DE2634B79DEA87206C8B27165D579CEB4919
+    version: 3.10.2

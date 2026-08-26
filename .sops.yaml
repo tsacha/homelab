@@ -4,7 +4,8 @@ creation_rules:
   - path_regex: cluster-secrets\.sops\.yaml$
     encrypted_regex: ^(data|stringData)$
     age: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-
+    pgp: 50C5DE2634B79DEA87206C8B27165D579CEB4919
   # No encrypted_regex: whole-file is the only mode that encrypts comments too.
   - path_regex: \.sops\.(ya?ml|rsc)$
     age: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    pgp: 50C5DE2634B79DEA87206C8B27165D579CEB4919

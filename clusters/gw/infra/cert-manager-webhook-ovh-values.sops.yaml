@@ -26,16 +26,28 @@ issuers:
         applicationConsumerKey: ENC[AES256_GCM,data:sWwPXGL6cHYJUkFZ31uox5CwL8R5mCwsBefOroExCNc=,iv:jSMl2JQHBvcIWE/ybosfc5iF0CSW1GD0NzD+m7Ey524=,tag:Pdg15dg2et6idVpopsTwpQ==,type:str]
 sops:
     age:
-        - recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-          enc: |
+        - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBVQUkzR285ekF4OWlNZm9v
-            dU04dGZoRTJsZGhDQy9sMnoza05jOHVYa1ZZCmp1T1ZTZzV5Smw4TE5KcHBtMjdC
-            OUZQaGNzaUZPZHVyWEdha2tCOEJVdjAKLS0tIDB1RCtqRlNmUms0TUVkditnSFV2
-            WWVPMUx5T1dRR3dvY2FKVnppenJJSmsKXWZd8Edhl1/yzxa3qkIxaPTIu5wctO6R
-            yGtAdy5cW7cDR1IT8rXTtZ5iYkIITyhaxhPeqd3va0R5g0nzi+fL4Q==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBYK0JXZHNhbXIwcVdhUFEv
+            TmhwM3RzMVozQ01pL0pOS1FqOHlRZTJOQng0CjVVbGdHSjc5Q1VLKytpajlFTGh6
+            OTlXd0FyMFF6ZFdNMDlReGk0SEpXSVEKLS0tIE9uT3BzQmhXMGdPWDZQdUVpQlZh
+            SGdkbWxJT2NzU2ZzR2tvdUlxbFdjdmsKbkJI86T1HxkbfXabe+F5872luX1tfV+s
+            JDHKJAvq9lvoGgAMdNlcB0bG6n15GZudVk/grh+Z43PPyMa7D1a6ig==
             -----END AGE ENCRYPTED FILE-----
+          recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
+    encrypted_regex: ^(ovh.+|email)$
     lastmodified: "2026-03-28T12:41:12Z"
     mac: ENC[AES256_GCM,data:AVmcTLqq6nhdjL7wCURFv3IAV/7o8PmACv0ofJSHA+r7ajtIWA2D45EdvBBonZ2MqWlihS31zoxGEan6wd+FJ/hcSXf1+FvkBhVwYSPB1bxcRQoxmduCfogT6BQ+ArHNouOBq30gYTHx0HT5jTYdPqtRxs2EJnMUAjgWFUKldgo=,iv:LUGjKTa/jEpNjZpCn3D7PY+ojan6PGFLqIDyrmlKLPE=,tag:xB6BCQpZhm0hgHchgXRsUA==,type:str]
-    encrypted_regex: ^(ovh.+|email)$
+    pgp:
+        - created_at: "2026-08-26T16:59:31Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hF4D8x4N7lmZIqkSAQdAzrSNvEf+9uYKJbbN0dXT9TgZB49xvQkqAIdNO9tOLDAw
+            UwJ5JvhmKa7+/w6xe2r4iax03/yD2u3uTP+DJmHjTfuOpnuZmTIyypa5HPdU/U7j
+            0l4BHKCJO3AOGkhe352U0Cug3B31emGIfh1wLdXKIbCGAibUQW36g2fpiIu9LSB4
+            rLlHi0Dm3BFYhuHMvG+1U4NUCiNfFwAEPUEnrsn6XrBssVi0UJ8ciECAsf/itpt+
+            =8swb
+            -----END PGP MESSAGE-----
+          fp: 50C5DE2634B79DEA87206C8B27165D579CEB4919
     version: 3.12.2
