@@ -1,7 +1,20 @@
-machine:
-  install:
-    disk: ${GW_INSTALL_DISK}
-    image: factory.talos.dev/hcloud-installer/${SCHEMATIC_ID}:${TALOS_VERSION}
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/hcloud-installer/${SCHEMATIC_ID}:${TALOS_VERSION}
+provisioning:
+  diskSelector:
+    # dev_path is the kernel path; a by-id path only appears in symlinks.
+    match: disk.dev_path == "${GW_INSTALL_DISK}" || "${GW_INSTALL_DISK}" in disk.symlinks
+  wipe: false
+---
+# The endpoint must resolve to this node itself: public DNS points wherever
+# the zone says, previous server included.
+apiVersion: v1alpha1
+kind: StaticHostConfig
+name: ${GW_ADDR6}
+hostnames:
+  - ${GW_FQDN}
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
@@ -41,3 +54,79 @@ mtu: ${WG_MTU}
 addresses:
   - address: ${WG_ADDR6}
   - address: ${WG_ADDR4}
+# Cryptokey routing installs no return routes. Never route 8d89::/80 here:
+# home-router sources its outer wg packets from 8d89::1 (mikrotik.md).
+# rc.2 spams "created route" for the v6 entries — ~/talos-1.14.0-rc.2-findings.md.
+routes: ${WG_ROUTES}
+---
+apiVersion: v1alpha1
+kind: NetworkDefaultActionConfig
+ingress: block
+---
+# Admin plane: tunnel subnets plus the home prefixes — the workstation reaches
+# these ports with its LAN source, over the tunnel or not.
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: apid
+portSelector: { ports: [50000], protocol: tcp }
+ingress: ${FW_TRUSTED}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: kube-apiserver
+portSelector: { ports: [6443], protocol: tcp }
+ingress: ${FW_TRUSTED}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: kubelet
+portSelector: { ports: [10250], protocol: tcp }
+ingress: ${FW_TRUSTED}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: ldaps
+portSelector: { ports: [636], protocol: tcp }
+ingress: ${FW_TRUSTED}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: etcd
+portSelector: { ports: [2379, 2380], protocol: tcp }
+ingress:
+  - subnet: ${WG_SUBNET6}
+---
+# home-router's public IP is dynamic; the peer key authenticates.
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: wireguard
+portSelector: { ports: [51820], protocol: udp }
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: http-public
+portSelector: { ports: [80, 443], protocol: tcp }
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0
+---
+# Authoritative NS for the home zone (dns.zone in the dns chart values) —
+# a default-block without DNS rules takes it down for the whole internet.
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: dns-udp
+portSelector: { ports: [53], protocol: udp }
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: dns-tcp
+portSelector: { ports: [53], protocol: tcp }
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0

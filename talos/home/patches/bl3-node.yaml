@@ -1,7 +1,12 @@
-machine:
-  install:
-    disk: ${BL3_INSTALL_DISK}
-    image: factory.talos.dev/metal-installer/${SCHEMATIC_ID}:${TALOS_VERSION}
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+installer:
+  image: factory.talos.dev/metal-installer/${SCHEMATIC_ID}:${TALOS_VERSION}
+provisioning:
+  diskSelector:
+    # dev_path is the kernel path; a by-id path only appears in symlinks.
+    match: disk.dev_path == "${BL3_INSTALL_DISK}" || "${BL3_INSTALL_DISK}" in disk.symlinks
+  wipe: false
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig

@@ -82,8 +82,8 @@ shred -u /tmp/talsecret.yaml
 | secret hygiene                                          | `go-task secrets:check` — and on every commit, once `go-task secrets:hook` is installed |
 | boot image / installer URL                              | `go-task talos:url CLUSTER=home`                                                        |
 | refresh the schematic ID after editing `schematic.yaml` | `go-task talos:schematic CLUSTER=home`                                                  |
-| upgrade Talos                                           | `go-task talos:cmd CLUSTER=home STEP=upgrade`                                           |
-| upgrade Kubernetes                                      | `go-task talos:cmd CLUSTER=home STEP=upgrade-k8s`                                       |
+| upgrade Talos                                           | `go-task talos:upgrade CLUSTER=home`                                           |
+| upgrade Kubernetes                                      | `go-task talos:upgrade-k8s CLUSTER=home`                                       |
 | etcd snapshot                                           | `go-task talos:etcd:snapshot CLUSTER=gw`                                                |
 
 `TALOS_VERSION` and `KUBERNETES_VERSION` are pinned in `tasks/talos.yaml` and tracked by a Renovate custom manager.
@@ -98,9 +98,9 @@ Three imperative steps exist and cannot be made declarative, plus one bridging s
 
 0. **`go-task talos:config CLUSTER=<c>`**, then `go-task talos:url CLUSTER=<c>`. Nothing downstream exists without this: `apply`, `bootstrap` and `kubeconfig` all read `clusterconfig/`, and the boot artefact URL carries the schematic ID of the extensions this node needs.
 1. **Boot the Image Factory artefact** — an ISO for bl3, a dd'd raw image for gw. The node lands in maintenance mode: no config, API on 50000 with no client cert.
-2. **`apply-config --insecure`** — `go-task talos:cmd:apply-insecure`. The only unauthenticated step in the cluster's life. ⚠ `-n` must be the **maintenance-mode DHCP address from the console**, not the static address in `talenv.sops.yaml`.
+2. **`apply-config --insecure`** — `go-task talos:apply:insecure IP=<maintenance-ip>`. The only unauthenticated step in the cluster's life. ⚠ `-n` must be the **maintenance-mode DHCP address from the console**, not the static address in `talenv.sops.yaml`.
 3. Node reboots into `cni: none`. etcd is not up, `talosctl health` hangs. **This is normal.**
-4. **`bootstrap`** — `go-task talos:cmd:bootstrap`. **Once. One node. Ever.** Twice, or on a second node, corrupts etcd.
+4. **`bootstrap`** — `go-task talos:bootstrap`. **Once. One node. Ever.** Twice, or on a second node, corrupts etcd.
 5. **`go-task talos:kubeconfig CLUSTER=<c>`** — writes `~/.kube/clusters/<clusterName>.yaml`, which is the path every `<cluster>:` task expects. The apiserver answers but every pod is `Pending`: no CNI yet. Also normal.
 6. **Cilium by helm** — `go-task <cluster>:cni`. Cannot come from flux: flux needs pod networking to run. This is why `k8sServiceHost` is `localhost:7445` (KubePrism) and not a DNS name — at this point there is no CoreDNS and no LB to resolve `KUBE_FQDN`. The task feeds helm the same values flux will compute, via `tasks/cilium-values.sh` — one implementation of that merge, so the handover in step 8 is a no-op.
 7. **`go-task <cluster>:flux`.** Creates the `sops-age` secret from `~/.config/sops/age/keys.txt`: the same key that decrypts `talsecret.sops.yaml` locally is what flux uses in-cluster. It cannot come from git — irreducible, and already how the repo works. On home, `go-task home:bgp` first, so the router has a session before flux starts moving addresses around.

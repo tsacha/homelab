@@ -10,19 +10,6 @@ vars:
   FORGEJO_PAT:
     sh: yq -r '.flux.forgejo_pat' .private/inventory.yaml 2>/dev/null || /bin/true
 tasks:
-  kubeconfig:
-    cmds:
-      - |
-        ssh {{.GW}} -l root -C "kubectl config view --raw" | yq '
-                      .clusters[0].cluster.server = "https://{{.GW}}:6443" |
-                      .clusters[0].name = "{{.GW_CLUSTER}}" |
-                      .contexts[0].name = "{{.GW_CLUSTER}}" |
-                      .contexts[0].context.cluster = "{{.GW_CLUSTER}}" |
-                      .contexts[0].context.user = "admin@{{.GW_CLUSTER}}" |
-                      .contexts[0].context.namespace = "default" |
-                      .users[0].name = "admin@{{.GW_CLUSTER}}" |
-                      .current-context = "{{.GW_CLUSTER}}"
-                    '
   flux:
     cmds:
       - |
@@ -41,11 +28,6 @@ tasks:
         pushd clusters/gw/flux-system
         kubectl apply --server-side -k .
         popd
-  # Delete with wg-host.sh once the old server is gone: Talos does wg0 itself.
-  wg:
-    desc: Configure host-level wireguard tunnel to home (idempotent)
-    cmds:
-      - bash tasks/wg-host.sh
   cni:
     desc: Install Cilium with Gateway API CRDs
     cmds:

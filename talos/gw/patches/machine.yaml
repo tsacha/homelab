@@ -1,9 +1,15 @@
 # Nameservers and NTP come from DHCP.
-machine:
-  kubelet:
-    extraArgs:
-      # Needs kubelet-serving-cert-approver, deployed in clusters/gw/infra.
-      rotate-server-certificates: "true"
-cluster:
-  discovery:
-    enabled: false
+apiVersion: v1alpha1
+kind: KubeletConfig
+extraArgs:
+  # Needs kubelet-serving-cert-approver, deployed in clusters/gw/infra.
+  rotate-server-certificates: "true"
+---
+apiVersion: v1alpha1
+kind: DiscoveryServiceConfig
+name: default
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: DiscoveryIdentityConfig
+$patch: delete

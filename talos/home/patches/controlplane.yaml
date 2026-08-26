@@ -1,11 +1,15 @@
 cluster:
-  proxy:
-    disabled: true
-  controllerManager:
-    extraArgs:
-      allocate-node-cidrs: "false"
   etcd:
     listenSubnets:
       - ${VLAN_CIDR6}
     advertisedSubnets:
       - ${VLAN_CIDR6}
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  allocate-node-cidrs: "false"

@@ -1,12 +1,20 @@
-machine:
-  time:
-    disabled: false
-    servers:
-      - ${NTP6}
-  kubelet:
-    extraArgs:
-      # Needs kubelet-serving-cert-approver, deployed in clusters/home/infra.
-      rotate-server-certificates: "true"
-cluster:
-  discovery:
-    enabled: false
+apiVersion: v1alpha1
+kind: TimeSyncConfig
+ntp:
+  servers:
+    - ${NTP6}
+---
+apiVersion: v1alpha1
+kind: KubeletConfig
+extraArgs:
+  # Needs kubelet-serving-cert-approver, deployed in clusters/home/infra.
+  rotate-server-certificates: "true"
+---
+apiVersion: v1alpha1
+kind: DiscoveryServiceConfig
+name: default
+$patch: delete
+---
+apiVersion: v1alpha1
+kind: DiscoveryIdentityConfig
+$patch: delete

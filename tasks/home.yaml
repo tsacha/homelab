@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 vars:
-  CLUSTER:
+  HOME_CLUSTER:
     sh: yq -r '.network.fqdn|sub("\\.";"-")' .private/inventory.yaml 2>/dev/null || /bin/true
   FORGEJO_USER:
     sh: yq -r '.flux.forgejo_user' .private/inventory.yaml 2>/dev/null || /bin/true
@@ -11,7 +11,7 @@ tasks:
   flux:
     cmds:
       - |
-        export KUBECONFIG=~/.kube/clusters/{{.CLUSTER}}.yaml
+        export KUBECONFIG=~/.kube/clusters/{{.HOME_CLUSTER}}.yaml
         export GITEA_TOKEN={{.FORGEJO_PAT}}
         kubectl get ns flux-system || kubectl create ns flux-system
         kubectl -n flux-system get secrets forgejo-auth || kubectl -n flux-system create secret generic forgejo-auth \
@@ -30,7 +30,7 @@ tasks:
     desc: Install Cilium with Gateway API CRDs
     cmds:
       - |
-        export KUBECONFIG=~/.kube/clusters/{{.CLUSTER}}.yaml
+        export KUBECONFIG=~/.kube/clusters/{{.HOME_CLUSTER}}.yaml
         export CILIUM_VERSION=1.20.1 # renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
         export GATEWAY_API_VERSION=v1.6.1 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
         kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_API_VERSION/experimental-install.yaml
@@ -40,5 +40,5 @@ tasks:
   bgp:
     desc: Apply BGP configuration for Cilium
     cmds:
-      - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/clusters/{{.CLUSTER}}.yaml kubectl delete -f -
-      - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/clusters/{{.CLUSTER}}.yaml kubectl apply -f -
+      - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/clusters/{{.HOME_CLUSTER}}.yaml kubectl delete --ignore-not-found -f -
+      - sops -d clusters/home/infra/bgp.sops.yaml | KUBECONFIG=~/.kube/clusters/{{.HOME_CLUSTER}}.yaml kubectl apply -f -

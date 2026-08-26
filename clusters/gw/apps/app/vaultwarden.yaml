@@ -19,6 +19,9 @@ spec:
           name: vaultwarden
           imagePullPolicy: Always
           env:
+            # v6-first cluster: Rocket's default 0.0.0.0 binds IPv4 only.
+            - name: ROCKET_ADDRESS
+              value: "::"
             - name: DOMAIN
               value: https://${VAULTWARDEN_VHOST}
             - name: SSO_ENABLED

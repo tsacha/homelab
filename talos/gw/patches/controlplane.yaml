@@ -1,12 +1,16 @@
 cluster:
-  proxy:
-    disabled: true
-  controllerManager:
-    extraArgs:
-      allocate-node-cidrs: "false"
   etcd:
     # Never on the public IP.
     listenSubnets:
       - ${WG_SUBNET6}
     advertisedSubnets:
       - ${WG_SUBNET6}
+---
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+apiVersion: v1alpha1
+kind: KubeControllerManagerConfig
+extraArgs:
+  allocate-node-cidrs: "false"

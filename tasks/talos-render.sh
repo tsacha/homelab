@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Render, validate and finalize a cluster's machine config with plain talosctl.
-# Replaces talhelper (archived 2026-08-26). Called by `go-task talos:config`.
+# Called by `go-task talos:config`.
 #
 # Usage: talos-render.sh <node> <mode> <endpoint-var> <addr-var>
 #   cwd            talos/<cluster>
