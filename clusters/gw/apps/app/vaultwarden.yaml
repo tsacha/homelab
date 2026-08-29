@@ -8,6 +8,7 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
+    rollingUpdate: null
   selector:
     matchLabels:
       app: vaultwarden
@@ -21,7 +22,6 @@ spec:
           name: vaultwarden
           imagePullPolicy: Always
           env:
-            # v6-first cluster: Rocket's default 0.0.0.0 binds IPv4 only.
             - name: ROCKET_ADDRESS
               value: "::"
             - name: DOMAIN
@@ -42,7 +42,6 @@ spec:
               value: ""
             - name: SSO_PKCE
               value: "true"
-            # $$ escapes the substitution: this is a regex meaning "empty", not a variable.
             - name: SSO_AUDIENCE_TRUSTED
               value: "^$$"
             - name: SSO_CLIENT_ID

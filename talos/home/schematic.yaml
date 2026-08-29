@@ -1,4 +1,3 @@
-# i915: jellyfin mounts /dev/dri.
 customization:
   systemExtensions:
     officialExtensions:

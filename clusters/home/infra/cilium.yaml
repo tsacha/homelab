@@ -25,10 +25,7 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-  # The addressing lives in cilium-values.sops.yaml. ⚠ Both files carry an
-  # `ipam:` key: merge them recursively or `mode` below is lost.
   values:
-    # KubePrism: at bootstrap there is no CoreDNS to resolve a name with.
     k8sServiceHost: localhost
     k8sServicePort: 7445
     ipv6:
@@ -45,7 +42,6 @@ spec:
       masquerade: true
     bgpControlPlane:
       enabled: true
-    # Talos mounts cgroup2 read-only and grants only the capabilities listed here.
     securityContext:
       capabilities:
         ciliumAgent:

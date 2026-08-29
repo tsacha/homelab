@@ -3,8 +3,7 @@ machine:
     - ${KUBE_FQDN}
     - ${BL3_FQDN}
 ---
-# Merge can't remove map keys: delete, recreate without the taint.
-# Labels restated, the delete drops them too.
+# Recreate KubeNodeConfig without the control-plane taint.
 apiVersion: v1alpha1
 kind: KubeNodeConfig
 $patch: delete
@@ -15,14 +14,12 @@ labels:
   node-role.kubernetes.io/control-plane: ""
   node.kubernetes.io/exclude-from-external-load-balancers: ""
 ---
-# cni none: Cilium replaces Flannel.
 apiVersion: v1alpha1
 kind: KubeFlannelCNIConfig
 $patch: delete
 ---
 apiVersion: v1alpha1
 kind: KubeNetworkConfig
-# First family is primary: IPv6 by default, IPv4 for legacy.
 podSubnets:
   - ${POD_CIDR6}
   - ${POD_CIDR4}

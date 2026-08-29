@@ -8,6 +8,7 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
+    rollingUpdate: null
   selector:
     matchLabels:
       app: pocketid
@@ -31,9 +32,6 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
-            # The LLDAP admin is automatically a member of lldap_admin, which
-            # is the Pocket ID administrator group. Create at most one other
-            # user from the LLDAP web UI.
             - name: UI_CONFIG_DISABLED
               value: "true"
             - name: LDAP_ENABLED

@@ -14,7 +14,6 @@ tasks:
     cmds:
       - |
         export KUBECONFIG=~/.kube/clusters/{{.GW_CLUSTER}}.yaml
-        export GITEA_TOKEN={{.FORGEJO_PAT}}
         kubectl get ns flux-system || kubectl create ns flux-system
         kubectl -n flux-system get secrets forgejo-auth || kubectl -n flux-system create secret generic forgejo-auth \
           --from-literal=username={{.FORGEJO_USER}} \

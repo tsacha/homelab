@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Nothing identifying sits in a file that is not encrypted. Needs the age key.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -18,7 +17,6 @@ plaintext=$(git ls-files -c -o --exclude-standard |
   grep -vE '\.sops\.(ya?ml|rsc)$' |
   grep -vE '\.md$|talconfig\.schema\.json$|/templates/')
 
-# Key name AND value shape, or it fires on `key: client-id`.
 leak=$(echo "$plaintext" | xargs grep -nIiE \
   'BEGIN [A-Z ]*PRIVATE KEY|(key|token|password|secret)[A-Za-z0-9_.-]*:[[:space:]]*"?[A-Za-z0-9+/]{24,}={0,2}"?[[:space:]]*$' \
   2>/dev/null | grep -viE 'publickey|pubkey' || true)
@@ -28,7 +26,6 @@ $leak"
 for f in $plaintext; do
   case "$f" in *.yaml | *.yml) ;; *) continue ;; esac
   grep -q '^kind: Secret' "$f" 2>/dev/null || continue
-  # No $ or { in the charset, so a `${VAR}` indirection cannot match.
   yq -e 'select(.kind == "Secret") | (.data // .stringData // {}) | to_entries |
          map(select(.value | tostring | test("^[A-Za-z0-9+/]{24,}={0,2}$"))) |
          length > 0' "$f" >/dev/null 2>&1 &&
@@ -50,8 +47,6 @@ for f in $(git ls-files '*.sops.yaml' '*.sops.rsc' | grep -v '^\.sops\.yaml$'); 
 $(echo "$c" | sed 's/^/  /')"
 done
 
-# No xargs on the value: secrets contain quotes and backticks. No pipe into the
-# loop either, or `fail` would only kill a subshell.
 docs=$(git ls-files '*.md')
 : >"$tmp/encvals"
 for f in $(git ls-files '*.sops.yaml' | grep -v '^\.sops\.yaml$'); do
@@ -68,8 +63,6 @@ while IFS= read -r v; do
 $(grep -Fn -- "$v" $docs | sed 's/^/  /')"
 done <"$tmp/encvals"
 
-# Last two labels only: a bare `.fr` would match half the prose. Docs included
-# here, unlike $plaintext.
 domain=$(sops -d secrets/inventory.sops.yaml | yq -r .network.fqdn |
   awk -F. 'NF >= 2 { print $(NF-1) "." $NF }')
 [ -n "$domain" ] || fail "cannot read the domain from secrets/inventory.sops.yaml"

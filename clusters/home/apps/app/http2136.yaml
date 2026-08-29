@@ -29,8 +29,7 @@ spec:
                 - |
                   set -eu
 
-                  # -6 : sans la contrainte, un v6 cassé bascule en silence sur le v4
-                  # masqueradé, qui marche aussi et masquerait le trou d'AllowedIPs côté gw.
+                  # Fail rather than fall back to IPv4.
                   put() {
                     curl -6 -fsS --connect-timeout 5 --max-time 10 -o /dev/null \
                       -X PUT "https://$VHOST/" \

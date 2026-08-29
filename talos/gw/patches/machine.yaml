@@ -1,8 +1,6 @@
-# Nameservers and NTP come from DHCP.
 apiVersion: v1alpha1
 kind: KubeletConfig
 extraArgs:
-  # Needs kubelet-serving-cert-approver, deployed in clusters/gw/infra.
   rotate-server-certificates: "true"
 ---
 apiVersion: v1alpha1

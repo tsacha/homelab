@@ -14,8 +14,6 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    # http2136-cert is issued by the dns tenant, which owns the bind workload.
-    # WG-only: the router updates wg4/wg6.home through the tunnel.
     - hostname: "${DNS_HTTP2136_VHOST}"
       name: http2136-https
       port: 443

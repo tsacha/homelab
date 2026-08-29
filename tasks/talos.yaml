@@ -1,20 +1,20 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-#
-# Rendering and validation live in tasks/talos-render.sh; plain talosctl
-# commands go through tasks/talosctl.sh (usable directly: tasks/talosctl.sh dashboard).
-# No gensecret task: the cluster CA is created once, by hand — talos/README.md.
 version: "3"
 vars:
   CLUSTER:
-    sh: tasks/talos-cluster.sh
+    sh: |
+      ctx=$(kubectl config current-context 2>/dev/null | sed 's/.*@//') || true
+      case "$ctx" in
+        "$(yq -r '.gw.fqdn|sub("\\.";"-")' .private/inventory.yaml)") echo gw ;;
+        "$(yq -r '.network.fqdn|sub("\\.";"-")' .private/inventory.yaml)") echo home ;;
+        *)
+          echo "talos: kubectl context '$ctx' is neither cluster — pass CLUSTER=home|gw" >&2
+          exit 1
+          ;;
+      esac
   DIR: talos/{{.CLUSTER}}
   NODE: '{{if eq .CLUSTER "gw"}}gw{{else}}bl3{{end}}'
-  # Runtime mode, also the Image Factory platform (metal|hcloud for validate metal|cloud).
   MODE: '{{if eq .CLUSTER "gw"}}cloud{{else}}metal{{end}}'
-  PLATFORM: '{{if eq .CLUSTER "gw"}}hcloud{{else}}metal{{end}}'
-  # gw is a Hetzner CAX (arm64); bl3 is amd64 bare metal.
-  BOOT_ARTEFACT: '{{if eq .CLUSTER "gw"}}hcloud-arm64.raw.xz{{else}}metal-amd64.iso{{end}}'
-  # talenv keys — names only, never values (talos/README.md).
   ENDPOINT_VAR: '{{if eq .CLUSTER "gw"}}GW_FQDN{{else}}KUBE_FQDN{{end}}'
   ADDR_VAR: '{{if eq .CLUSTER "gw"}}GW_ADDR6{{else}}BL3_ADDR6{{end}}'
 env:
@@ -24,77 +24,61 @@ tasks:
   default:
     cmds:
       - go-task --list-all | grep 'talos:'
+  cluster:
+    internal: true
+    preconditions:
+      - sh: test "{{.CLUSTER}}" = home || test "{{.CLUSTER}}" = gw
+        msg: "talos: CLUSTER must be home or gw"
   ctl:
-    desc: "Any talosctl command against the resolved cluster (go-task talos:ctl -- dashboard)"
+    desc: "Run any talosctl command (go-task talos:ctl CLUSTER=home -- dashboard)"
+    deps: [cluster]
     cmds:
-      - tasks/talosctl.sh {{.CLI_ARGS}}
+      - |
+        case "{{.CLUSTER}}" in
+          gw) addr_var=GW_ADDR6 ;;
+          home) addr_var=BL3_ADDR6 ;;
+        esac
+        talenv=$(sops -d "{{.DIR}}/talenv.sops.yaml")
+        addr=$(printf '%s\n' "$talenv" | yq -r ".$addr_var")
+        set -- {{.CLI_ARGS}}
+        exec talosctl --talosconfig "{{.DIR}}/clusterconfig/talosconfig" --nodes "$addr" --endpoints "$addr" "$@"
   config:
     desc: "Render and validate machine configs (CLUSTER=home|gw)"
+    deps: [cluster]
     dir: "{{.DIR}}"
     cmds:
-      - ../../tasks/talos-render.sh {{.NODE}} {{.MODE}} {{.ENDPOINT_VAR}} {{.ADDR_VAR}}
-  schematic:
-    desc: "Refresh schematic.id from schematic.yaml via the Image Factory (CLUSTER=home|gw)"
-    dir: "{{.DIR}}"
-    cmds:
-      - curl -sf -X POST --data-binary @schematic.yaml https://factory.talos.dev/schematics | yq -r .id > schematic.id
-      - cat schematic.id
-  url:
-    desc: "Image Factory URLs — boot artefact and installer image (CLUSTER=home|gw)"
-    dir: "{{.DIR}}"
-    cmds:
-      - 'echo "image:     https://factory.talos.dev/image/$(cat schematic.id)/${TALOS_VERSION}/{{.BOOT_ARTEFACT}}"'
-      - 'echo "installer: factory.talos.dev/{{.PLATFORM}}-installer/$(cat schematic.id):${TALOS_VERSION}"'
+      - |
+        sops exec-env talenv.sops.yaml bash -euo pipefail -c '
+          vars=$(grep -ohE "\$\{[A-Z0-9_]+\}" patches/*.yaml | sort -u)
+          for name in $(tr -d "${}" <<<"$vars"); do [[ -v $name ]] || exit 1; done
+
+          mkdir -p clusterconfig
+          {
+            for patch in patches/*.yaml; do
+              printf "%s\\n" "---"
+              cat "$patch"
+            done
+          } | envsubst "$vars" > clusterconfig/patches.yaml
+
+          talosctl gen config "$CLUSTER_NAME" "https://${!1}:6443" \
+            --with-secrets <(sops -d talsecret.sops.yaml) \
+            --talos-version "$TALOS_VERSION" \
+            --kubernetes-version "$KUBERNETES_VERSION" \
+            --with-docs=false --with-examples=false \
+            --config-patch @clusterconfig/patches.yaml \
+            --output-types controlplane,talosconfig \
+            --output clusterconfig --force
+          mv clusterconfig/controlplane.yaml "clusterconfig/$2.yaml"
+          talosctl validate --config "clusterconfig/$2.yaml" --mode "$3" --strict
+          addr=${!4}
+          talosctl --talosconfig clusterconfig/talosconfig config endpoint "$addr"
+          talosctl --talosconfig clusterconfig/talosconfig config node "$addr"
+          echo "rendered clusterconfig/$2.yaml"
+        ' _ "{{.ENDPOINT_VAR}}" "{{.NODE}}" "{{.MODE}}" "{{.ADDR_VAR}}"
   apply:
-    desc: "Apply the rendered config (CLUSTER=home|gw)"
+    desc: "Render then apply the machine config (CLUSTER=home|gw)"
+    deps: [config]
     cmds:
-      - tasks/talosctl.sh apply-config --file {{.DIR}}/clusterconfig/{{.NODE}}.yaml
-  apply:insecure:
-    desc: "First apply against a maintenance-mode node (CLUSTER=home|gw IP=<its DHCP address, not talenv's>)"
-    dir: "{{.DIR}}"
-    requires:
-      vars: [IP]
-    cmds:
-      - talosctl apply-config --nodes={{.IP}} --file=./clusterconfig/{{.NODE}}.yaml --insecure
-  bootstrap:
-    desc: "Bootstrap etcd — ONCE, on ONE node, ever (CLUSTER=home|gw)"
-    prompt: "etcd bootstrap on {{.CLUSTER}} — once, one node, ever. Continue?"
-    cmds:
-      - tasks/talosctl.sh bootstrap
-  health:
-    desc: "Cluster health check (CLUSTER=home|gw)"
-    cmds:
-      # gw: etcd advertises the wg address, the k8s node the public ones —
-      # health can't model that split. The flag covers etcd, the timeout ends
-      # the structurally red "k8s nodes to report" check.
-      - |
-        extra=""
-        if [ "{{.CLUSTER}}" = "gw" ]; then
-          extra="--control-plane-nodes $(sops -d {{.DIR}}/talenv.sops.yaml | yq -r '.WG_HOST6') --wait-timeout 45s"
-        fi
-        tasks/talosctl.sh health $extra
-  upgrade:
-    desc: "Upgrade Talos to ${TALOS_VERSION} (CLUSTER=home|gw)"
-    prompt: "Upgrade {{.CLUSTER}} to ${TALOS_VERSION}?"
-    cmds:
-      - tasks/talosctl.sh upgrade --image=factory.talos.dev/{{.PLATFORM}}-installer/$(cat {{.DIR}}/schematic.id):${TALOS_VERSION}
-  upgrade-k8s:
-    desc: "Upgrade Kubernetes to ${KUBERNETES_VERSION} (CLUSTER=home|gw)"
-    prompt: "Upgrade {{.CLUSTER}} Kubernetes to ${KUBERNETES_VERSION}?"
-    cmds:
-      - tasks/talosctl.sh upgrade-k8s --to=${KUBERNETES_VERSION}
-  etcd:snapshot:
-    desc: "Take an etcd snapshot (CLUSTER=home|gw)"
-    cmds:
-      - |
-        mkdir -p .private/etcd
-        out=".private/etcd/{{.CLUSTER}}-$(date -u +%Y%m%dT%H%M%SZ).snapshot"
-        tasks/talosctl.sh etcd snapshot "$out"
-        echo "wrote $out"
-  kubeconfig:
-    desc: "Merge the cluster's kubeconfig into ~/.kube/clusters/<CLUSTER_NAME>.yaml"
-    cmds:
-      - |
-        mkdir -p ~/.kube/clusters
-        name=$(sops -d {{.DIR}}/talenv.sops.yaml | yq -r .CLUSTER_NAME)
-        tasks/talosctl.sh kubeconfig --force ~/.kube/clusters/"$name".yaml
+      - task: ctl
+        vars:
+          CLI_ARGS: apply-config --file {{.DIR}}/clusterconfig/{{.NODE}}.yaml

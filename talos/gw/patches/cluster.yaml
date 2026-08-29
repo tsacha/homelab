@@ -1,11 +1,9 @@
 machine:
   certSANs:
     - ${GW_FQDN}
-    # Admin rides the tunnel; bare address, WG_ADDR6 carries /128.
     - ${WG_HOST6}
 ---
-# Merge can't remove map keys: delete, recreate without the taint nor the
-# exclude-from-external-load-balancers label (node IPAM honors it).
+# Recreate KubeNodeConfig without the control-plane taint.
 apiVersion: v1alpha1
 kind: KubeNodeConfig
 $patch: delete
@@ -14,21 +12,17 @@ apiVersion: v1alpha1
 kind: KubeNodeConfig
 labels:
   node-role.kubernetes.io/control-plane: ""
-# Else the kubelet picks the wg address as node IPv6 and node IPAM hands
-# it to gw-public.
 nodeIP:
   validSubnets:
     - ${GW_ADDR6}/128
     - 0.0.0.0/0
 ---
-# cni none: Cilium replaces Flannel.
 apiVersion: v1alpha1
 kind: KubeFlannelCNIConfig
 $patch: delete
 ---
 apiVersion: v1alpha1
 kind: KubeNetworkConfig
-# First family is primary: IPv6 by default, IPv4 for legacy.
 podSubnets:
   - ${POD_CIDR6}
   - ${POD_CIDR4}
