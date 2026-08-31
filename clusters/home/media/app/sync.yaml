@@ -34,6 +34,10 @@ spec:
                   readOnly: true
                 - name: media-storage
                   mountPath: /media
+                - name: media-storage
+                  mountPath: /run/media-ready
+                  subPath: torrents
+                  readOnly: true
           volumes:
             - name: rclone-config-volume
               configMap:

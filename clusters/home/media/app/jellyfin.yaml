@@ -30,6 +30,12 @@ spec:
               mountPath: /config/cache
             - name: jellyfin-media
               mountPath: /media
+            # A subPath mount fails before the container starts when the media
+            # volume is absent and /var/mnt/media is only an empty directory.
+            - name: jellyfin-media
+              mountPath: /run/media-ready
+              subPath: movies
+              readOnly: true
             - name: jellyfin-dri
               mountPath: /dev/dri
       volumes:

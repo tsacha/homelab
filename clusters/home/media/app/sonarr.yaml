@@ -31,6 +31,10 @@ spec:
               mountPath: /config
             - name: sonarr-media
               mountPath: /media
+            - name: sonarr-media
+              mountPath: /run/media-ready
+              subPath: shows
+              readOnly: true
       volumes:
         - name: sonarr-config
           persistentVolumeClaim:

@@ -31,6 +31,10 @@ spec:
               mountPath: /config
             - name: radarr-media
               mountPath: /media
+            - name: radarr-media
+              mountPath: /run/media-ready
+              subPath: movies
+              readOnly: true
       volumes:
         - name: radarr-config
           persistentVolumeClaim:
