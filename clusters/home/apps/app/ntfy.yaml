@@ -23,6 +23,17 @@ spec:
           image: docker.io/binwiederhier/ntfy:v2.26.3
           args:
             - serve
+          env:
+            - name: NTFY_WEB_PUSH_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ntfy-webpush
+                  key: public-key
+            - name: NTFY_WEB_PUSH_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ntfy-webpush
+                  key: private-key
           ports:
             - name: http
               containerPort: 80
@@ -69,6 +80,17 @@ data:
     behind-proxy: true
     cache-file: "/var/lib/ntfy/cache.db"
     cache-duration: "168h"
+    web-push-file: "/var/lib/ntfy/webpush.db"
+    web-push-email-address: "sacha@${SECRET_DOMAIN}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ntfy-webpush
+type: Opaque
+stringData:
+  public-key: "${NTFY_WEB_PUSH_PUBLIC_KEY}"
+  private-key: "${NTFY_WEB_PUSH_PRIVATE_KEY}"
 ---
 apiVersion: v1
 kind: Service
