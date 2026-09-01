@@ -9,7 +9,9 @@ labels:
 resources:
   - namespace.yaml
   - listeners.yaml
+  - ntfy.yaml
   - papra.yaml
   - syncthing.yaml
   - syncthing-discovery.yaml
   - http2136.yaml
+  - uptime-kuma.yaml

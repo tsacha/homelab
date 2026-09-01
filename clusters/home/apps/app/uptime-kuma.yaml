@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uptime-kuma
+  labels:
+    app: uptime-kuma
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: uptime-kuma
+  template:
+    metadata:
+      labels:
+        app: uptime-kuma
+    spec:
+      containers:
+        - name: uptime-kuma
+          image: docker.io/louislam/uptime-kuma:2.3.2
+          ports:
+            - name: http
+              containerPort: 3001
+          startupProbe:
+            tcpSocket:
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: uptime-kuma
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uptime-kuma
+  labels:
+    app: uptime-kuma
+spec:
+  selector:
+    app: uptime-kuma
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: uptime-kuma
+spec:
+  parentRefs:
+    - name: gw-private
+      namespace: gateway
+      sectionName: https
+  hostnames:
+    - uptime.${SECRET_DOMAIN}
+  rules:
+    - backendRefs:
+        - name: uptime-kuma
+          port: 80
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uptime-kuma
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: restic-config-uptime-kuma
+type: Opaque
+stringData:
+  RESTIC_REPOSITORY: s3:${S3_ENDPOINT}/${RESTIC_BUCKET_APPS}/uptime-kuma
+  RESTIC_PASSWORD: "${RESTIC_PASSWORD}"
+  AWS_ACCESS_KEY_ID: "${S3_ACCESS_KEY}"
+  AWS_SECRET_ACCESS_KEY: "${S3_SECRET_KEY}"
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: uptime-kuma
+spec:
+  sourcePVC: uptime-kuma
+  trigger:
+    schedule: "0 * * * *"
+  restic:
+    repository: restic-config-uptime-kuma
+    copyMethod: Direct
+    pruneIntervalDays: 14
+    retain:
+      hourly: 6
+      daily: 5
+      weekly: 4
+      monthly: 2
+      yearly: 1
