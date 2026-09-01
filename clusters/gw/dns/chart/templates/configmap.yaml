@@ -4,7 +4,7 @@ metadata:
     name: dns
 data:
     zone.conf: |
-        @ 60 IN SOA {{ .Values.dns.ns }}. {{ .Values.dns.ns }}. 2026090100 3600 600 2600 30
+        @ 60 IN SOA {{ .Values.dns.ns }}. {{ .Values.dns.ns }}. 2026090101 3600 600 2600 30
         @ 60 IN NS {{ .Values.dns.ns }}.
 
         {{ .Values.dns.custom_records | nindent 8 }}

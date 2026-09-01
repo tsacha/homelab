@@ -51,37 +51,23 @@ spec:
               mountPath: /var/lib/ntfy
       volumes:
         - name: config
-          secret:
-            secretName: ntfy-config
+          configMap:
+            name: ntfy-config
         - name: data
           persistentVolumeClaim:
             claimName: ntfy
 ---
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: ntfy-config
-type: Opaque
-stringData:
+data:
   server.yml: |
     base-url: "https://ntfy.${SECRET_DOMAIN}"
     listen-http: ":80"
     behind-proxy: true
     cache-file: "/var/lib/ntfy/cache.db"
     cache-duration: "168h"
-    auth-file: "/var/lib/ntfy/auth.db"
-    auth-default-access: "deny-all"
-    auth-users:
-      - "sacha:${NTFY_SACHA_PASSWORD_HASH}:user"
-      - "uptime-kuma:${NTFY_KUMA_PASSWORD_HASH}:user"
-    auth-access:
-      - "sacha:${NTFY_TOPIC}:ro"
-      - "uptime-kuma:${NTFY_TOPIC}:wo"
-    auth-tokens:
-      - "uptime-kuma:${NTFY_KUMA_TOKEN}:Uptime Kuma"
-    enable-login: true
-    enable-signup: false
-    require-login: true
 ---
 apiVersion: v1
 kind: Service
@@ -104,7 +90,7 @@ metadata:
   name: ntfy
 spec:
   parentRefs:
-    - name: gw-public
+    - name: gw-private
       namespace: gateway
       sectionName: https
   hostnames:
