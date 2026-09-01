@@ -1,8 +1,10 @@
+# link.type == 1 matches every ethernet-type link, veths and bridges included —
+# 26 of them here. Only the physical NIC carries a bus path.
 apiVersion: v1alpha1
 kind: LinkAliasConfig
 name: ethSel0
 selector:
-  match: link.type == 1
+  match: link.bus_path != ""
 ---
 apiVersion: v1alpha1
 kind: DHCPv4Config
