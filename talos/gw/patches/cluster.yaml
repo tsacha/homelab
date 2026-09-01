@@ -15,7 +15,7 @@ labels:
 nodeIP:
   validSubnets:
     - ${GW_ADDR6}/128
-    - 0.0.0.0/0
+    - ${GW_ADDR4}/32
 ---
 apiVersion: v1alpha1
 kind: KubeFlannelCNIConfig

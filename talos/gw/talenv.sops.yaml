@@ -25,6 +25,7 @@ WG_ROUTES: ENC[AES256_GCM,data:akp0jgxlSAvhUU2q9ETZTis95bsOAc9JNevyKautiSCiLbHue
 FW_TRUSTED: ENC[AES256_GCM,data:APeDDfsHpe8ZL7k2oUhm0UHh+RB7OthTq3h16hVH4k5xOJxywxQo3C7USNPQDNYpHNaddkUsHrl7KahtMU2QaffQJmqCkaxQw6hsdCHMozTLzX7QCkYtxFBIJ9bHmKPPxJC/hfR1zxvFT3ROGNLHgsVsU5zEZzVJ8/wY/A7PzkGUN1i6WSXt7/Z0b+Xo4sDKutSBtbdK5/yeoU/MYDkhE6jnjL/k9BocdjfbaWUr+gkaFFB0uQ==,iv:zNA0mRFZaFnQ3Y1IB2rs35HU9GFjV1ghkWi+caQm6Q0=,tag:Txdbwosw3vxnM81E5k9X1g==,type:str]
 WG_HOST6: ENC[AES256_GCM,data:TCx54EZZUhoxPOTWYTnKAzbKvCxS,iv:SZVEfz1z8pl82QT1JrYSxQdDIUSfTSXLlXrvnJ4FS5o=,tag:4+IQg3TVKfh7+wk8GNrcpA==,type:str]
 HOME_POD_CIDR6: ENC[AES256_GCM,data:CoScVkF5qJR3IqnXqoKX3kNB4sGuf2o=,iv:kDRm6ydj1M7Ol9ewQUwU6mjUZn0+0/WBDsT/YP67jmA=,tag:oNAIUHuepY3ST2NuChVrRA==,type:str]
+GW_ADDR4: ENC[AES256_GCM,data:n31YXnfpWc2Nj5Jy,iv:I31f9L94at4EDDxtm+jjRrJRj3KkcO8CFv2QL0UlPA0=,tag:FSCWfqwKExusfR9+sbQDTQ==,type:str]
 sops:
     age:
         - enc: |
@@ -36,8 +37,8 @@ sops:
             +ERCszpQk3N2SyRtgMRGsQ3NP0JNFdByxeXTuFzJGuokZQzTPcrNqg==
             -----END AGE ENCRYPTED FILE-----
           recipient: age164zdqnr4yzgxjyxp8mlxkn9z5nanl9u4p7s95x95spkjl2x85gqqfl8r00
-    lastmodified: "2026-08-29T12:28:39Z"
-    mac: ENC[AES256_GCM,data:qiQILN+YG0Ta7+eLy0z7zYT9oZFb7y/1uWnmhoPnnZEBeQ8gY1qjAlnbDos8uE4Pe5cBzhfdy4PYpaU9Xkh0VbBDJxbg0lFIiO4UkHVS1ACBjMXONdHUA1iyPZreqcN6v7cYqKep9lvCDXisXmDddF7sbDNozQOXD0H2/Y/1iq0=,iv:LpqxV5JpgQuCqtO70srcphbkPkcVqm2xP/hoW2eUun8=,tag:sSNIIwTTS6YQIdfhqXSNMA==,type:str]
+    lastmodified: "2026-09-01T11:40:13Z"
+    mac: ENC[AES256_GCM,data:N/qMcd/o500ewWQGMzSisqz+L+UKkw+8pWn0sAD/4OJIDFflwGrkxF6bJVOF5/c4Di3bX1YIB4ii4yurrzGbqsHI3ABvPCJPMVoFcXFm+uhAZrOEKSkBfARi6SfzWGNlDJ6BCwMaGBQHFEQtTLLrQxE6N+AqSX/XhBbRG7cAw4A=,iv:HJ/CUo8g+Mp1RY+YNDtRpWD/4RT03wUD4ctY0JAf2Y0=,tag:vpTWndjGNL9nrHnLx/2dHA==,type:str]
     pgp:
         - created_at: "2026-08-26T16:59:31Z"
           enc: |-

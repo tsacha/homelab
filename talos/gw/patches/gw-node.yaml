@@ -57,37 +57,55 @@ ingress: block
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: apid
-portSelector: { ports: [50000], protocol: tcp }
+portSelector: {ports: [50000], protocol: tcp}
 ingress: ${FW_TRUSTED}
 ---
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: trustd
-portSelector: { ports: [50001], protocol: tcp }
+portSelector: {ports: [50001], protocol: tcp}
 ingress: ${FW_TRUSTED}
 ---
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: kube-apiserver
-portSelector: { ports: [6443], protocol: tcp }
+portSelector: {ports: [6443], protocol: tcp}
 ingress: ${FW_TRUSTED}
 ---
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: kubelet
-portSelector: { ports: [10250], protocol: tcp }
+portSelector: {ports: [10250], protocol: tcp}
 ingress: ${FW_TRUSTED}
+---
+# The host firewall filters pod traffic to the node address too: without
+# these, no pod opens a new connection to the API, only established ones live.
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: kube-apiserver-cluster
+portSelector: {ports: [6443], protocol: tcp}
+ingress:
+  - subnet: ${POD_CIDR6}
+  - subnet: ${POD_CIDR4}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: kubelet-cluster
+portSelector: {ports: [10250], protocol: tcp}
+ingress:
+  - subnet: ${POD_CIDR6}
+  - subnet: ${POD_CIDR4}
 ---
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: ldaps
-portSelector: { ports: [636], protocol: tcp }
+portSelector: {ports: [636], protocol: tcp}
 ingress: ${FW_TRUSTED}
 ---
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: ldaps-cluster
-portSelector: { ports: [636], protocol: tcp }
+portSelector: {ports: [636], protocol: tcp}
 ingress:
   - subnet: ${POD_CIDR6}
   - subnet: ${POD_CIDR4}
@@ -96,7 +114,7 @@ ingress:
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: etcd
-portSelector: { ports: [2379, 2380], protocol: tcp }
+portSelector: {ports: [2379, 2380], protocol: tcp}
 ingress:
   - subnet: ${WG_SUBNET6}
 ---
@@ -114,13 +132,13 @@ ingress:
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: cilium-vxlan
-portSelector: { ports: [8472], protocol: udp }
+portSelector: {ports: [8472], protocol: udp}
 ingress: ${FW_TRUSTED}
 ---
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: http-public
-portSelector: { ports: [80, 443], protocol: tcp }
+portSelector: {ports: [80, 443], protocol: tcp}
 ingress:
   - subnet: 0.0.0.0/0
   - subnet: ::/0
@@ -128,7 +146,7 @@ ingress:
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: dns-udp
-portSelector: { ports: [53], protocol: udp }
+portSelector: {ports: [53], protocol: udp}
 ingress:
   - subnet: 0.0.0.0/0
   - subnet: ::/0
@@ -136,7 +154,7 @@ ingress:
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: dns-tcp
-portSelector: { ports: [53], protocol: tcp }
+portSelector: {ports: [53], protocol: tcp}
 ingress:
   - subnet: 0.0.0.0/0
   - subnet: ::/0
