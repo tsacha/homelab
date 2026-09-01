@@ -1,0 +1,72 @@
+apiVersion: v1alpha1
+kind: NetworkDefaultActionConfig
+ingress: block
+---
+# Talos prepends its own rules: loopback, established and related, rate-limited
+# ICMP, pods to the host resolver, and pods to the pod and service subnets.
+# Only the node's own addresses need a rule here.
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: trusted-tcp
+portSelector:
+  ports: [50000, 50001, 6443, 10250, 636]
+  protocol: tcp
+ingress:
+  - subnet: ${HOME_LAN6}
+  - subnet: ${HOME_LAN4}
+  - subnet: ${HOME_SRV6}
+  - subnet: ${HOME_SRV4}
+  - subnet: ${WG_MOBILE6}
+  - subnet: ${WG_MOBILE4}
+---
+# The node address is not a pod subnet, so the default pod-to-pod accept misses
+# it: without this, no pod opens a new connection to the API, only established
+# ones live.
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: cluster-tcp
+portSelector:
+  ports: [6443, 10250, 636]
+  protocol: tcp
+ingress:
+  - subnet: ${POD_CIDR6}
+  - subnet: ${POD_CIDR4}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: ldaps-home
+portSelector:
+  ports: [636]
+  protocol: tcp
+ingress:
+  - subnet: ${HOME_POD6}
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: public-tcp
+portSelector:
+  ports: [53, 80, 443]
+  protocol: tcp
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: public-udp
+portSelector:
+  ports: [53]
+  protocol: udp
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: wireguard
+portSelector:
+  ports: [${WG_LISTEN_PORT}]
+  protocol: udp
+ingress:
+  - subnet: 0.0.0.0/0
+  - subnet: ::/0

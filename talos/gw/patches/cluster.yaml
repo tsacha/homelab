@@ -1,7 +1,7 @@
 machine:
   certSANs:
     - ${GW_FQDN}
-    - ${WG_HOST6}
+    - ${WG_ADDR6}
 ---
 # Recreate KubeNodeConfig without the control-plane taint.
 apiVersion: v1alpha1

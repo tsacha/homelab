@@ -1,0 +1,48 @@
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: link.type == 1
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: ethSel0
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel0
+addresses:
+  - address: ${GW_ADDR6}/64
+routes:
+  - gateway: fe80::1
+---
+# WG_SUBNET6 is absent from allowedIPs and routes: the router sources its outer
+# packets from its address inside the tunnel, so routing that block into wg0
+# sends the handshake reply into the tunnel it is supposed to bring up.
+apiVersion: v1alpha1
+kind: WireguardConfig
+name: wg0
+privateKey: ${WG_PRIVATEKEY}
+listenPort: ${WG_LISTEN_PORT}
+mtu: ${WG_MTU}
+addresses:
+  - address: ${WG_ADDR6}/128
+  - address: ${WG_ADDR4}/32
+peers:
+  - publicKey: ${WG_PEER_PUBLICKEY}
+    allowedIPs:
+      - ${HOME_LAN6}
+      - ${HOME_LAN4}
+      - ${HOME_SRV6}
+      - ${HOME_SRV4}
+      - ${HOME_POD6}
+      - ${WG_MOBILE6}
+      - ${WG_MOBILE4}
+routes:
+  - destination: ${HOME_LAN6}
+  - destination: ${HOME_LAN4}
+  - destination: ${HOME_SRV6}
+  - destination: ${HOME_SRV4}
+  - destination: ${HOME_POD6}
+  - destination: ${WG_MOBILE6}
+  - destination: ${WG_MOBILE4}
