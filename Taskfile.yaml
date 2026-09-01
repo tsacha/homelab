@@ -3,10 +3,8 @@ version: "3"
 tasks:
   default: go-task --list
 includes:
-  templates: ./tasks/templates.yaml
-  gw: ./tasks/gw.yaml
+  bootstrap: ./tasks/bootstrap.yaml
   mikrotik: ./tasks/mikrotik.yaml
-  home: ./tasks/home.yaml
   talos: ./tasks/talos.yaml
   renovate: ./tasks/renovate.yaml
   secrets: ./tasks/secrets.yaml

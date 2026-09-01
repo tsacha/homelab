@@ -26,6 +26,8 @@ spec:
               value: "::"
             - name: DOMAIN
               value: https://${VAULTWARDEN_VHOST}
+            - name: SIGNUPS_ALLOWED
+              value: "false"
             - name: SSO_ENABLED
               value: "true"
             - name: SSO_ONLY

@@ -21,9 +21,6 @@ env:
   TALOS_VERSION: v1.14.0-rc.2 # renovate: datasource=github-releases depName=siderolabs/talos
   KUBERNETES_VERSION: v1.36.4 # renovate: datasource=github-releases depName=kubernetes/kubernetes
 tasks:
-  default:
-    cmds:
-      - go-task --list-all | grep 'talos:'
   cluster:
     internal: true
     preconditions:
@@ -34,12 +31,7 @@ tasks:
     deps: [cluster]
     cmds:
       - |
-        case "{{.CLUSTER}}" in
-          gw) addr_var=GW_ADDR6 ;;
-          home) addr_var=BL3_ADDR6 ;;
-        esac
-        talenv=$(sops -d "{{.DIR}}/talenv.sops.yaml")
-        addr=$(printf '%s\n' "$talenv" | yq -r ".$addr_var")
+        addr=$(sops -d "{{.DIR}}/talenv.sops.yaml" | yq -r ".{{.ADDR_VAR}}")
         set -- {{.CLI_ARGS}}
         exec talosctl --talosconfig "{{.DIR}}/clusterconfig/talosconfig" --nodes "$addr" --endpoints "$addr" "$@"
   config:

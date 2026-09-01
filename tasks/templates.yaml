@@ -1,9 +1,0 @@
-# yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: "3"
-tasks:
-  inventory:
-    desc: Decrypt inventory
-    cmds:
-      - rm -Rf .private/
-      - mkdir -p .private
-      - sops -d secrets/inventory.sops.yaml > .private/inventory.yaml
