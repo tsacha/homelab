@@ -37,6 +37,10 @@ spec:
               value: "::"
             - name: AUTH_PROVIDERS_EMAIL_IS_ENABLED
               value: "false"
+            - name: DOCUMENT_STORAGE_USE_LEGACY_STORAGE_KEY_DEFINITION_SYSTEM
+              value: "false"
+            - name: DOCUMENT_STORAGE_KEY_PATTERN
+              value: "{{organization.id}}/{{document.name}}"
           envFrom:
             - secretRef:
                 name: papra-env
