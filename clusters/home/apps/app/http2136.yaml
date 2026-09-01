@@ -43,7 +43,10 @@ spec:
                 - name: VHOST
                   value: "${HTTP2136_VHOST}"
                 - name: TOKEN
-                  value: "${HTTP2136_TOKEN}"
+                  valueFrom:
+                    secretKeyRef:
+                      name: http2136-env
+                      key: token
                 - name: ZONE
                   value: "${SECRET_DOMAIN}"
                 - name: WG_IPV6
@@ -62,3 +65,11 @@ spec:
                 capabilities:
                   drop:
                     - ALL
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: http2136-env
+type: Opaque
+stringData:
+  token: "${HTTP2136_TOKEN}"

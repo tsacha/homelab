@@ -3,10 +3,18 @@ kind: Gateway
 metadata:
   name: gw-private
 spec:
+  addresses:
+    - type: IPAddress
+      value: "${GW_IPV6}"
+    - type: IPAddress
+      value: "${GW_IPV4}"
   gatewayClassName: cilium-gw-private
-  infrastructure:
-    annotations:
-      lbipam.cilium.io/ips: "${GW_IPV6},${GW_IPV4}"
+  allowedListeners:
+    namespaces:
+      from: Selector
+      selector:
+        matchLabels:
+          private-gateway-listeners: "true"
   listeners:
     - name: http
       protocol: HTTP
@@ -26,45 +34,3 @@ spec:
           - kind: Secret
             name: wildcard-cert
         mode: Terminate
-    - name: syncthing-bep
-      protocol: TCP
-      port: 22000
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: syncthing-quic
-      protocol: UDP
-      port: 22000
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: syncthing-discovery
-      protocol: TCP
-      port: 8443
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: unifi-inform
-      protocol: TCP
-      port: 8080
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: unifi-speedtest
-      protocol: TCP
-      port: 6789
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: unifi-stun
-      protocol: UDP
-      port: 3478
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: unifi-discovery
-      protocol: UDP
-      port: 10003
-      allowedRoutes:
-        namespaces:
-          from: All

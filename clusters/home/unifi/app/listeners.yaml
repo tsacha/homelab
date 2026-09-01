@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: ListenerSet
+metadata:
+  name: unifi
+spec:
+  parentRef:
+    name: gw-private
+    namespace: gateway
+  listeners:
+    - name: inform
+      protocol: TCP
+      port: 8080
+    - name: speedtest
+      protocol: TCP
+      port: 6789
+    - name: stun
+      protocol: UDP
+      port: 3478
+    - name: discovery
+      protocol: UDP
+      port: 10003

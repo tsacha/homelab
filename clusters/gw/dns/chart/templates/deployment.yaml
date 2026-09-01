@@ -19,7 +19,8 @@ spec:
         app: dns
     spec:
       containers:
-        - image: docker.io/ubuntu/bind9:9.20-25.04_beta
+        - image: docker.io/ubuntu/bind9:9.20-26.04_stable
+          imagePullPolicy: Always
           name: bind9
           ports:
             - containerPort: 53
@@ -47,7 +48,10 @@ spec:
           name: http2136
           env:
             - name: TOKEN
-              value: "{{ .Values.dns.http2136_token }}"
+              valueFrom:
+                secretKeyRef:
+                  name: dns
+                  key: http2136-token
           volumeMounts:
             - name: dns-run
               mountPath: /run/named

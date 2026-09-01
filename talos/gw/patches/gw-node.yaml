@@ -103,7 +103,10 @@ ingress:
 apiVersion: v1alpha1
 kind: NetworkRuleConfig
 name: wireguard
-portSelector: { ports: [${WG_LISTEN_PORT}], protocol: udp }
+portSelector:
+  ports:
+    - ${WG_LISTEN_PORT}
+  protocol: udp
 ingress:
   - subnet: 0.0.0.0/0
   - subnet: ::/0

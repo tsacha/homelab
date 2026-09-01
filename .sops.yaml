@@ -1,4 +1,3 @@
-# One age key for everything. First matching rule wins.
 creation_rules:
   # Flux cluster-secrets: keep metadata readable so kustomize can patch it.
   - path_regex: cluster-secrets\.sops\.yaml$

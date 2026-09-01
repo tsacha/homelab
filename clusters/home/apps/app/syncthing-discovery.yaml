@@ -100,9 +100,10 @@ metadata:
   name: syncthing-discovery
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: syncthing-discovery
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: syncthing
+      sectionName: discovery
   rules:
     - backendRefs:
         - name: syncthing-discovery

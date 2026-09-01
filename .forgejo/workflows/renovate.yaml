@@ -1,9 +1,7 @@
 name: Renovate
 on:
-  # Run daily at 2 AM UTC
   schedule:
     - cron: '0 2 * * *'
-  # Allow manual trigger
   workflow_dispatch:
   push:
     branches:

@@ -1,6 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: lldap
   name: lldap
@@ -8,7 +10,6 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
-    rollingUpdate: null
   selector:
     matchLabels:
       app: lldap
@@ -20,16 +21,21 @@ spec:
       containers:
         - image: lldap/lldap:v0.6.3
           name: lldap
-          imagePullPolicy: Always
           env:
             - name: UID
               value: "1000"
             - name: GID
               value: "1000"
             - name: LLDAP_JWT_SECRET
-              value: "${LLDAP_JWT_SECRET}"
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-env
+                  key: jwt-secret
             - name: LLDAP_KEY_SEED
-              value: "${LLDAP_KEY_SEED}"
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-env
+                  key: key-seed
             - name: LLDAP_LDAP_BASE_DN
               value: dc=homelab,dc=internal
             - name: LLDAP_LDAP_USER_DN
@@ -37,7 +43,10 @@ spec:
             - name: LLDAP_LDAP_USER_EMAIL
               value: "${LLDAP_ADMIN_EMAIL}"
             - name: LLDAP_LDAP_USER_PASS
-              value: "${LLDAP_ADMIN_PASSWORD}"
+              valueFrom:
+                secretKeyRef:
+                  name: lldap-env
+                  key: admin-password
             - name: LLDAP_LDAP_HOST
               value: "::"
             - name: LLDAP_HTTP_HOST
@@ -93,6 +102,16 @@ spec:
       protocol: TCP
       port: 6360
       targetPort: ldaps
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: lldap-env
+type: Opaque
+stringData:
+  jwt-secret: "${LLDAP_JWT_SECRET}"
+  key-seed: "${LLDAP_KEY_SEED}"
+  admin-password: "${LLDAP_ADMIN_PASSWORD}"
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

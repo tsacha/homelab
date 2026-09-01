@@ -1,6 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: vaultwarden
   name: vaultwarden
@@ -8,7 +10,6 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
-    rollingUpdate: null
   selector:
     matchLabels:
       app: vaultwarden
@@ -20,7 +21,6 @@ spec:
       containers:
         - image: docker.io/vaultwarden/server:1.37.2
           name: vaultwarden
-          imagePullPolicy: Always
           env:
             - name: ROCKET_ADDRESS
               value: "::"

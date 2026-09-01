@@ -8,7 +8,6 @@ spec:
   replicas: 1
   strategy:
     type: Recreate
-    rollingUpdate: null
   selector:
     matchLabels:
       app: jellyfin
@@ -19,7 +18,6 @@ spec:
     spec:
       containers:
         - image: ghcr.io/jellyfin/jellyfin:10.11.11
-          imagePullPolicy: Always
           name: jellyfin
           securityContext:
             privileged: true # for DRI
@@ -30,8 +28,7 @@ spec:
               mountPath: /config/cache
             - name: jellyfin-media
               mountPath: /media
-            # A subPath mount fails before the container starts when the media
-            # volume is absent and /var/mnt/media is only an empty directory.
+            # subPath fails when the media volume is absent and only its mountpoint exists.
             - name: jellyfin-media
               mountPath: /run/media-ready
               subPath: movies

@@ -36,6 +36,7 @@ spec:
   chart:
     spec:
       chart: cert-manager
+      version: v1.21.1
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
@@ -62,6 +63,7 @@ spec:
   chart:
     spec:
       chart: cert-manager-webhook-ovh
+      version: 0.9.16
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository

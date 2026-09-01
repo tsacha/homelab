@@ -26,6 +26,7 @@ spec:
   chart:
     spec:
       chart: metrics-server
+      version: 3.14.0
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository

@@ -8,6 +8,7 @@ labels:
       app.kubernetes.io/part-of: apps
 resources:
   - namespace.yaml
+  - listeners.yaml
   - papra.yaml
   - syncthing.yaml
   - syncthing-discovery.yaml

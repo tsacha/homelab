@@ -32,8 +32,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                # $$ escapes the substitution: Flux replaces ${...} across the
-                # whole rendered output, and $HOST_IP must survive to the shell.
+                # $$ leaves $HOST_IP for the container shell after Flux substitution.
                 command: ["/bin/bash", "-c", "echo $$HOST_IP host.docker.internal >> /etc/hosts"]
           volumeMounts:
             - name: data
@@ -75,7 +74,7 @@ kind: Service
 metadata:
   name: unifi-app
 spec:
-  ipFamilyPolicy: PreferDualStack # No IPv6 on Unifi APs…
+  ipFamilyPolicy: PreferDualStack # APs need an IPv4 endpoint.
   selector:
     app: unifi-os-server
   ports:
@@ -106,9 +105,10 @@ metadata:
   name: inform
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: unifi-inform
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: unifi
+      sectionName: inform
   rules:
     - backendRefs:
         - name: unifi-app
@@ -120,9 +120,10 @@ metadata:
   name: speedtest
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: unifi-speedtest
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: unifi
+      sectionName: speedtest
   rules:
     - backendRefs:
         - name: unifi-app
@@ -134,9 +135,10 @@ metadata:
   name: stun
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: unifi-stun
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: unifi
+      sectionName: stun
   rules:
     - backendRefs:
         - name: unifi-app
@@ -148,9 +150,10 @@ metadata:
   name: discovery
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: unifi-discovery
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: unifi
+      sectionName: discovery
   rules:
     - backendRefs:
         - name: unifi-app

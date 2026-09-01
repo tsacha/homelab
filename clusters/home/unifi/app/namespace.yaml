@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: unifi
   labels:
+    private-gateway-listeners: "true"
     pod-security.kubernetes.io/enforce: privileged
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled

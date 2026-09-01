@@ -9,13 +9,11 @@
   },
   "customManagers": [
     {
-      "description": "Talos and Kubernetes pins live in the taskfile env block — no native manager",
       "customType": "regex",
       "managerFilePatterns": ["/^tasks/talos\\.yaml$/"],
       "matchStrings": ["(?<depType>TALOS_VERSION|KUBERNETES_VERSION): (?<currentValue>\\S+) # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)"]
     },
     {
-      "description": "Bootstrap pins live in shell exports, outside any standard manager",
       "customType": "regex",
       "managerFilePatterns": ["/^tasks/.+\\.yaml$/"],
       "matchStrings": ["export \\w+=(?<currentValue>\\S+) # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) packageName=(?<packageName>\\S+)"]
@@ -23,7 +21,6 @@
   ],
   "packageRules": [
     {
-      "description": "Disable digest-only updates",
       "matchUpdateTypes": ["digest"],
       "enabled": false
     },
@@ -33,7 +30,6 @@
       "groupName": "cilium and gateway-api"
     },
     {
-      "description": "Fix duplicate registryUrls for Cilium",
       "matchDatasources": ["helm"],
       "matchPackageNames": ["cilium"],
       "registryUrls": ["https://helm.cilium.io"]

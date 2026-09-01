@@ -19,6 +19,7 @@ spec:
   chart:
     spec:
       chart: volsync
+      version: 0.16.0
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository

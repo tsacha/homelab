@@ -3,10 +3,12 @@ kind: Gateway
 metadata:
   name: gw-private
 spec:
+  addresses:
+    - type: IPAddress
+      value: "${GW_PRIVATE_IPV6}"
+    - type: IPAddress
+      value: "${GW_PRIVATE_IPV4}"
   gatewayClassName: cilium-gw-private
-  infrastructure:
-    annotations:
-      lbipam.cilium.io/ips: "${GW_PRIVATE_IPV6},${GW_PRIVATE_IPV4}"
   listeners:
     - protocol: HTTP
       port: 80

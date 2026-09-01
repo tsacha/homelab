@@ -1,4 +1,4 @@
-# Cilium Gateway does not support HTTPS backends.
+# UniFi OS couples its UI and loopback certificates, so backend trust cannot rotate safely.
 apiVersion: apps/v1
 kind: Deployment
 metadata:

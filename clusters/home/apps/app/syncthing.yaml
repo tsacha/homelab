@@ -203,9 +203,10 @@ metadata:
   name: syncthing-bep
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: syncthing-bep
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: syncthing
+      sectionName: bep
   rules:
     - backendRefs:
         - name: syncthing
@@ -217,9 +218,10 @@ metadata:
   name: syncthing-quic
 spec:
   parentRefs:
-    - name: gw-private
-      namespace: gateway
-      sectionName: syncthing-quic
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: syncthing
+      sectionName: quic
   rules:
     - backendRefs:
         - name: syncthing

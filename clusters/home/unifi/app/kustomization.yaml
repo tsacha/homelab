@@ -8,5 +8,6 @@ labels:
       app.kubernetes.io/part-of: unifi
 resources:
   - namespace.yaml
+  - listeners.yaml
   - unifi-os.yaml
   - proxy.yaml
