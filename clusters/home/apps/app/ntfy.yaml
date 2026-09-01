@@ -62,6 +62,7 @@ kind: ConfigMap
 metadata:
   name: ntfy-config
 data:
+  topic: monitoring
   server.yml: |
     base-url: "https://ntfy.${SECRET_DOMAIN}"
     listen-http: ":80"
